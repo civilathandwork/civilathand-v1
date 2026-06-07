@@ -79,7 +79,7 @@ export const Calculators: React.FC = () => {
       phone: "+91 00000 00000",
       service: "Architectural & Structural Design",
       source: "Cost Calculator",
-      details: `Calculated quote for ${area} sq.ft, Quality: ${quality}. Est. Total: ₹${totalCost.toLocaleString()}`,
+      details: `Calculated quote for ${area} sq.ft, Quality: ${quality}. Est. Total: ₹${totalCost.toLocaleString("en-IN")}`,
     });
     setCostSuccess(true);
     setTimeout(() => setCostSuccess(false), 3000);
@@ -167,7 +167,7 @@ export const Calculators: React.FC = () => {
         phone: "+91 00000 00000",
         service: "BOQ Estimation",
         source: "AI BOQ Takeoff",
-        details: `Uploaded Drawing: ${drawingName}. Generated BOQ Area: ${calcArea} sq.ft. BOQ Estimate: ₹${sumTotal.toLocaleString()}`,
+        details: `Uploaded Drawing: ${drawingName}. Generated BOQ Area: ${calcArea} sq.ft. BOQ Estimate: ₹${sumTotal.toLocaleString("en-IN")}`,
       });
     }, 4000);
   };
@@ -301,7 +301,7 @@ export const Calculators: React.FC = () => {
                       <div>
                         <span className="text-xs font-bold text-navy-600 uppercase tracking-wider">Total Estimated Cost</span>
                         <p className="text-3xl font-extrabold font-display text-navy-950 mt-1">
-                          ₹{totalCost.toLocaleString()}
+                          ₹{totalCost.toLocaleString("en-IN")}
                         </p>
                         <hr className="border-slate-200 my-4" />
                         <div className="space-y-3.5 text-xs">
@@ -314,7 +314,7 @@ export const Calculators: React.FC = () => {
                             <div key={idx} className="space-y-1">
                               <div className="flex justify-between font-medium">
                                 <span className="text-navy-600">{item.name}:</span>
-                                <span className="font-semibold text-navy-950">₹{item.val.toLocaleString()} ({item.pct}%)</span>
+                                <span className="font-semibold text-navy-950">₹{item.val.toLocaleString("en-IN")} ({item.pct}%)</span>
                               </div>
                               <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
                                 <motion.div 
@@ -496,7 +496,7 @@ export const Calculators: React.FC = () => {
                           animate={{ scale: 1, opacity: 1 }}
                           className="text-4xl font-extrabold font-display text-navy-950 mt-2"
                         >
-                          {totalSteelWeight.toLocaleString()} <span className="text-lg font-bold text-navy-600">KG</span>
+                          {totalSteelWeight.toLocaleString("en-IN")} <span className="text-lg font-bold text-navy-600">KG</span>
                         </motion.p>
                         <span className="text-xs font-semibold text-orange-500 mt-2 block">
                           ≈ {(totalSteelWeight / 1000).toFixed(3)} Metric Tons
@@ -678,7 +678,7 @@ export const Calculators: React.FC = () => {
                         </div>
                         <div>
                           <span className="block text-[10px] uppercase font-bold text-navy-600 tracking-wide text-left sm:text-right">Project Estimate</span>
-                          <span className="text-xl font-extrabold text-navy-950 font-display">₹{boqResult.totalCost.toLocaleString()}</span>
+                          <span className="text-xl font-extrabold text-navy-950 font-display">₹{boqResult.totalCost.toLocaleString("en-IN")}</span>
                         </div>
                       </motion.div>
 
@@ -707,13 +707,13 @@ export const Calculators: React.FC = () => {
                                 <td className="px-4 py-2.5 font-medium text-navy-950">{item.item}</td>
                                 <td className="px-3 py-2.5 text-center">{item.unit}</td>
                                 <td className="px-3 py-2.5 text-center">{item.qty}</td>
-                                <td className="px-3 py-2.5 text-right">{item.rate.toLocaleString()}</td>
-                                <td className="px-4 py-2.5 text-right font-semibold text-navy-950">₹{item.total.toLocaleString()}</td>
+                                <td className="px-3 py-2.5 text-right">{item.rate.toLocaleString("en-IN")}</td>
+                                <td className="px-4 py-2.5 text-right font-semibold text-navy-950">₹{item.total.toLocaleString("en-IN")}</td>
                               </motion.tr>
                             ))}
                             <tr className="bg-slate-50 font-extrabold text-navy-950">
                               <td colSpan={5} className="px-4 py-3 text-right uppercase tracking-wide">Total Project Sum (INR)</td>
-                              <td className="px-4 py-3 text-right text-orange-500">₹{boqResult.totalCost.toLocaleString()}</td>
+                              <td className="px-4 py-3 text-right text-orange-500">₹{boqResult.totalCost.toLocaleString("en-IN")}</td>
                             </tr>
                           </tbody>
                         </table>

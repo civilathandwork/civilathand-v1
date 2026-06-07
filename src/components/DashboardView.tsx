@@ -204,7 +204,7 @@ export const DashboardView: React.FC = () => {
                           <Briefcase className="h-4.5 w-4.5 text-navy-600 mt-0.5" />
                           <div>
                             <span className="block font-bold text-navy-950 uppercase tracking-wide text-[10px]">Project Scope</span>
-                            <span className="text-navy-600">{project.areaSqFt.toLocaleString()} sq.ft built area</span>
+                            <span className="text-navy-600">{project.areaSqFt.toLocaleString("en-IN")} sq.ft built area</span>
                           </div>
                         </div>
                         <div className="flex items-start gap-2.5">
@@ -405,7 +405,7 @@ export const DashboardView: React.FC = () => {
                       <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end border-t sm:border-0 pt-3 sm:pt-0 border-slate-100">
                         <div className="text-left sm:text-right">
                           <span className="block text-[10px] uppercase font-bold text-navy-600 tracking-wide">Amount Due</span>
-                          <span className="text-base font-extrabold text-navy-950">₹{inv.amount.toLocaleString()}</span>
+                          <span className="text-base font-extrabold text-navy-950">₹{inv.amount.toLocaleString("en-IN")}</span>
                         </div>
 
                         {inv.status === "Paid" ? (

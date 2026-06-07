@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { 
-  HardHat, 
   Mail, 
   Phone, 
   MapPin, 
@@ -52,8 +51,8 @@ export const Footer: React.FC = () => {
           {/* Brand Info */}
           <div>
             <div className="flex items-center gap-2 mb-5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-navy-950 shadow-premium">
-                <HardHat className="h-5 w-5 text-orange-500" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white overflow-hidden shadow-premium">
+                <img src="/logo.jpg" alt="Civil At Hand Logo" className="h-full w-full object-cover" />
               </div>
               <span className="font-display text-lg font-extrabold tracking-tight text-white">
                 CIVIL <span className="text-orange-500 font-bold">AT HAND</span>

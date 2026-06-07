@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ProjectProvider } from "@/context/ProjectContext";
+import { InteractiveBackground } from "@/components/InteractiveBackground";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ProjectProvider>
+          <InteractiveBackground />
           {children}
         </ProjectProvider>
       </body>

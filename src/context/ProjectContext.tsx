@@ -405,14 +405,14 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
       addNotification(
         "Payment Confirmed",
-        `Receipt generated for Invoice #${targetInv.id.toUpperCase()}. Amount: ₹${targetInv.amount.toLocaleString()}.`,
+        `Receipt generated for Invoice #${targetInv.id.toUpperCase()}. Amount: ₹${targetInv.amount.toLocaleString("en-IN")}.`,
         "success",
         false
       );
 
       addNotification(
         "Payment Received",
-        `Client paid ₹${targetInv.amount.toLocaleString()} for ${targetInv.projectTitle}.`,
+        `Client paid ₹${targetInv.amount.toLocaleString("en-IN")} for ${targetInv.projectTitle}.`,
         "success",
         true
       );
@@ -445,7 +445,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
       addNotification(
         "Invoice Generated",
-        `A new quotation and invoice of ₹${amount.toLocaleString()} is ready for "${proj.title}".`,
+        `A new quotation and invoice of ₹${amount.toLocaleString("en-IN")} is ready for "${proj.title}".`,
         "warning",
         false
       );

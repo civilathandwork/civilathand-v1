@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { useProjects } from "@/context/ProjectContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  HardHat, 
   Bell, 
   Menu, 
   X, 
@@ -60,7 +59,7 @@ export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
 
-  const isAdminView = pathname.startsWith("/admin");
+  const isAdminView = pathname.startsWith("/cah-expert-control");
   const isDashboardView = pathname.startsWith("/dashboard");
 
   // Filter notifications based on view
@@ -97,10 +96,14 @@ export const Header: React.FC = () => {
             <Link href="/dashboard" className="hover:text-orange-500 transition-colors font-bold">
               Customer Connect
             </Link>
-            <span className="text-navy-800">|</span>
-            <Link href="/admin" className="hover:text-orange-500 transition-colors font-bold">
-              Expert Connect
-            </Link>
+            {isAdminView && (
+              <>
+                <span className="text-navy-800">|</span>
+                <Link href="/cah-expert-control" className="hover:text-orange-500 transition-colors font-bold">
+                  Expert Connect
+                </Link>
+              </>
+            )}
             <span className="text-navy-800">|</span>
             <span className="hover:text-orange-500 cursor-pointer transition-colors">Partner Portal</span>
             <span className="text-navy-800">|</span>
@@ -124,9 +127,9 @@ export const Header: React.FC = () => {
               <motion.div 
                 whileHover={{ scale: 1.05, rotate: [0, -10, 10, 0] }}
                 transition={{ duration: 0.5 }}
-                className="flex h-11 w-11 items-center justify-center rounded-lg bg-navy-950 text-white shadow-premium"
+                className="flex h-11 w-11 items-center justify-center rounded-lg bg-navy-950 overflow-hidden shadow-premium"
               >
-                <HardHat className="h-6 w-6 text-orange-500" />
+                <img src="/logo.jpg" alt="Civil At Hand Logo" className="h-full w-full object-cover" />
               </motion.div>
               <div>
                 <span className="font-display text-xl font-extrabold tracking-tight text-navy-950">
@@ -255,19 +258,17 @@ export const Header: React.FC = () => {
             </motion.div>
 
             {/* Admin Panel Link */}
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                href="/admin"
-                className={`flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition-all duration-300 border ${
-                  isAdminView
-                    ? "bg-navy-950 text-white border-navy-950"
-                    : "border-navy-950 text-navy-950 hover:bg-slate-50"
-                }`}
-              >
-                <Settings className="h-3.5 w-3.5" />
-                Admin Panel
-              </Link>
-            </motion.div>
+            {isAdminView && (
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  href="/cah-expert-control"
+                  className="flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition-all duration-300 border bg-navy-950 text-white border-navy-950"
+                >
+                  <Settings className="h-3.5 w-3.5" />
+                  Admin Panel
+                </Link>
+              </motion.div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -323,14 +324,16 @@ export const Header: React.FC = () => {
                 <User className="h-4 w-4" />
                 Client Portal
               </Link>
-              <Link
-                href="/admin"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-2 rounded-lg border border-navy-950 px-4 py-2.5 text-xs font-bold text-navy-950"
-              >
-                <Settings className="h-4 w-4" />
-                Admin Panel
-              </Link>
+              {isAdminView && (
+                <Link
+                  href="/cah-expert-control"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 rounded-lg border border-navy-950 px-4 py-2.5 text-xs font-bold text-navy-950"
+                >
+                  <Settings className="h-4 w-4" />
+                  Admin Panel
+                </Link>
+              )}
             </nav>
           </motion.div>
         )}

@@ -131,8 +131,8 @@ export const AdminView: React.FC = () => {
               {/* KPI Cards Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                  { title: "Total Sales Invoiced", val: `₹${(totalRevenue + pendingRevenue).toLocaleString()}`, desc: "+12% vs last month", isTrend: true },
-                  { title: "Collected Revenue", val: `₹${totalRevenue.toLocaleString()}`, desc: "Invoiced payments received", isTrend: false },
+                  { title: "Total Sales Invoiced", val: `₹${(totalRevenue + pendingRevenue).toLocaleString("en-IN")}`, desc: "+12% vs last month", isTrend: true },
+                  { title: "Collected Revenue", val: `₹${totalRevenue.toLocaleString("en-IN")}`, desc: "Invoiced payments received", isTrend: false },
                   { title: "Active Leads", val: `${leads.length} Leads`, desc: `${leads.filter(l => l.status === "new").length} New requests`, isTrend: false },
                   { title: "Sales Conversion", val: `${conversionRate}%`, desc: "Leads to project conversion", isTrend: false }
                 ].map((kpi, idx) => (
@@ -457,7 +457,7 @@ export const AdminView: React.FC = () => {
                       <div key={inv.id} className="border border-slate-200 rounded-lg p-3 bg-white hover:bg-slate-50 transition-colors flex justify-between items-center text-xs">
                         <div>
                           <p className="font-semibold text-navy-950">{inv.projectTitle}</p>
-                          <p className="text-[10px] text-navy-600">ID: #{inv.id.toUpperCase()} • ₹{inv.amount.toLocaleString()}</p>
+                          <p className="text-[10px] text-navy-600">ID: #{inv.id.toUpperCase()} • ₹{inv.amount.toLocaleString("en-IN")}</p>
                         </div>
                         <span className={`px-2 py-0.5 rounded font-bold text-[9px] ${
                           inv.status === "Paid" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"

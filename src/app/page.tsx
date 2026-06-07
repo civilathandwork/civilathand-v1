@@ -72,7 +72,7 @@ const AnimatedCounter: React.FC<{ value: number; suffix?: string; duration?: num
     return () => clearInterval(timer);
   }, [value, duration]);
 
-  return <span>{count.toLocaleString()}{suffix}</span>;
+  return <span>{count.toLocaleString("en-IN")}{suffix}</span>;
 };
 
 export default function Home() {
@@ -125,14 +125,13 @@ export default function Home() {
   };
 
   const services = [
-    { title: "Architectural Design", desc: "Premium master plans, structural elevation blueprints, and space layout calculations.", icon: DraftingCompass },
+    { title: "Architectural Design", desc: "Premium master plans, structural elevation blueprints, and space layout calculations.", icon: DraftingCompass, href: "/services/architectural-design" },
     { title: "Structural Design", desc: "High-grade structural detailing and frame analysis using state-of-the-art computer automation.", icon: Cpu },
     { title: "BOQ Estimation", desc: "Detailed Material bills and cost projections computed automatically with IS-code standard accuracies.", icon: FileTextIcon },
     { title: "Quantity Surveying", desc: "Professional pre-construction quantity audits, concrete takeoffs, and rebar scheduling.", icon: Briefcase },
     { title: "PDF to AutoCAD", desc: "Seamless vectorization of blueprint drawings to fully editable DWG/DXF files.", icon: FileTextIcon },
     { title: "BIM Services", desc: "Virtual design coordination and 3D modeling up to LOD 400 specification standards.", icon: Compass },
     { title: "Interior Design", desc: "Ergonomic workspace designs, custom interior layouts, and wood-finish specifications.", icon: HomeIcon },
-    { title: "Site Supervision", desc: "Remote and on-site expert quality checks, structural alignment reviews, and progress tracking.", icon: UserCheck },
     { title: "Industrial Planning", desc: "Heavy machinery layouts, warehouse logistics routing, and manufacturing floor design.", icon: Factory },
     { title: "Project Management", desc: "Complete end-to-end design-build execution timeline audit, tasking, and cost tracking.", icon: ShieldCheck },
   ];
@@ -436,7 +435,7 @@ export default function Home() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {services.map((service, idx) => {
                 const Icon = service.icon;
                 return (
@@ -445,7 +444,7 @@ export default function Home() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: (idx % 5) * 0.08 }}
+                    transition={{ duration: 0.4, delay: (idx % 3) * 0.08 }}
                     variants={cardHoverVariants}
                     whileHover="hover"
                     className="group border border-slate-200 hover:border-navy-950 rounded-xl p-5 hover:bg-slate-50 transition-all duration-300 shadow-sm flex flex-col justify-between"
@@ -462,9 +461,9 @@ export default function Home() {
                       </p>
                     </div>
                     <div className="pt-4 mt-auto">
-                      <a href="#contact" className="text-[10px] font-bold text-orange-500 hover:text-navy-950 uppercase tracking-wider flex items-center gap-1">
+                      <Link href={service.href || "#contact"} className="text-[10px] font-bold text-orange-500 hover:text-navy-950 uppercase tracking-wider flex items-center gap-1">
                         Get Estimate <ArrowRight className="h-3 w-3" />
-                      </a>
+                      </Link>
                     </div>
                   </motion.div>
                 );

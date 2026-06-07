@@ -26,8 +26,8 @@ html {
 }
 
 body {
-  background-color: #ffffff;
-  color: #0f172a;
+  background-color: #0D0C1D;
+  color: #f8fafc;
   font-family: var(--font-sans);
   overflow-x: hidden;
 }
@@ -113,4 +113,212 @@ body {
 /* Timeline Custom Styles */
 .timeline-line {
   background: linear-gradient(to bottom, #ff6b00 30%, #0a192f 100%);
+}
+
+/* --- Interactive background CSS --- */
+@property --glow-color {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #ADF5FF;
+}
+
+:root {
+  --gap: 0.125rem;
+  --triangle-base: 3rem;
+  --triangle-base-height: calc(1.733 * var(--triangle-base));
+  --triangle-width: calc(var(--triangle-base) - var(--gap));
+  --triangle-height: calc(var(--triangle-base-height) - var(--gap));
+}
+
+.interactive-bg-hero {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle at center, #2C666E, #161B33);
+  background-size: 400% 400%;
+  background-position: 100% 100%;
+  height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  padding-bottom: calc(var(--gap) * 2);
+  overflow: hidden;
+  animation: bg-animation 20s alternate infinite;
+  z-index: -50;
+  pointer-events: none;
+}
+
+@keyframes bg-animation {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 400% 400%;
+  }
+}
+
+#glow {
+  position: absolute;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle closest-side, var(--glow-color), transparent);
+  animation: glow-animation 5.2s ease infinite alternate;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: -40;
+}
+
+@keyframes glow-animation {
+  from {
+    --glow-color: #ADF5FF;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  to {
+    --glow-color: #FF6978;
+    transform: translate(-50%, -50%) scale(1) rotate(90deg);
+  }
+}
+
+.triangle-container {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  z-index: -30;
+}
+
+.triangle-set {
+  display: inline-block;
+  position: relative;
+  width: calc(var(--triangle-base) * 2 + var(--gap));
+  height: var(--triangle-base-height);
+}
+
+.triangle-set--offset {
+  transform: translateX(calc(-1 * var(--triangle-base) - 0.5 * var(--gap)));
+}
+
+.triangle-set::before,
+.triangle-set::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: var(--gap);
+  border-right: var(--triangle-width) solid transparent;
+  border-left: var(--triangle-width) solid transparent;
+}
+
+.triangle-set::before {
+  left: calc(-1 * var(--triangle-base));
+  border-bottom: var(--triangle-height) solid #0D0C1D;
+}
+
+.triangle-set::after {
+  right: calc(var(--gap) * 2.5);
+  border-top: var(--triangle-height) solid #0D0C1D;
+}
+
+/* --- Dark Theme & Transparency Adapters --- */
+.bg-white {
+  background-color: rgba(13, 12, 29, 0.45) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  color: #f8fafc !important;
+}
+
+.bg-slate-50 {
+  background-color: rgba(22, 27, 51, 0.35) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  color: #f8fafc !important;
+}
+
+.border-slate-100,
+.border-slate-200 {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.text-navy-950 {
+  color: #f8fafc !important;
+}
+
+.text-navy-900,
+.text-navy-800,
+.text-navy-700 {
+  color: #e2e8f0 !important;
+}
+
+.text-navy-600 {
+  color: #94a3b8 !important;
+}
+
+.bg-glass {
+  background: rgba(13, 12, 29, 0.65) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #f8fafc !important;
+}
+
+.bg-glass-dark {
+  background: rgba(13, 12, 29, 0.85) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.hover\:bg-slate-50:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.hover\:bg-slate-100:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+input,
+select,
+textarea {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* Adjust stats widget titles */
+.text-slate-500, .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+/* Make sure text elements that were black or navy dark adapt */
+.text-slate-900 {
+  color: #f8fafc !important;
+}
+
+/* Set scrollbar track background to dark to match theme */
+::-webkit-scrollbar-track {
+  background: #0D0C1D;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Background centered instructional title */
+.interactive-bg-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 1.25rem 2.5rem;
+  transform: translate(-50%, -50%);
+  background: #0D0C1D;
+  border-radius: 5rem;
+  box-shadow: 0 0 1rem 1rem #0D0C1D;
+  color: #ffffff !important;
+  font-size: 2rem;
+  font-family: 'Bruno Ace', cursive, sans-serif;
+  text-align: center;
+  z-index: -20;
+  pointer-events: none;
+  opacity: 0.12; /* Subtle background watermark */
 }
