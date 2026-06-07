@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useProjects, Lead, Project } from "@/context/ProjectContext";
+import { useProjects, Lead, Project, BlogPost } from "@/context/ProjectContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Users, 
@@ -16,7 +16,10 @@ import {
   ArrowUpRight, 
   Clock, 
   CheckCircle,
-  AlertCircle 
+  AlertCircle,
+  BookOpen,
+  Trash2,
+  Edit3
 } from "lucide-react";
 
 export const AdminView: React.FC = () => {
@@ -24,12 +27,16 @@ export const AdminView: React.FC = () => {
     leads, 
     projects, 
     invoices, 
+    blogs,
     updateProjectStatus, 
     generateInvoice, 
-    addProject 
+    addProject,
+    addBlog,
+    updateBlog,
+    deleteBlog
   } = useProjects();
 
-  const [activeTab, setActiveTab] = useState<"analytics" | "leads" | "projects" | "invoices">("analytics");
+  const [activeTab, setActiveTab] = useState<"analytics" | "leads" | "projects" | "invoices" | "blogs">("analytics");
 
   // State for Invoice Generation
   const [selectedProjId, setSelectedProjId] = useState("");
@@ -76,6 +83,74 @@ export const AdminView: React.FC = () => {
     setTimeout(() => setInvoiceSuccess(false), 3000);
   };
 
+  // State for Blog Management
+  const [blogTitle, setBlogTitle] = useState("");
+  const [blogSummary, setBlogSummary] = useState("");
+  const [blogContent, setBlogContent] = useState("");
+  const [blogCategory, setBlogCategory] = useState<BlogPost["category"]>("General");
+  const [blogAuthor, setBlogAuthor] = useState("CivAtHand Admin");
+  const [blogImage, setBlogImage] = useState("");
+  const [blogStatus, setBlogStatus] = useState<BlogPost["status"]>("published");
+  const [editingBlogId, setEditingBlogId] = useState<string | null>(null);
+
+  // Handle Blog Submit
+  const handleBlogSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!blogTitle.trim() || !blogContent.trim()) return;
+
+    const fallbackImage = blogImage.trim() || "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80";
+
+    const blogMeta = {
+      title: blogTitle,
+      summary: blogSummary,
+      content: blogContent,
+      category: blogCategory,
+      author: blogAuthor || "CivAtHand Admin",
+      image: fallbackImage,
+      status: blogStatus
+    };
+
+    if (editingBlogId) {
+      updateBlog(editingBlogId, blogMeta);
+      alert("Blog post updated successfully!");
+      setEditingBlogId(null);
+    } else {
+      addBlog(blogMeta);
+      alert("Blog post published successfully!");
+    }
+
+    // Reset Form
+    setBlogTitle("");
+    setBlogSummary("");
+    setBlogContent("");
+    setBlogCategory("General");
+    setBlogAuthor("CivAtHand Admin");
+    setBlogImage("");
+    setBlogStatus("published");
+  };
+
+  const startEditBlog = (post: BlogPost) => {
+    setEditingBlogId(post.id);
+    setBlogTitle(post.title);
+    setBlogSummary(post.summary);
+    setBlogContent(post.content);
+    setBlogCategory(post.category);
+    setBlogAuthor(post.author);
+    setBlogImage(post.image);
+    setBlogStatus(post.status);
+  };
+
+  const cancelEditBlog = () => {
+    setEditingBlogId(null);
+    setBlogTitle("");
+    setBlogSummary("");
+    setBlogContent("");
+    setBlogCategory("General");
+    setBlogAuthor("CivAtHand Admin");
+    setBlogImage("");
+    setBlogStatus("published");
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       {/* Sidebar Navigation */}
@@ -84,7 +159,8 @@ export const AdminView: React.FC = () => {
           { id: "analytics", title: "Analytics Dashboard", icon: BarChart3 },
           { id: "leads", title: "Lead & CRM Management", icon: Users, badge: true },
           { id: "projects", title: "Project Control Center", icon: FolderKanban },
-          { id: "invoices", title: "Billing & Invoicing", icon: Receipt }
+          { id: "invoices", title: "Billing & Invoicing", icon: Receipt },
+          { id: "blogs", title: "Blog Management", icon: BookOpen }
         ].map((tab) => {
           const hasNewLeads = tab.badge && leads.filter((l) => l.status === "new").length > 0;
           return (
@@ -466,6 +542,214 @@ export const AdminView: React.FC = () => {
                         </span>
                       </div>
                     ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* TAB 5: Blog Management */}
+          {activeTab === "blogs" && (
+            <motion.div
+              key="blogs"
+              initial={{ opacity: 0, x: 15 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -15 }}
+              transition={{ duration: 0.2 }}
+              className="space-y-6 flex-grow text-xs text-navy-950"
+            >
+              <div>
+                <h3 className="font-display font-extrabold text-xl text-navy-950">Engineering Blog & Content Management</h3>
+                <p className="text-xs text-navy-600 mt-1">Write, edit, and publish engineering technical articles and site news update logs.</p>
+              </div>
+
+              <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+                {/* Form Col */}
+                <div className="xl:col-span-5 border border-slate-200 rounded-xl p-5 md:p-6 bg-slate-50 space-y-4">
+                  <h4 className="font-display font-extrabold text-sm text-navy-950 flex items-center gap-1.5 uppercase tracking-wide">
+                    <FilePlus className="h-4.5 w-4.5 text-orange-500" />
+                    {editingBlogId ? "Edit Blog Article" : "Create New Blog Article"}
+                  </h4>
+
+                  <form onSubmit={handleBlogSubmit} className="space-y-3.5">
+                    <div>
+                      <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1">Article Title</label>
+                      <input
+                        type="text"
+                        required
+                        value={blogTitle}
+                        onChange={(e) => setBlogTitle(e.target.value)}
+                        placeholder="e.g. Modern Rebar Placement Guide"
+                        className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1">Category</label>
+                        <select
+                          value={blogCategory}
+                          onChange={(e) => setBlogCategory(e.target.value as any)}
+                          className="w-full bg-white border border-slate-300 rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                        >
+                          <option value="Structural">Structural</option>
+                          <option value="Architecture">Architecture</option>
+                          <option value="Estimation">Estimation</option>
+                          <option value="BIM">BIM Services</option>
+                          <option value="General">General Tech</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1">Status</label>
+                        <select
+                          value={blogStatus}
+                          onChange={(e) => setBlogStatus(e.target.value as any)}
+                          className="w-full bg-white border border-slate-300 rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                        >
+                          <option value="published">Published</option>
+                          <option value="draft">Draft (Private)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1">Author Name</label>
+                        <input
+                          type="text"
+                          required
+                          value={blogAuthor}
+                          onChange={(e) => setBlogAuthor(e.target.value)}
+                          placeholder="e.g. Er. Amit Wagh"
+                          className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1">Banner Image URL</label>
+                        <input
+                          type="text"
+                          value={blogImage}
+                          onChange={(e) => setBlogImage(e.target.value)}
+                          placeholder="Optional image link"
+                          className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1">Brief Summary</label>
+                      <input
+                        type="text"
+                        required
+                        value={blogSummary}
+                        onChange={(e) => setBlogSummary(e.target.value)}
+                        placeholder="A short snippet shown on card preview..."
+                        className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1">Full Article Content (Markdown/Text)</label>
+                      <textarea
+                        required
+                        rows={6}
+                        value={blogContent}
+                        onChange={(e) => setBlogContent(e.target.value)}
+                        placeholder="Write full article body. Supports standard formatting."
+                        className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold resize-y"
+                      />
+                    </div>
+
+                    <div className="flex gap-2.5 pt-2">
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        type="submit"
+                        className="flex-grow bg-navy-950 hover:bg-orange-600 text-white font-bold py-2.5 rounded-lg text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-premium"
+                      >
+                        {editingBlogId ? "Save Updates" : "Publish Post"}
+                      </motion.button>
+                      {editingBlogId && (
+                        <button
+                          type="button"
+                          onClick={cancelEditBlog}
+                          className="bg-slate-200 hover:bg-slate-300 text-navy-950 font-bold px-4 py-2.5 rounded-lg text-xs uppercase tracking-wider transition-all"
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </div>
+                  </form>
+                </div>
+
+                {/* Listing Col */}
+                <div className="xl:col-span-7 space-y-4">
+                  <h4 className="font-display font-extrabold text-sm text-navy-950 uppercase tracking-wider">Active Blog Articles ({blogs.length})</h4>
+                  
+                  <div className="space-y-3.5 max-h-[550px] overflow-y-auto pr-1">
+                    {blogs.length === 0 ? (
+                      <div className="text-center py-12 bg-slate-50 border border-dashed border-slate-200 rounded-xl text-slate-500">
+                        <BookOpen className="h-8 w-8 mx-auto text-slate-300 mb-2" />
+                        No articles found. Start publishing!
+                      </div>
+                    ) : (
+                      blogs.map((post) => (
+                        <div key={post.id} className="border border-slate-200 rounded-xl p-4 bg-white hover:bg-slate-50/50 transition-colors space-y-3 flex flex-col md:flex-row md:items-center gap-4">
+                          <div className="h-16 w-24 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0 relative border border-slate-100">
+                            <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
+                          </div>
+                          
+                          <div className="flex-grow space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[9px] bg-navy-100 text-navy-700 px-1.5 py-0.5 rounded font-bold uppercase tracking-wide">
+                                {post.category}
+                              </span>
+                              <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wide ${
+                                post.status === "published" ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-600"
+                              }`}>
+                                {post.status}
+                              </span>
+                              <span className="text-[10px] text-navy-600 ml-auto">{post.date}</span>
+                            </div>
+                            <h5 className="font-display font-extrabold text-sm text-navy-950">{post.title}</h5>
+                            <p className="text-[10px] text-navy-600 line-clamp-1 italic">"{post.summary}"</p>
+                            <p className="text-[9px] text-navy-600 font-semibold">Author: {post.author}</p>
+                          </div>
+
+                          <div className="flex md:flex-col gap-1.5 justify-end md:items-end flex-shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-slate-100 md:pl-2">
+                            <button
+                              onClick={() => {
+                                const nextStatus = post.status === "published" ? "draft" : "published";
+                                updateBlog(post.id, { status: nextStatus });
+                              }}
+                              className="bg-slate-100 hover:bg-slate-200 text-navy-950 font-bold px-2.5 py-1.5 rounded-lg text-[9px] uppercase tracking-wide"
+                            >
+                              {post.status === "published" ? "Unpublish" : "Publish"}
+                            </button>
+                            <div className="flex gap-1.5">
+                              <button
+                                onClick={() => startEditBlog(post)}
+                                className="bg-orange-500/10 hover:bg-orange-500/20 text-orange-600 p-1.5 rounded-lg"
+                                title="Edit Article"
+                              >
+                                <Edit3 className="h-3.5 w-3.5" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  if (confirm("Are you sure you want to delete this blog post?")) {
+                                    deleteBlog(post.id);
+                                  }
+                                }}
+                                className="bg-red-500/10 hover:bg-red-500/20 text-red-600 p-1.5 rounded-lg"
+                                title="Delete Article"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
               </div>

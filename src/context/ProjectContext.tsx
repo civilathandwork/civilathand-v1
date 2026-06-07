@@ -65,6 +65,18 @@ export interface ChatMessage {
   timestamp: string;
 }
 
+export interface BlogPost {
+  id: string;
+  title: string;
+  content: string;
+  summary: string;
+  category: "Structural" | "Architecture" | "Estimation" | "BIM" | "General";
+  date: string;
+  author: string;
+  image: string;
+  status: "draft" | "published";
+}
+
 interface ProjectContextType {
   leads: Lead[];
   projects: Project[];
@@ -72,6 +84,7 @@ interface ProjectContextType {
   invoices: Invoice[];
   notifications: Notification[];
   chatMessages: ChatMessage[];
+  blogs: BlogPost[];
   addLead: (lead: Omit<Lead, "id" | "date" | "status">) => void;
   addProject: (project: Omit<Project, "id" | "dateStarted" | "progress" | "status">) => void;
   updateProjectStatus: (id: string, status: Project["status"]) => void;
@@ -81,6 +94,9 @@ interface ProjectContextType {
   addNotification: (title: string, message: string, type: Notification["type"], isAdmin: boolean) => void;
   markNotificationsAsRead: (isAdmin: boolean) => void;
   sendChatMessage: (text: string, sender: ChatMessage["sender"]) => void;
+  addBlog: (blog: Omit<BlogPost, "id" | "date">) => void;
+  updateBlog: (id: string, blog: Partial<BlogPost>) => void;
+  deleteBlog: (id: string) => void;
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
@@ -232,6 +248,72 @@ const initialChatMessages: ChatMessage[] = [
   }
 ];
 
+const initialBlogs: BlogPost[] = [
+  {
+    id: "blog-1",
+    title: "Understanding Soil Bearing Capacity in Foundation Design",
+    summary: "A deep dive into soil investigation reports, standard penetration tests (SPT), and how structural engineers calculate safe bearing capacity.",
+    content: `Structural stability begins at the foundation. Before laying a single cubic meter of concrete, civil engineers must understand the mechanical behaviors of the sub-soil.
+
+### What is Soil Bearing Capacity?
+Bearing capacity is the capacity of soil to support the loads applied to the ground. The maximum pressure that the soil can support safely without undergoing shear failure or excessive settlement is called the Ultimate Bearing Capacity.
+
+### The Role of SPT (Standard Penetration Test)
+The SPT value (N-value) is a critical parameter. During exploration:
+1. A split-spoon sampler is driven into the soil.
+2. The number of blows required to drive the sampler through three successive 150mm intervals is recorded.
+3. The sum of blow counts for the last two intervals is the N-value.
+
+Higher N-values correspond to denser sandy soils or stiffer cohesive clays, indicating superior bearing strength.
+
+### Engineering Best Practices
+- **Never skip soil testing:** Designing foundations on assumed parameters often results in uneven settlement, wall cracking, or structural failure.
+- **Factor of Safety (FoS):** In residential and commercial structural designs, a minimum FoS of 2.5 to 3.0 should be applied to calculate Safe Bearing Capacity (SBC).`,
+    category: "Structural",
+    date: "2026-06-05",
+    author: "Er. Amit Wagh",
+    image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80",
+    status: "published",
+  },
+  {
+    id: "blog-2",
+    title: "A Complete Guide to Modern Glassmorphism in Architecture",
+    summary: "Exploring the aesthetic evolution of glass facade engineering, acoustic properties of triple-glazed structures, and visual design parameters.",
+    content: `Glassmorphism isn't just a trend in digital UI design; it has deep roots in modern architectural facades. Premium high-rises and executive offices leverage frosted, fluted, and translucent glass sheets to create breathtaking architectural elements that play with light and depth.
+
+### Visual Depth & Ambient Lighting
+By using low-iron frosted glass, designers can capture light without creating sharp, blinding reflections. This allows interior spaces to benefit from natural daylighting while maintaining thermal barriers and private workspaces.
+
+### Triple-Glazing & Acoustical Comfort
+To achieve a premium glassmorphic facade, engineers must account for environmental dynamics:
+- **Acoustic Dampening:** Triple-glazed configurations with vacuum chambers reduce exterior decibel levels by up to 45dB, essential for city centers.
+- **U-Value Management:** Implementing low-E metallic oxide coatings ensures that heat is reflected, maintaining comfortable internal HVAC load settings.`,
+    category: "Architecture",
+    date: "2026-06-03",
+    author: "Ar. Sneha Patel",
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80",
+    status: "published",
+  },
+  {
+    id: "blog-3",
+    title: "AI Takeoffs: The Future of Quantity Surveying & BOQ",
+    summary: "How deep learning visual engines are automating coordinate mapping and volume estimation directly from structural DWG and PDF files.",
+    content: `Traditional quantity takeoffs require structural estimators to manually scale blueprints, measure linear feet, and manually count reinforcement bars. This process is time-consuming and prone to human error. AI-assisted takeoffs are transforming the engineering industry.
+
+### How AI BOQ Takeoffs Work
+1. **Object Detection:** Machine learning algorithms identify standard symbols (rebar shapes, columns, footing dimensions, wall lengths) on 2D drawings.
+2. **Dynamic Scaling:** By recognizing scale legends (e.g. 1:100), the engine calculates concrete volumes and brickwork counts automatically.
+3. **Rebar Estimation:** Rebar schedules are extracted directly from schedule tables, multiplying lengths by unit weights to generate steel summaries in seconds.
+
+At Civil At Hand, our automated AI engine reduces manual takeoff prep time by over 80%, giving engineers more time to focus on value engineering.`,
+    category: "Estimation",
+    date: "2026-06-01",
+    author: "Er. Nitin Shinde",
+    image: "https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?auto=format&fit=crop&w=800&q=80",
+    status: "published",
+  }
+];
+
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -239,6 +321,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Load from local storage
@@ -250,6 +333,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       const storedInvoices = localStorage.getItem("cah_invoices");
       const storedNotifs = localStorage.getItem("cah_notifications");
       const storedChats = localStorage.getItem("cah_chats");
+      const storedBlogs = localStorage.getItem("cah_blogs");
 
       setLeads(storedLeads ? JSON.parse(storedLeads) : initialLeads);
       setProjects(storedProjects ? JSON.parse(storedProjects) : initialProjects);
@@ -257,6 +341,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       setInvoices(storedInvoices ? JSON.parse(storedInvoices) : initialInvoices);
       setNotifications(storedNotifs ? JSON.parse(storedNotifs) : initialNotifications);
       setChatMessages(storedChats ? JSON.parse(storedChats) : initialChatMessages);
+      setBlogs(storedBlogs ? JSON.parse(storedBlogs) : initialBlogs);
       setIsLoaded(true);
     }
   }, []);
@@ -270,8 +355,9 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       localStorage.setItem("cah_invoices", JSON.stringify(invoices));
       localStorage.setItem("cah_notifications", JSON.stringify(notifications));
       localStorage.setItem("cah_chats", JSON.stringify(chatMessages));
+      localStorage.setItem("cah_blogs", JSON.stringify(blogs));
     }
-  }, [leads, projects, drawings, invoices, notifications, chatMessages, isLoaded]);
+  }, [leads, projects, drawings, invoices, notifications, chatMessages, blogs, isLoaded]);
 
   // Methods
   const addLead = (newLead: Omit<Lead, "id" | "date" | "status">) => {
@@ -511,6 +597,31 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
+  const addBlog = (blogData: Omit<BlogPost, "id" | "date">) => {
+    const newBlog: BlogPost = {
+      ...blogData,
+      id: `blog-${Date.now()}`,
+      date: new Date().toISOString().split("T")[0],
+    };
+    setBlogs((prev) => [newBlog, ...prev]);
+    addNotification(
+      "New Blog Post Created",
+      `Blog post "${newBlog.title}" is now available.`,
+      "success",
+      true
+    );
+  };
+
+  const updateBlog = (id: string, blogData: Partial<BlogPost>) => {
+    setBlogs((prev) =>
+      prev.map((b) => (b.id === id ? { ...b, ...blogData } : b))
+    );
+  };
+
+  const deleteBlog = (id: string) => {
+    setBlogs((prev) => prev.filter((b) => b.id !== id));
+  };
+
   return (
     <ProjectContext.Provider
       value={{
@@ -520,6 +631,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         invoices,
         notifications,
         chatMessages,
+        blogs,
         addLead,
         addProject,
         updateProjectStatus,
@@ -529,6 +641,9 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         addNotification,
         markNotificationsAsRead,
         sendChatMessage,
+        addBlog,
+        updateBlog,
+        deleteBlog,
       }}
     >
       {children}

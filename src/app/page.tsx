@@ -76,7 +76,7 @@ const AnimatedCounter: React.FC<{ value: number; suffix?: string; duration?: num
 };
 
 export default function Home() {
-  const { addLead } = useProjects();
+  const { addLead, blogs } = useProjects();
   
   // Interactive Lifecycle Step State
   const [activeLifecycleStep, setActiveLifecycleStep] = useState(0);
@@ -1147,6 +1147,83 @@ export default function Home() {
                 </motion.button>
               </form>
 
+            </div>
+          </div>
+        </section>
+
+        {/* Latest Insights / Blog Section */}
+        <section className="py-16 border-t border-white/5 relative z-10">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-12">
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                Latest Engineering <span className="text-orange-500">Insights</span>
+              </h2>
+              <p className="mt-3 text-sm text-slate-300">
+                Explore tech briefs, building regulations audits, rebar schedules guidelines, and industry news published by our team.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {blogs
+                .filter((p) => p.status === "published")
+                .slice(0, 3)
+                .map((post, idx) => (
+                  <motion.article
+                    key={post.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: idx * 0.1 }}
+                    className="bg-glass-dark border border-white/5 rounded-2xl overflow-hidden shadow-premium group flex flex-col h-full hover:border-orange-500/30 transition-all duration-300"
+                  >
+                    <div className="h-44 overflow-hidden relative bg-slate-900 border-b border-white/5">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute top-3 left-3">
+                        <span className="text-[9px] bg-orange-500 text-white px-2 py-0.5 rounded font-bold uppercase tracking-wider shadow-sm">
+                          {post.category}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
+                      <div className="space-y-2 text-xs">
+                        <div className="flex gap-3 text-[9px] text-slate-400 font-bold uppercase tracking-wide">
+                          <span>{post.date}</span>
+                          <span>•</span>
+                          <span>{post.author}</span>
+                        </div>
+                        <h4 className="font-display font-extrabold text-base text-white group-hover:text-orange-500 transition-colors line-clamp-2 leading-snug">
+                          {post.title}
+                        </h4>
+                        <p className="text-slate-300 leading-relaxed line-clamp-3">
+                          {post.summary}
+                        </p>
+                      </div>
+
+                      <div className="pt-2">
+                        <Link
+                          href={`/blog/${post.id}`}
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-500 hover:text-white uppercase tracking-wider transition-colors"
+                        >
+                          Read Post <ArrowRight className="h-3.5 w-3.5" />
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.article>
+                ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-1.5 bg-navy-950 hover:bg-orange-600 text-white rounded-lg px-6 py-3 text-xs font-bold uppercase tracking-wider transition-all shadow-premium"
+              >
+                View Engineering Blog <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         </section>
