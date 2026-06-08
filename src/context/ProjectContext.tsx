@@ -94,9 +94,9 @@ interface ProjectContextType {
   addNotification: (title: string, message: string, type: Notification["type"], isAdmin: boolean) => void;
   markNotificationsAsRead: (isAdmin: boolean) => void;
   sendChatMessage: (text: string, sender: ChatMessage["sender"]) => void;
-  addBlog: (blog: Omit<BlogPost, "id" | "date">) => void;
-  updateBlog: (id: string, blog: Partial<BlogPost>) => void;
-  deleteBlog: (id: string) => void;
+  addBlog: (blog: Omit<BlogPost, "id" | "date">) => Promise<void>;
+  updateBlog: (id: string, blog: Partial<BlogPost>) => Promise<void>;
+  deleteBlog: (id: string) => Promise<void>;
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
@@ -324,7 +324,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load from local storage
+  // Load from local storage and API
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedLeads = localStorage.getItem("cah_leads");
@@ -333,7 +333,6 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       const storedInvoices = localStorage.getItem("cah_invoices");
       const storedNotifs = localStorage.getItem("cah_notifications");
       const storedChats = localStorage.getItem("cah_chats");
-      const storedBlogs = localStorage.getItem("cah_blogs");
 
       setLeads(storedLeads ? JSON.parse(storedLeads) : initialLeads);
       setProjects(storedProjects ? JSON.parse(storedProjects) : initialProjects);
@@ -341,12 +340,27 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       setInvoices(storedInvoices ? JSON.parse(storedInvoices) : initialInvoices);
       setNotifications(storedNotifs ? JSON.parse(storedNotifs) : initialNotifications);
       setChatMessages(storedChats ? JSON.parse(storedChats) : initialChatMessages);
-      setBlogs(storedBlogs ? JSON.parse(storedBlogs) : initialBlogs);
-      setIsLoaded(true);
+
+      // Fetch blogs asynchronously from the backend API
+      fetch("/api/blogs")
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch blogs");
+          return res.json();
+        })
+        .then((data) => {
+          setBlogs(data && data.length > 0 ? data : initialBlogs);
+        })
+        .catch((err) => {
+          console.error("Failed to load blogs from API, falling back to initial data:", err);
+          setBlogs(initialBlogs);
+        })
+        .finally(() => {
+          setIsLoaded(true);
+        });
     }
   }, []);
 
-  // Save to local storage
+  // Save to local storage (excluding blogs, which are stored server-side)
   useEffect(() => {
     if (isLoaded) {
       localStorage.setItem("cah_leads", JSON.stringify(leads));
@@ -355,9 +369,8 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       localStorage.setItem("cah_invoices", JSON.stringify(invoices));
       localStorage.setItem("cah_notifications", JSON.stringify(notifications));
       localStorage.setItem("cah_chats", JSON.stringify(chatMessages));
-      localStorage.setItem("cah_blogs", JSON.stringify(blogs));
     }
-  }, [leads, projects, drawings, invoices, notifications, chatMessages, blogs, isLoaded]);
+  }, [leads, projects, drawings, invoices, notifications, chatMessages, isLoaded]);
 
   // Methods
   const addLead = (newLead: Omit<Lead, "id" | "date" | "status">) => {
@@ -597,29 +610,58 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
-  const addBlog = (blogData: Omit<BlogPost, "id" | "date">) => {
-    const newBlog: BlogPost = {
-      ...blogData,
-      id: `blog-${Date.now()}`,
-      date: new Date().toISOString().split("T")[0],
-    };
-    setBlogs((prev) => [newBlog, ...prev]);
-    addNotification(
-      "New Blog Post Created",
-      `Blog post "${newBlog.title}" is now available.`,
-      "success",
-      true
-    );
+  const addBlog = async (blogData: Omit<BlogPost, "id" | "date">) => {
+    try {
+      const res = await fetch("/api/blogs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(blogData),
+      });
+      if (!res.ok) throw new Error("Failed to add blog post");
+      const newBlog = await res.json();
+      setBlogs((prev) => [newBlog, ...prev]);
+      addNotification(
+        "New Blog Post Created",
+        `Blog post "${newBlog.title}" is now available.`,
+        "success",
+        true
+      );
+    } catch (error) {
+      console.error("Error adding blog post:", error);
+    }
   };
 
-  const updateBlog = (id: string, blogData: Partial<BlogPost>) => {
-    setBlogs((prev) =>
-      prev.map((b) => (b.id === id ? { ...b, ...blogData } : b))
-    );
+  const updateBlog = async (id: string, blogData: Partial<BlogPost>) => {
+    try {
+      const res = await fetch(`/api/blogs/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(blogData),
+      });
+      if (!res.ok) throw new Error("Failed to update blog post");
+      const updatedBlog = await res.json();
+      setBlogs((prev) =>
+        prev.map((b) => (b.id === id ? updatedBlog : b))
+      );
+    } catch (error) {
+      console.error("Error updating blog post:", error);
+    }
   };
 
-  const deleteBlog = (id: string) => {
-    setBlogs((prev) => prev.filter((b) => b.id !== id));
+  const deleteBlog = async (id: string) => {
+    try {
+      const res = await fetch(`/api/blogs/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete blog post");
+      setBlogs((prev) => prev.filter((b) => b.id !== id));
+    } catch (error) {
+      console.error("Error deleting blog post:", error);
+    }
   };
 
   return (
