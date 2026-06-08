@@ -137,7 +137,7 @@ export const Header: React.FC = () => {
                   CIVIL <span className="text-orange-500 font-bold">AT HAND</span>
                 </span>
                 <span className="block text-[10px] font-semibold uppercase tracking-widest text-navy-600">
-                  Engineering Tech
+                  Design and consultancy
                 </span>
               </div>
             </Link>
