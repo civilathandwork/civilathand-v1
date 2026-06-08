@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 
+export const dynamic = "force-dynamic";
+
 const filePath = path.join(process.cwd(), "src/data/blogs.json");
 
 async function getBlogsFromFile() {
@@ -59,8 +61,9 @@ export async function DELETE(
     const blogs = await getBlogsFromFile();
     const filteredBlogs = blogs.filter((b: any) => b.id !== id);
 
+    // If the blog was not found, return success anyway (idempotent delete)
     if (blogs.length === filteredBlogs.length) {
-      return NextResponse.json({ error: "Blog post not found" }, { status: 404 });
+      return NextResponse.json({ success: true, message: "Blog post was already deleted or not found" });
     }
 
     await writeBlogsToFile(filteredBlogs);
