@@ -109,18 +109,16 @@ export const Footer: React.FC = () => {
               <li className="flex items-start gap-2.5">
                 <MapPin className="h-4 w-4 text-orange-500 flex-shrink-0 mt-0.5" />
                 <span>
-                  Civil At Hand Tech Headquarters,<br />
-                  6th Floor, Synergy Business Park,<br />
-                  Kalyani Nagar, Pune, India - 411006
+                  Civil At Hand Design and consultancy,<br />
                 </span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="h-4 w-4 text-orange-500 flex-shrink-0" />
-                <span>+91 20 6734 5000</span>
+                <span>+91 770-39-770-02</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="h-4 w-4 text-orange-500 flex-shrink-0" />
-                <span>projects@civilathand.com</span>
+                <span>info@civilathand.in</span>
               </li>
             </ul>
           </div>
