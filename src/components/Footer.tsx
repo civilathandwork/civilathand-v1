@@ -163,7 +163,7 @@ export const Footer: React.FC = () => {
         <hr className="border-navy-900 mb-8" />
 
         <div className="flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-4">
-          <p>© {currentYear} Civil At Hand Tech Solutions Pvt. Ltd. All rights reserved.</p>
+          <p>© {currentYear} Civil At Hand : Design & Consultancy All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-slate-300">Privacy Policy</a>
             <a href="#" className="hover:text-slate-300">Terms of Service</a>
