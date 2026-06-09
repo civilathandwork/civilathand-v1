@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
+import clientPromise from "@/lib/mongodb";
 
 export const dynamic = "force-dynamic";
 
-const filePath = path.join(process.cwd(), "src/data/blogs.json");
+const dbName = process.env.MONGODB_DB || "civil-at-hand";
 
 const initialBlogs = [
   {
@@ -21,7 +20,7 @@ const initialBlogs = [
   {
     id: "blog-2",
     title: "A Complete Guide to Modern Glassmorphism in Architecture",
-    summary: "Exploring the aesthetic evolution of glass facade engineering, acoustic properties of triple-glazed structures, and visual design parameters.",
+    "summary": "Exploring the aesthetic evolution of glass facade engineering, acoustic properties of triple-glazed structures, and visual design parameters.",
     content: "Glassmorphism isn't just a trend in digital UI design; it has deep roots in modern architectural facades. Premium high-rises and executive offices leverage frosted, fluted, and translucent glass sheets to create breathtaking architectural elements that play with light and depth.\n\n### Visual Depth & Ambient Lighting\nBy using low-iron frosted glass, designers can capture light without creating sharp, blinding reflections. This allows interior spaces to benefit from natural daylighting while maintaining thermal barriers and private workspaces.\n\n### Triple-Glazing & Acoustical Comfort\nTo achieve a premium glassmorphic facade, engineers must account for environmental dynamics:\n- **Acoustic Dampening:** Triple-glazed configurations with vacuum chambers reduce exterior decibel levels by up to 45dB, essential for city centers.\n- **U-Value Management:** Implementing low-E metallic oxide coatings ensures that heat is reflected, maintaining comfortable internal HVAC load settings.",
     category: "Architecture",
     date: "2026-06-03",
@@ -32,7 +31,7 @@ const initialBlogs = [
   {
     id: "blog-3",
     title: "AI Takeoffs: The Future of Quantity Surveying & BOQ",
-    summary: "How deep learning visual engines are automating coordinate mapping and volume estimation directly from structural DWG and PDF files.",
+    "summary": "How deep learning visual engines are automating coordinate mapping and volume estimation directly from structural DWG and PDF files.",
     content: "Traditional quantity takeoffs require structural estimators to manually scale blueprints, measure linear feet, and manually count reinforcement bars. This process is time-consuming and prone to human error. AI-assisted takeoffs are transforming the engineering industry.\n\n### How AI BOQ Takeoffs Work\n1. **Object Detection:** Machine learning algorithms identify standard symbols (rebar shapes, columns, footing dimensions, wall lengths) on 2D drawings.\n2. **Dynamic Scaling:** By recognizing scale legends (e.g. 1:100), the engine calculates concrete volumes and brickwork counts automatically.\n3. **Rebar Estimation:** Rebar schedules are extracted directly from schedule tables, multiplying lengths by unit weights to generate steel summaries in seconds.\n\nAt Civil At Hand, our automated AI engine reduces manual takeoff prep time by over 80%, giving engineers more time to focus on value engineering.",
     category: "Estimation",
     date: "2026-06-01",
@@ -42,29 +41,27 @@ const initialBlogs = [
   }
 ];
 
-async function getBlogsFromFile() {
-  try {
-    const data = await fs.readFile(filePath, "utf-8");
-    return JSON.parse(data);
-  } catch (error: any) {
-    if (error.code === "ENOENT") {
-      await writeBlogsToFile(initialBlogs);
-      return initialBlogs;
-    }
-    return [];
-  }
-}
-
-async function writeBlogsToFile(blogs: any[]) {
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
-  await fs.writeFile(filePath, JSON.stringify(blogs, null, 2), "utf-8");
-}
-
 export async function GET() {
   try {
-    const blogs = await getBlogsFromFile();
-    return NextResponse.json(blogs);
+    const client = await clientPromise;
+    const db = client.db(dbName);
+    const collection = db.collection("blogs");
+
+    // Fetch all blogs
+    const blogs = await collection.find({}).toArray();
+
+    // If database is empty, seed it with the default blogs
+    if (blogs.length === 0) {
+      await collection.insertMany(initialBlogs);
+      return NextResponse.json(initialBlogs);
+    }
+
+    // Convert _id to string or remove it to match client expectations
+    const formattedBlogs = blogs.map(({ _id, ...rest }) => rest);
+
+    return NextResponse.json(formattedBlogs);
   } catch (error) {
+    console.error("Error in GET /api/blogs:", error);
     return NextResponse.json({ error: "Failed to fetch blogs" }, { status: 500 });
   }
 }
@@ -78,7 +75,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Title and content are required" }, { status: 400 });
     }
 
-    const blogs = await getBlogsFromFile();
+    const client = await clientPromise;
+    const db = client.db(dbName);
+    const collection = db.collection("blogs");
 
     const newBlog = {
       id: `blog-${Date.now()}`,
@@ -92,10 +91,11 @@ export async function POST(request: Request) {
       status: status || "draft",
     };
 
-    blogs.unshift(newBlog);
-    await writeBlogsToFile(blogs);
+    await collection.insertOne(newBlog);
 
-    return NextResponse.json(newBlog, { status: 201 });
+    // Return without MongoDB's _id
+    const { _id, ...responseBlog } = newBlog as any;
+    return NextResponse.json(responseBlog, { status: 201 });
   } catch (error) {
     console.error("Error creating blog:", error);
     return NextResponse.json({ error: "Failed to create blog" }, { status: 500 });

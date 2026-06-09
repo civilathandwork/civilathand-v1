@@ -1,24 +1,9 @@
 import { NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
+import clientPromise from "@/lib/mongodb";
 
 export const dynamic = "force-dynamic";
 
-const filePath = path.join(process.cwd(), "src/data/blogs.json");
-
-async function getBlogsFromFile() {
-  try {
-    const data = await fs.readFile(filePath, "utf-8");
-    return JSON.parse(data);
-  } catch (error) {
-    return [];
-  }
-}
-
-async function writeBlogsToFile(blogs: any[]) {
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
-  await fs.writeFile(filePath, JSON.stringify(blogs, null, 2), "utf-8");
-}
+const dbName = process.env.MONGODB_DB || "civil-at-hand";
 
 export async function PUT(
   request: Request,
@@ -28,24 +13,30 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json();
 
-    const blogs = await getBlogsFromFile();
-    const index = blogs.findIndex((b: any) => b.id === id);
+    const client = await clientPromise;
+    const db = client.db(dbName);
+    const collection = db.collection("blogs");
 
-    if (index === -1) {
+    // Check if the blog post exists
+    const blog = await collection.findOne({ id });
+    if (!blog) {
       return NextResponse.json({ error: "Blog post not found" }, { status: 404 });
     }
 
-    const updatedBlog = {
-      ...blogs[index],
+    // Prepare updated data
+    const updatedBlogData = {
       ...body,
-      id: blogs[index].id,
-      date: blogs[index].date,
+      id: blog.id, // Ensure id cannot be changed
+      date: blog.date, // Preserve date
     };
 
-    blogs[index] = updatedBlog;
-    await writeBlogsToFile(blogs);
+    // Remove _id from update payload if it is present
+    delete (updatedBlogData as any)._id;
 
-    return NextResponse.json(updatedBlog);
+    await collection.updateOne({ id }, { $set: updatedBlogData });
+
+    const { _id, ...originalBlogWithoutId } = blog;
+    return NextResponse.json({ ...originalBlogWithoutId, ...updatedBlogData });
   } catch (error) {
     console.error("Error updating blog:", error);
     return NextResponse.json({ error: "Failed to update blog" }, { status: 500 });
@@ -58,15 +49,18 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const blogs = await getBlogsFromFile();
-    const filteredBlogs = blogs.filter((b: any) => b.id !== id);
 
-    // If the blog was not found, return success anyway (idempotent delete)
-    if (blogs.length === filteredBlogs.length) {
+    const client = await clientPromise;
+    const db = client.db(dbName);
+    const collection = db.collection("blogs");
+
+    const deleteResult = await collection.deleteOne({ id });
+
+    // If no document was deleted, return success anyway (idempotent delete)
+    if (deleteResult.deletedCount === 0) {
       return NextResponse.json({ success: true, message: "Blog post was already deleted or not found" });
     }
 
-    await writeBlogsToFile(filteredBlogs);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting blog:", error);
