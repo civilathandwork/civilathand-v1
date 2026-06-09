@@ -348,7 +348,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
           return res.json();
         })
         .then((data) => {
-          setBlogs(data && data.length > 0 ? data : initialBlogs);
+          setBlogs(Array.isArray(data) ? data : initialBlogs);
         })
         .catch((err) => {
           console.error("Failed to load blogs from API, falling back to initial data:", err);
