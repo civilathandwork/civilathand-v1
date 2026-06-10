@@ -46,15 +46,20 @@ export async function GET() {
     const client = await clientPromise;
     const db = client.db(dbName);
     const collection = db.collection("blogs");
+    const settingsCollection = db.collection("settings");
+
+    // Check if the database has already been seeded at least once
+    const seedFlag = await settingsCollection.findOne({ key: "seeded" });
+
+    if (!seedFlag) {
+      // Seed with initial blogs
+      await collection.insertMany(initialBlogs);
+      await settingsCollection.insertOne({ key: "seeded", value: true });
+      return NextResponse.json(initialBlogs);
+    }
 
     // Fetch all blogs
     const blogs = await collection.find({}).toArray();
-
-    // If database is empty, seed it with the default blogs
-    if (blogs.length === 0) {
-      await collection.insertMany(initialBlogs);
-      return NextResponse.json(initialBlogs);
-    }
 
     // Convert _id to string or remove it to match client expectations
     const formattedBlogs = blogs.map(({ _id, ...rest }) => rest);
