@@ -342,7 +342,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       setChatMessages(storedChats ? JSON.parse(storedChats) : initialChatMessages);
 
       // Fetch blogs asynchronously from the backend API
-      fetch("/api/blogs")
+      fetch("/api/blogs", { cache: "no-store" })
         .then((res) => {
           if (!res.ok) throw new Error("Failed to fetch blogs");
           return res.json();

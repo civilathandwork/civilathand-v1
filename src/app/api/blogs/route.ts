@@ -51,11 +51,15 @@ export async function GET() {
     // Check if the database has already been seeded at least once
     const seedFlag = await settingsCollection.findOne({ key: "seeded" });
 
+    const headers = {
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    };
+
     if (!seedFlag) {
       // Seed with initial blogs
       await collection.insertMany(initialBlogs);
       await settingsCollection.insertOne({ key: "seeded", value: true });
-      return NextResponse.json(initialBlogs);
+      return NextResponse.json(initialBlogs, { headers });
     }
 
     // Fetch all blogs
@@ -64,7 +68,7 @@ export async function GET() {
     // Convert _id to string or remove it to match client expectations
     const formattedBlogs = blogs.map(({ _id, ...rest }) => rest);
 
-    return NextResponse.json(formattedBlogs);
+    return NextResponse.json(formattedBlogs, { headers });
   } catch (error) {
     console.error("Error in GET /api/blogs:", error);
     return NextResponse.json({ error: "Failed to fetch blogs" }, { status: 500 });
