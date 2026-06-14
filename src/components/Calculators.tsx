@@ -176,20 +176,32 @@ export const Calculators: React.FC = () => {
     <div id="calculators" className="py-20 bg-slate-50 border-y border-slate-100">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Title */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
           <div className="inline-flex items-center gap-1.5 rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-600 mb-4 shadow-sm">
             <Calculator className="h-3.5 w-3.5" />
             <span>Interactive Calculators</span>
           </div>
-          <h2 className="font-display text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
+          <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl">
             Professional Engineering Estimation Tools
           </h2>
-          <p className="mt-4 text-sm text-navy-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed">
             Get instant, highly accurate structural and cost calculations backed by standard IS-code algorithms, trusted by engineering experts.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start"
+        >
           {/* Sidebar Tabs */}
           <div className="lg:col-span-4 flex flex-row lg:flex-col overflow-x-auto lg:overflow-visible gap-2 pb-4 lg:pb-0 scrollbar-none">
             {[
@@ -203,11 +215,12 @@ export const Calculators: React.FC = () => {
                 whileHover={{ x: 4 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex-shrink-0 flex items-center gap-3 w-full text-left px-5 py-4 rounded-xl font-bold text-sm transition-all duration-200 ${
+                className={`flex-shrink-0 flex items-center gap-3 w-full text-left px-5 py-4 rounded-md font-bold text-sm transition-all duration-200 ${
                   activeTab === tab.id
-                    ? "bg-navy-950 text-white shadow-premium"
-                    : "bg-white text-navy-950 hover:bg-slate-100 border border-slate-200"
+                    ? "bg-wix-dark text-white border border-wix-dark shadow-sm"
+                    : "bg-white text-wix-dark hover:bg-slate-50 border border-slate-200"
                 }`}
+                suppressHydrationWarning
               >
                 <tab.icon className="h-4.5 w-4.5 text-orange-500" />
                 <div>
@@ -221,11 +234,12 @@ export const Calculators: React.FC = () => {
               whileHover={{ x: 4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setActiveTab("boq")}
-              className={`flex-shrink-0 flex items-center gap-3 w-full text-left px-5 py-4 rounded-xl font-bold text-sm transition-all duration-200 ${
+              className={`flex-shrink-0 flex items-center gap-3 w-full text-left px-5 py-4 rounded-md font-bold text-sm transition-all duration-200 ${
                 activeTab === "boq"
-                  ? "bg-navy-950 text-white shadow-premium border-navy-950"
-                  : "bg-orange-100 text-navy-950 hover:bg-orange-200 border border-orange-200"
+                  ? "bg-wix-dark text-white border border-wix-dark shadow-sm"
+                  : "bg-orange-50 border border-orange-200/50 hover:bg-orange-100/70"
               }`}
+              suppressHydrationWarning
             >
               <Sparkles className="h-4.5 w-4.5 text-orange-500 animate-pulse" />
               <div>
@@ -238,7 +252,7 @@ export const Calculators: React.FC = () => {
           </div>
 
           {/* Calculator Output Panel */}
-          <div className="lg:col-span-8 bg-white rounded-2xl shadow-premium border border-slate-200 p-6 md:p-8 overflow-hidden min-h-[420px]">
+          <div className="lg:col-span-8 bg-white rounded-md border border-slate-200 p-6 md:p-8 overflow-hidden min-h-[420px] shadow-sm">
             <AnimatePresence mode="wait">
               {/* T1: Cost Calculator */}
               {activeTab === "cost" && (
@@ -266,7 +280,8 @@ export const Calculators: React.FC = () => {
                           max="200000"
                           value={area}
                           onChange={(e) => setArea(Number(e.target.value))}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-orange-500 font-semibold text-navy-950"
+                          className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold text-slate-800 transition-all shadow-sm"
+                          suppressHydrationWarning
                         />
                       </div>
                       <div>
@@ -283,6 +298,7 @@ export const Calculators: React.FC = () => {
                                   ? "bg-navy-950 text-white border-navy-950 shadow-sm"
                                   : "bg-white text-navy-950 border-slate-200 hover:bg-slate-50"
                               }`}
+                              suppressHydrationWarning
                             >
                               {tier}
                             </button>
@@ -297,7 +313,7 @@ export const Calculators: React.FC = () => {
                     </div>
 
                     {/* Outputs */}
-                    <div className="bg-slate-50 p-5 rounded-xl border border-slate-100 flex flex-col justify-between">
+                    <div className="bg-wix-cream p-5 rounded-md border border-slate-200/60 flex flex-col justify-between">
                       <div>
                         <span className="text-xs font-bold text-navy-600 uppercase tracking-wider">Total Estimated Cost</span>
                         <p className="text-3xl font-extrabold font-display text-navy-950 mt-1">
@@ -334,6 +350,7 @@ export const Calculators: React.FC = () => {
                         whileTap={{ scale: 0.98 }}
                         onClick={handleRequestCostQuote}
                         className="mt-6 w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg py-3 text-xs font-bold flex items-center justify-center gap-1.5 shadow-orange-glow transition-all duration-300"
+                        suppressHydrationWarning
                       >
                         {costSuccess ? (
                           <>
@@ -378,7 +395,7 @@ export const Calculators: React.FC = () => {
                           max="5000"
                           value={volume}
                           onChange={(e) => setVolume(Number(e.target.value))}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-orange-500 font-semibold text-navy-950"
+                          className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold text-slate-800 transition-all shadow-sm"
                         />
                       </div>
                       <div>
@@ -388,7 +405,7 @@ export const Calculators: React.FC = () => {
                         <select
                           value={concreteMix}
                           onChange={(e: any) => setConcreteMix(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-orange-500 font-semibold text-navy-950"
+                          className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold text-slate-800 transition-all shadow-sm"
                         >
                           <option value="M15">M15 (1 : 2 : 4) - General Foundation</option>
                           <option value="M20">M20 (1 : 1.5 : 3) - Beams & Slabs</option>
@@ -398,7 +415,7 @@ export const Calculators: React.FC = () => {
                     </div>
 
                     {/* Outputs */}
-                    <div className="bg-slate-50 p-5 rounded-xl border border-slate-100 flex flex-col justify-between">
+                    <div className="bg-wix-cream p-5 rounded-md border border-slate-200/60 flex flex-col justify-between">
                       <div>
                         <span className="text-xs font-bold text-navy-600 uppercase tracking-wider font-display">Required Materials</span>
                         <div className="mt-4 space-y-4">
@@ -452,7 +469,7 @@ export const Calculators: React.FC = () => {
                           <select
                             value={diameter}
                             onChange={(e) => setDiameter(Number(e.target.value))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-orange-500 font-semibold text-navy-950"
+                            className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold text-slate-800 transition-all shadow-sm"
                           >
                             {[8, 10, 12, 16, 20, 25, 32].map((d) => (
                               <option key={d} value={d}>
@@ -469,7 +486,7 @@ export const Calculators: React.FC = () => {
                             type="number"
                             value={steelLength}
                             onChange={(e) => setSteelLength(Number(e.target.value))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-orange-500 font-semibold text-navy-950"
+                            className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold text-slate-800 transition-all shadow-sm"
                           />
                         </div>
                       </div>
@@ -481,7 +498,7 @@ export const Calculators: React.FC = () => {
                           type="number"
                           value={steelQty}
                           onChange={(e) => setSteelQty(Number(e.target.value))}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-orange-500 font-semibold text-navy-950"
+                          className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold text-slate-800 transition-all shadow-sm"
                         />
                       </div>
                     </div>
@@ -536,7 +553,7 @@ export const Calculators: React.FC = () => {
                             type="number"
                             value={wallLength}
                             onChange={(e) => setWallLength(Number(e.target.value))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-orange-500 font-semibold text-navy-950"
+                            className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold text-slate-800 transition-all shadow-sm"
                           />
                         </div>
                         <div>
@@ -547,7 +564,7 @@ export const Calculators: React.FC = () => {
                             type="number"
                             value={wallHeight}
                             onChange={(e) => setWallHeight(Number(e.target.value))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-orange-500 font-semibold text-navy-950"
+                            className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold text-slate-800 transition-all shadow-sm"
                           />
                         </div>
                       </div>
@@ -560,11 +577,12 @@ export const Calculators: React.FC = () => {
                             <button
                               key={thick}
                               onClick={() => setWallThickness(thick)}
-                              className={`py-2.5 px-4 text-center rounded-lg border text-xs font-bold transition-all ${
+                              className={`py-2.5 px-4 text-center rounded-md border text-xs font-bold transition-all ${
                                 wallThickness === thick
-                                  ? "bg-navy-950 text-white border-navy-950 shadow-sm"
-                                  : "bg-white text-navy-950 border-slate-200 hover:bg-slate-50"
+                                  ? "bg-wix-dark text-white border-wix-dark shadow-sm"
+                                  : "bg-white text-wix-dark border-slate-200 hover:bg-slate-50"
                               }`}
+                              suppressHydrationWarning
                             >
                               {thick} inch Wall
                             </button>
@@ -574,7 +592,7 @@ export const Calculators: React.FC = () => {
                     </div>
 
                     {/* Outputs */}
-                    <div className="bg-slate-50 p-5 rounded-xl border border-slate-100 flex flex-col justify-between">
+                    <div className="bg-wix-cream p-5 rounded-md border border-slate-200/60 flex flex-col justify-between">
                       <div>
                         <span className="text-xs font-bold text-navy-600 uppercase tracking-wider font-display">Required Materials</span>
                         <div className="mt-4 space-y-3">
@@ -623,20 +641,20 @@ export const Calculators: React.FC = () => {
 
                   {/* File Upload Simulation */}
                   {!boqResult && (
-                    <div className="border-2 border-dashed border-slate-200 rounded-xl p-8 text-center bg-slate-50 hover:bg-slate-100 transition-colors">
+                    <div className="border border-dashed border-slate-300 rounded-md p-8 text-center bg-slate-50/50 hover:bg-slate-100/70 transition-colors">
                       {analyzing ? (
                         <div className="flex flex-col items-center justify-center py-6">
                           <Loader2 className="h-10 w-10 text-orange-500 animate-spin mb-4" />
-                          <h4 className="font-bold text-sm text-navy-950">Analyzing Blueprint Layout...</h4>
-                          <p className="text-xs text-navy-600 mt-2 max-w-xs leading-relaxed">
+                          <h4 className="font-bold text-sm text-wix-dark">Analyzing Blueprint Layout...</h4>
+                          <p className="text-xs text-slate-600 mt-2 max-w-xs leading-relaxed">
                             Extracting layout dimensions, concrete footings, slab reinforcement grids, and brickwork boundaries.
                           </p>
                         </div>
                       ) : (
                         <div className="flex flex-col items-center">
                           <FileText className="h-12 w-12 text-slate-400 mb-4" />
-                          <h4 className="font-bold text-sm text-navy-950">Upload Floor Plan or CAD File</h4>
-                          <p className="text-xs text-navy-600 mt-1 mb-4">PDF, DWG, DXF formats accepted (Max 25MB)</p>
+                          <h4 className="font-bold text-sm text-wix-dark">Upload Floor Plan or CAD File</h4>
+                          <p className="text-xs text-slate-600 mt-1 mb-4">PDF, DWG, DXF formats accepted (Max 25MB)</p>
                           
                           <div className="flex gap-2 max-w-md w-full justify-center">
                             <input
@@ -644,14 +662,14 @@ export const Calculators: React.FC = () => {
                               placeholder="Type file name (e.g. Villa_Layout_v2.pdf)"
                               value={drawingName}
                               onChange={(e) => setDrawingName(e.target.value)}
-                              className="bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 w-60 text-navy-950 font-semibold"
+                              className="bg-white border border-slate-300 rounded-md px-3 py-2 text-xs focus:outline-none focus:border-orange-500 w-60 text-wix-dark font-semibold shadow-sm"
                             />
                             <motion.button
-                              whileHover={{ scale: 1.02 }}
+                              whileHover={{ scale: 1.01 }}
                               whileTap={{ scale: 0.98 }}
                               onClick={handleAiBOQAnalysis}
                               disabled={!drawingName}
-                              className="bg-navy-950 hover:bg-orange-600 disabled:bg-slate-400 text-white rounded-lg px-4 py-2 text-xs font-bold transition-all shadow-premium"
+                              className="bg-wix-dark hover:bg-orange-600 disabled:bg-slate-300 text-white rounded-md px-5 py-2.5 text-xs font-bold transition-all uppercase tracking-wider"
                             >
                               Run AI Audit
                             </motion.button>
@@ -667,24 +685,24 @@ export const Calculators: React.FC = () => {
                       <motion.div 
                         initial={{ scale: 0.95, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
-                        className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-orange-100 p-4 rounded-xl border border-orange-200 gap-4"
+                        className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-orange-50 p-5 rounded-md border border-orange-200/50 gap-4"
                       >
                         <div>
-                          <h4 className="font-bold text-sm text-navy-950 flex items-center gap-1.5">
+                          <h4 className="font-bold text-sm text-wix-dark flex items-center gap-1.5">
                             <Check className="h-4 w-4 text-emerald-500" />
                             BOQ Complete: {boqResult.projectName}
                           </h4>
-                          <p className="text-xs text-navy-600 mt-0.5">Calculated built-up area: {boqResult.areaSqFt} sq.ft</p>
+                          <p className="text-xs text-slate-600 mt-0.5">Calculated built-up area: {boqResult.areaSqFt} sq.ft</p>
                         </div>
                         <div>
-                          <span className="block text-[10px] uppercase font-bold text-navy-600 tracking-wide text-left sm:text-right">Project Estimate</span>
-                          <span className="text-xl font-extrabold text-navy-950 font-display">₹{boqResult.totalCost.toLocaleString("en-IN")}</span>
+                          <span className="block text-[10px] uppercase font-bold text-slate-500 tracking-wide text-left sm:text-right">Project Estimate</span>
+                          <span className="text-xl font-extrabold text-wix-dark font-display">₹{boqResult.totalCost.toLocaleString("en-IN")}</span>
                         </div>
                       </motion.div>
 
-                      <div className="overflow-x-auto rounded-xl border border-slate-200">
+                      <div className="overflow-x-auto rounded-md border border-slate-200">
                         <table className="min-w-full divide-y divide-slate-200 text-left text-xs">
-                          <thead className="bg-slate-50 font-bold text-navy-950">
+                          <thead className="bg-slate-50 font-bold text-wix-dark border-b border-slate-200">
                             <tr>
                               <th className="px-3 py-3 w-10 text-center">S.No</th>
                               <th className="px-4 py-3">Description of Engineering Work</th>
@@ -694,7 +712,7 @@ export const Calculators: React.FC = () => {
                               <th className="px-4 py-3 text-right">Total (₹)</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-200 bg-white text-navy-600">
+                          <tbody className="divide-y divide-slate-200 bg-white text-slate-600">
                             {boqResult.items.map((item: any, idx: number) => (
                               <motion.tr 
                                 key={item.sl}
@@ -725,17 +743,18 @@ export const Calculators: React.FC = () => {
                             setBoqResult(null);
                             setDrawingName("");
                           }}
-                          className="w-full bg-slate-100 hover:bg-slate-200 text-navy-950 rounded-lg py-2.5 text-xs font-bold transition-all text-center"
+                          className="w-full bg-slate-100 hover:bg-slate-200 text-wix-dark rounded-md py-2.5 text-xs font-bold transition-all text-center border border-slate-200"
                         >
                           Upload Another Drawing
                         </button>
                         <motion.button
-                          whileHover={{ scale: 1.02 }}
+                          whileHover={{ scale: 1.01 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={() => {
                             alert("Detailed breakdown sheet compiled and downloaded (simulated).");
                           }}
-                          className="w-full bg-navy-950 hover:bg-orange-600 text-white rounded-lg py-2.5 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-premium"
+                          className="w-full bg-wix-dark hover:bg-orange-600 text-white rounded-md py-3 text-xs font-bold transition-all flex items-center justify-center gap-1.5 uppercase tracking-widest"
+                          suppressHydrationWarning
                         >
                           <FileSpreadsheet className="h-4 w-4" />
                           Export BOQ Sheet (Excel)
@@ -747,7 +766,7 @@ export const Calculators: React.FC = () => {
               )}
             </AnimatePresence>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

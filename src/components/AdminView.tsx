@@ -479,7 +479,7 @@ export const AdminView: React.FC = () => {
                       required
                       value={selectedProjId}
                       onChange={(e) => setSelectedProjId(e.target.value)}
-                      className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                      className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm transition-all"
                     >
                       <option value="">-- Select Active Project --</option>
                       {projects.map((proj) => (
@@ -501,7 +501,7 @@ export const AdminView: React.FC = () => {
                       step="500"
                       value={invoiceAmount}
                       onChange={(e) => setInvoiceAmount(Number(e.target.value))}
-                      className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                      className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm transition-all"
                     />
                   </div>
 
@@ -580,7 +580,7 @@ export const AdminView: React.FC = () => {
                         value={blogTitle}
                         onChange={(e) => setBlogTitle(e.target.value)}
                         placeholder="e.g. Modern Rebar Placement Guide"
-                        className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                        className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm transition-all"
                       />
                     </div>
 
@@ -590,7 +590,7 @@ export const AdminView: React.FC = () => {
                         <select
                           value={blogCategory}
                           onChange={(e) => setBlogCategory(e.target.value as any)}
-                          className="w-full bg-white border border-slate-300 rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                          className="w-full bg-white border border-slate-300 rounded-lg px-2.5 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm transition-all"
                         >
                           <option value="Structural">Structural</option>
                           <option value="Architecture">Architecture</option>
@@ -604,7 +604,7 @@ export const AdminView: React.FC = () => {
                         <select
                           value={blogStatus}
                           onChange={(e) => setBlogStatus(e.target.value as any)}
-                          className="w-full bg-white border border-slate-300 rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                          className="w-full bg-white border border-slate-300 rounded-lg px-2.5 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm transition-all"
                         >
                           <option value="published">Published</option>
                           <option value="draft">Draft (Private)</option>
@@ -621,7 +621,7 @@ export const AdminView: React.FC = () => {
                           value={blogAuthor}
                           onChange={(e) => setBlogAuthor(e.target.value)}
                           placeholder="e.g. Er. Amit Wagh"
-                          className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                          className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm transition-all"
                         />
                       </div>
                       <div>
@@ -631,7 +631,7 @@ export const AdminView: React.FC = () => {
                           value={blogImage}
                           onChange={(e) => setBlogImage(e.target.value)}
                           placeholder="Optional image link"
-                          className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                          className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm transition-all"
                         />
                       </div>
                     </div>
@@ -644,7 +644,7 @@ export const AdminView: React.FC = () => {
                         value={blogSummary}
                         onChange={(e) => setBlogSummary(e.target.value)}
                         placeholder="A short snippet shown on card preview..."
-                        className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                        className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm transition-all"
                       />
                     </div>
 
@@ -656,7 +656,7 @@ export const AdminView: React.FC = () => {
                         value={blogContent}
                         onChange={(e) => setBlogContent(e.target.value)}
                         placeholder="Write full article body. Supports standard formatting."
-                        className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold resize-y"
+                        className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm resize-y transition-all"
                       />
                     </div>
 

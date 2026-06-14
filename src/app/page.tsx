@@ -260,6 +260,14 @@ export default function Home() {
     }
   };
 
+  const staggerContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
   const heroItemVariants = {
     hidden: { opacity: 0, y: 25 },
     visible: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 90, damping: 15 } }
@@ -284,16 +292,22 @@ export default function Home() {
 
       <main className="flex-grow">
         {/* SECTION 1: HERO SECTION */}
-        <section className="relative min-h-[90vh] flex items-center bg-navy-950 text-white overflow-hidden py-20">
+        <section className="relative min-h-[90vh] flex items-center bg-wix-dark text-white overflow-hidden py-20">
           {/* Background Image with Dark Overlay */}
           <div className="absolute inset-0 z-0">
             <img 
-              src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80&w=1600" 
-              alt="Industrial Engineering" 
-              className="w-full h-full object-cover opacity-25 object-center"
+              src="/indian_construction_site.png" 
+              alt="Indian Infrastructure Construction" 
+              className="w-full h-full object-cover opacity-45 object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/90 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-wix-dark/95 via-wix-dark/85 to-wix-dark/60"></div>
           </div>
+
+          {/* Ambient Glowing Orbs */}
+          <div className="absolute rounded-full pointer-events-none z-0 opacity-60 w-[450px] h-[450px] top-1/4 -left-20 animate-pulse-slow"
+               style={{ background: "radial-gradient(circle, rgba(255, 107, 0, 0.15) 0%, rgba(255, 107, 0, 0) 70%)" }} />
+          <div className="absolute rounded-full pointer-events-none z-0 opacity-60 w-[450px] h-[450px] bottom-1/4 -right-20 animate-pulse-slow"
+               style={{ background: "radial-gradient(circle, rgba(0, 41, 255, 0.12) 0%, rgba(0, 41, 255, 0) 70%)" }} />
 
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 w-full">
             <motion.div 
@@ -306,7 +320,7 @@ export default function Home() {
               <div className="lg:col-span-7 space-y-6">
                 <motion.div 
                   variants={heroItemVariants}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-navy-900 border border-navy-800 px-3 py-1 text-xs font-semibold text-orange-400 shadow-sm"
+                  className="inline-flex items-center gap-1.5 rounded-md bg-white/5 border border-white/10 px-3.5 py-1.5 text-xs font-bold text-orange-400 shadow-sm uppercase tracking-widest"
                 >
                   <Cpu className="h-3.5 w-3.5" />
                   <span>Next-Gen Engineering Technology</span>
@@ -314,14 +328,14 @@ export default function Home() {
                 
                 <motion.h1 
                   variants={heroItemVariants}
-                  className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-tight"
+                  className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-tight uppercase"
                 >
-                  Engineering Excellence <span className="block text-orange-500 mt-2">Powered by Automation</span>
+                  Engineering Excellence <span className="block text-orange-500 mt-2 font-black">Powered by Automation</span>
                 </motion.h1>
                 
                 <motion.p 
                   variants={heroItemVariants}
-                  className="text-base text-slate-300 max-w-xl leading-relaxed"
+                  className="text-sm text-slate-300 max-w-xl leading-relaxed font-medium"
                 >
                   Planning, Design, Quantity Estimation, Construction Automation, and Project Management in One Cohesive Platform.
                 </motion.p>
@@ -330,18 +344,18 @@ export default function Home() {
                   variants={heroItemVariants}
                   className="flex flex-wrap gap-4 pt-2"
                 >
-                  <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                  <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
                     <a
                       href="#contact"
-                      className="inline-block rounded-lg bg-orange-500 hover:bg-orange-600 px-6 py-3.5 text-xs font-bold text-white shadow-orange-glow transition-all duration-300 uppercase tracking-wider"
+                      className="inline-block rounded-md bg-orange-500 hover:bg-orange-600 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm vfx-sheen"
                     >
                       Get Free Consultation
                     </a>
                   </motion.div>
-                  <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                  <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
                     <a
                       href="#services"
-                      className="inline-block rounded-lg border border-slate-500 hover:border-white hover:bg-white/5 px-6 py-3.5 text-xs font-bold text-white transition-all duration-300 uppercase tracking-wider"
+                      className="inline-block rounded-md border border-slate-500 hover:border-white hover:bg-white/10 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest"
                     >
                       Explore Services
                     </a>
@@ -360,14 +374,14 @@ export default function Home() {
                   <motion.div 
                     key={idx}
                     variants={heroItemVariants}
-                    whileHover={{ scale: 1.02, border: "1px solid rgba(255,107,0,0.3)" }}
-                    className="bg-glass-dark p-5 rounded-xl border border-white/5 flex flex-col justify-between shadow-premium transition-all duration-300"
+                    whileHover={{ scale: 1.02 }}
+                    className="bg-white/5 backdrop-blur-sm p-5 rounded-md border border-white/10 flex flex-col justify-between shadow-sm transition-all duration-300 hover:border-orange-500/50"
                   >
                     <div>
                       <p className="text-2xl font-extrabold font-display text-orange-500 tracking-tight">
                         <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                       </p>
-                      <p className="text-xs font-bold mt-1 text-white">{stat.label}</p>
+                      <p className="text-xs font-bold mt-1 text-white uppercase tracking-wider">{stat.label}</p>
                     </div>
                     <p className="text-[10px] text-slate-400 mt-3">{stat.desc}</p>
                   </motion.div>
@@ -378,38 +392,41 @@ export default function Home() {
         </section>
 
         {/* SECTION 2: TRUST SECTION */}
-        <section className="bg-slate-50 py-16 border-b border-slate-200 shadow-sm">
+        <section className="bg-white py-12 border-b border-slate-200 overflow-hidden relative">
+          {/* Ambient shading on sides for premium visual blend */}
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none" />
+          
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div className="flex w-max gap-8 animate-ticker py-2">
               {[
                 { title: "ISO 9001:2015", label: "Quality Standards", icon: Award, desc: "Certified engineering design quality management systems." },
                 { title: "Rapid Turnaround", label: "CAD Detailing", icon: Clock, desc: "24-48hr vectorization and structural drawings delivery." },
                 { title: "AI-Powered Quantities", label: "Automated Estimations", icon: Cpu, desc: "IS-code standardized material calculations and BOQs." },
                 { title: "Chartered SE / BIM", label: "Expert Auditors", icon: UserCheck, desc: "Double-checked reviews by senior structural engineers." },
                 { title: "Milestone Escrow", label: "Secure Payments", icon: ShieldCheck, desc: "Payments split by project phase and unlocked on file delivery." },
-              ].map((badge, idx) => {
+              ].concat([
+                { title: "ISO 9001:2015", label: "Quality Standards", icon: Award, desc: "Certified engineering design quality management systems." },
+                { title: "Rapid Turnaround", label: "CAD Detailing", icon: Clock, desc: "24-48hr vectorization and structural drawings delivery." },
+                { title: "AI-Powered Quantities", label: "Automated Estimations", icon: Cpu, desc: "IS-code standardized material calculations and BOQs." },
+                { title: "Chartered SE / BIM", label: "Expert Auditors", icon: UserCheck, desc: "Double-checked reviews by senior structural engineers." },
+                { title: "Milestone Escrow", label: "Secure Payments", icon: ShieldCheck, desc: "Payments split by project phase and unlocked on file delivery." },
+              ]).map((badge, idx) => {
                 const Icon = badge.icon;
                 return (
-                  <motion.div 
+                  <div 
                     key={idx}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: idx * 0.08 }}
-                    whileHover={{ y: -4, transition: { duration: 0.25 } }}
-                    className="bg-white border border-slate-200/80 rounded-xl p-5 hover:shadow-premium transition-all duration-300 relative overflow-hidden group flex flex-col justify-between"
+                    className="w-[280px] flex-shrink-0 px-6 border-r border-slate-200 last:border-0 group flex flex-col justify-between"
                   >
-                    {/* Hover Orange Accent Bar */}
-                    <div className="absolute top-0 left-0 w-full h-1 bg-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div>
-                      <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-navy-50 text-navy-950 mb-4 border border-navy-100/50 group-hover:bg-orange-500 group-hover:text-white transition-all duration-300 shadow-sm">
-                        <Icon className="h-5.5 w-5.5 text-orange-500 group-hover:text-white transition-colors duration-300" />
+                      <div className="flex items-center gap-2 mb-2">
+                        <Icon className="h-5 w-5 text-orange-500" />
+                        <h3 className="text-xs font-bold text-wix-dark uppercase tracking-widest">{badge.title}</h3>
                       </div>
-                      <h3 className="text-xs font-extrabold text-navy-950 uppercase tracking-wider">{badge.title}</h3>
-                      <p className="text-[10px] text-orange-600 font-bold uppercase tracking-wider mt-0.5">{badge.label}</p>
-                      <p className="text-[10px] text-slate-500 mt-2.5 leading-relaxed">{badge.desc}</p>
+                      <p className="text-[10px] text-orange-600 font-extrabold uppercase tracking-widest">{badge.label}</p>
+                      <p className="text-[10px] text-slate-500 mt-2 leading-relaxed">{badge.desc}</p>
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>
@@ -417,7 +434,7 @@ export default function Home() {
         </section>
 
         {/* SECTION 3: SERVICES SECTION */}
-        <section id="services" className="py-20 bg-white">
+        <section id="services" className="py-24 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial="hidden"
@@ -427,10 +444,10 @@ export default function Home() {
               className="text-center max-w-3xl mx-auto mb-16"
             >
               <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Our Capabilities</span>
-              <h2 className="font-display text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
                 End-to-End Civil & Structural Services
               </h2>
-              <p className="mt-4 text-sm text-navy-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed">
                 Combining senior-level human expertise with automated design verification to deliver top-tier drawings, models, and estimations.
               </p>
             </motion.div>
@@ -441,27 +458,25 @@ export default function Home() {
                 return (
                   <motion.div 
                     key={idx} 
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: (idx % 3) * 0.08 }}
-                    variants={cardHoverVariants}
-                    whileHover="hover"
-                    className="group border border-slate-200 hover:border-navy-950 rounded-xl p-5 hover:bg-slate-50 transition-all duration-300 shadow-sm flex flex-col justify-between"
+                    transition={{ duration: 0.4, delay: (idx % 3) * 0.05 }}
+                    className="group border border-slate-200 rounded-md p-6 bg-white hover:bg-slate-50/50 flex flex-col justify-between shadow-sm vfx-border-glow"
                   >
                     <div>
-                      <div className="h-10 w-10 rounded-lg bg-slate-50 text-navy-950 group-hover:bg-navy-950 group-hover:text-white flex items-center justify-center mb-4 border border-slate-100 transition-colors shadow-sm">
+                      <div className="h-10 w-10 rounded-md bg-slate-50 text-wix-dark group-hover:bg-wix-dark group-hover:text-white flex items-center justify-center mb-4 border border-slate-200 transition-colors">
                         <Icon className="h-5.5 w-5.5 text-orange-500" />
                       </div>
-                      <h3 className="font-display font-extrabold text-sm text-navy-950 mb-2 leading-tight">
+                      <h3 className="font-display font-bold text-sm text-wix-dark mb-2 leading-tight uppercase tracking-wider">
                         {service.title}
                       </h3>
-                      <p className="text-[11px] text-navy-600 leading-relaxed">
+                      <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
                         {service.desc}
                       </p>
                     </div>
-                    <div className="pt-4 mt-auto">
-                      <Link href={service.href || "#contact"} className="text-[10px] font-bold text-orange-500 hover:text-navy-950 uppercase tracking-wider flex items-center gap-1">
+                    <div className="pt-5 mt-auto">
+                      <Link href={service.href || "#contact"} className="text-[10px] font-extrabold text-orange-500 hover:text-wix-dark uppercase tracking-widest flex items-center gap-1">
                         Get Estimate <ArrowRight className="h-3 w-3" />
                       </Link>
                     </div>
@@ -476,7 +491,7 @@ export default function Home() {
         <Calculators />
 
         {/* SECTION 5: MARKET SECTORS */}
-        <section id="sectors" className="py-20 bg-white">
+        <section id="sectors" className="py-24 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial="hidden"
@@ -486,10 +501,10 @@ export default function Home() {
               className="text-center max-w-3xl mx-auto mb-16"
             >
               <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Industries We Serve</span>
-              <h2 className="font-display text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
                 Broad Spectrum Engineering Sectors
               </h2>
-              <p className="mt-4 text-sm text-navy-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
                 From luxury domestic houses to high-tolerance heavy factories, our team delivers optimized structural planning tailored to industry specifications.
               </p>
             </motion.div>
@@ -500,11 +515,11 @@ export default function Home() {
                 return (
                   <motion.div 
                     key={idx} 
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.5, delay: (idx % 3) * 0.1 }}
-                    className="group relative h-80 rounded-2xl overflow-hidden shadow-premium border border-slate-200 flex flex-col justify-end p-6 transition-all duration-300"
+                    className="group relative h-80 rounded-md overflow-hidden border border-slate-200 flex flex-col justify-end p-6 transition-all duration-300 hover:border-wix-dark shadow-sm hover:shadow-md"
                   >
                     {/* Background image */}
                     <div className="absolute inset-0 z-0">
@@ -513,25 +528,25 @@ export default function Home() {
                         alt={sector.title} 
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/70 to-transparent transition-all duration-300 group-hover:from-navy-950 group-hover:via-navy-950/90"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-wix-dark/95 via-wix-dark/60 to-transparent transition-all duration-300 group-hover:from-wix-dark group-hover:via-wix-dark/85"></div>
                     </div>
 
                     <div className="relative z-10 text-white space-y-2.5 w-full">
                       <div className="flex justify-between items-center">
-                        <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-orange-500 text-white shadow-premium">
+                        <div className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-orange-500 text-white border border-orange-600">
                           <Icon className="h-4.5 w-4.5" />
                         </div>
                       </div>
                       
-                      <h3 className="font-display font-extrabold text-lg tracking-tight">{sector.title}</h3>
-                      <p className="text-xs text-slate-300 leading-normal group-hover:hidden transition-all duration-200">{sector.desc}</p>
+                      <h3 className="font-display font-extrabold text-lg tracking-tight uppercase">{sector.title}</h3>
+                      <p className="text-xs text-slate-300 leading-normal group-hover:opacity-0 group-hover:h-0 group-hover:overflow-hidden transition-all duration-300">{sector.desc}</p>
                       
                       {/* Floating specs shown on hover */}
-                      <div className="hidden group-hover:block transition-all duration-300 space-y-2">
-                        <p className="text-[10px] text-orange-400 font-bold uppercase tracking-wider">Engineering Specs:</p>
+                      <div className="opacity-0 max-h-0 overflow-hidden group-hover:opacity-100 group-hover:max-h-40 transition-all duration-300 space-y-2">
+                        <p className="text-[10px] text-orange-400 font-bold uppercase tracking-widest">Engineering Specs:</p>
                         <div className="grid grid-cols-2 gap-1.5">
                           {sector.specs?.map((spec, sIdx) => (
-                            <span key={sIdx} className="bg-white/10 backdrop-blur-sm border border-white/5 text-[9px] font-bold text-slate-200 px-2 py-1 rounded">
+                            <span key={sIdx} className="bg-white/10 backdrop-blur-sm border border-white/10 text-[9px] font-bold text-slate-200 px-2 py-1 rounded-sm">
                               {spec}
                             </span>
                           ))}
@@ -546,7 +561,7 @@ export default function Home() {
         </section>
 
         {/* SECTION 6: CONCEPT TO COMMISSIONING INTERACTIVE LIFECYCLE */}
-        <section className="py-20 bg-slate-50 border-y border-slate-200">
+        <section className="py-24 bg-wix-cream border-y border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial="hidden"
@@ -556,10 +571,10 @@ export default function Home() {
               className="text-center max-w-3xl mx-auto mb-16"
             >
               <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Service Lifecycle</span>
-              <h2 className="font-display text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
                 Concept to Commissioning: Engineering Pipeline
               </h2>
-              <p className="mt-4 text-sm text-navy-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed">
                 Click through the 6 stages of our integrated engineering and construction verification workflow to see our rigorous standards and deliverable sets.
               </p>
             </motion.div>
@@ -570,11 +585,12 @@ export default function Home() {
                 <button
                   key={idx}
                   onClick={() => setActiveLifecycleStep(idx)}
-                  className={`p-4 rounded-xl border text-left transition-all duration-300 ${
+                  className={`p-4 rounded-md border text-left transition-all duration-300 ${
                     activeLifecycleStep === idx 
-                      ? "bg-navy-950 border-navy-950 text-white shadow-premium" 
-                      : "bg-white border-slate-200 text-navy-950 hover:bg-slate-50"
+                      ? "bg-wix-dark border-wix-dark text-white shadow-sm" 
+                      : "bg-white border-slate-200 text-wix-dark hover:bg-slate-50"
                   }`}
+                  suppressHydrationWarning
                 >
                   <span className={`block font-display text-xs font-extrabold uppercase tracking-wider ${
                     activeLifecycleStep === idx ? "text-orange-400" : "text-orange-600"
@@ -587,7 +603,7 @@ export default function Home() {
             </div>
 
             {/* Interactive Details Card */}
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-10 shadow-premium min-h-[350px] flex flex-col justify-between relative overflow-hidden">
+            <div className="bg-white border border-slate-200 rounded-md p-6 md:p-10 shadow-sm min-h-[350px] flex flex-col justify-between relative overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeLifecycleStep}
@@ -600,20 +616,20 @@ export default function Home() {
                   {/* Left Column: Description & Statistics */}
                   <div className="lg:col-span-7 space-y-5">
                     <div className="flex items-center gap-4">
-                      <span className="font-display font-black text-4xl text-orange-500/25 select-none">{lifecycleSteps[activeLifecycleStep].phase}</span>
+                      <span className="font-display font-black text-4xl text-orange-500/20 select-none">{lifecycleSteps[activeLifecycleStep].phase}</span>
                       <div>
                         <span className="text-[10px] text-orange-600 uppercase font-bold tracking-widest block">
                           {lifecycleSteps[activeLifecycleStep].subtitle}
                         </span>
-                        <h3 className="font-display font-extrabold text-xl text-navy-950 mt-0.5">
+                        <h3 className="font-display font-extrabold text-xl text-wix-dark mt-0.5 uppercase tracking-wide">
                           {lifecycleSteps[activeLifecycleStep].title}
                         </h3>
                       </div>
                     </div>
-                    <p className="text-xs text-navy-600 leading-relaxed">
+                    <p className="text-xs text-slate-500 leading-relaxed font-medium">
                       {lifecycleSteps[activeLifecycleStep].desc}
                     </p>
-                    <div className="inline-flex items-center gap-2 bg-orange-50 text-orange-600 border border-orange-100 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm">
+                    <div className="inline-flex items-center gap-2 bg-orange-50 text-orange-600 border border-orange-100 px-3 py-1.5 rounded-md text-xs font-bold shadow-sm">
                       <CheckCircle2 className="h-4.5 w-4.5" />
                       <span>{lifecycleSteps[activeLifecycleStep].stat}</span>
                     </div>
@@ -622,23 +638,23 @@ export default function Home() {
                   {/* Right Column: Compliance and Deliverables */}
                   <div className="lg:col-span-5 space-y-4">
                     {/* Compliance Box */}
-                    <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2">
-                      <span className="text-[10px] text-navy-950 font-bold uppercase tracking-wider block">Compliance Codes & Standards</span>
-                      <p className="text-xs text-navy-600 font-semibold italic">
+                    <div className="bg-wix-cream border border-slate-200/80 p-4 rounded-md space-y-2">
+                      <span className="text-[10px] text-wix-dark font-bold uppercase tracking-widest block">Compliance Codes & Standards</span>
+                      <p className="text-xs text-slate-600 font-bold italic">
                         {lifecycleSteps[activeLifecycleStep].codes}
                       </p>
                     </div>
 
                     {/* Deliverables Checklist */}
                     <div className="space-y-2.5">
-                      <span className="text-[10px] text-navy-950 font-bold uppercase tracking-wider block">Released Deliverables:</span>
+                      <span className="text-[10px] text-wix-dark font-bold uppercase tracking-widest block">Released Deliverables:</span>
                       <div className="space-y-2">
                         {lifecycleSteps[activeLifecycleStep].deliverables.map((item, dIdx) => (
-                          <div key={dIdx} className="flex items-center gap-2.5 text-xs text-navy-600">
-                            <div className="h-5 w-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
+                          <div key={dIdx} className="flex items-center gap-2.5 text-xs text-slate-600">
+                            <div className="h-5 w-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0 border border-emerald-100">
                               <CheckCircle2 className="h-3.5 w-3.5" />
                             </div>
-                            <span className="font-semibold">{item}</span>
+                            <span className="font-bold text-slate-700">{item}</span>
                           </div>
                         ))}
                       </div>
@@ -651,7 +667,7 @@ export default function Home() {
         </section>
 
         {/* SECTION 7: PROJECT PORTFOLIO */}
-        <section id="portfolio" className="py-20 bg-white">
+        <section id="portfolio" className="py-24 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial="hidden"
@@ -661,10 +677,10 @@ export default function Home() {
               className="text-center max-w-3xl mx-auto mb-16"
             >
               <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Our Work</span>
-              <h2 className="font-display text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
                 Featured Engineering Masterpieces
               </h2>
-              <p className="mt-4 text-sm text-navy-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
                 Browse our recent design-build consultations, structural drawings, and BIM layouts validated and executed successfully.
               </p>
             </motion.div>
@@ -678,12 +694,11 @@ export default function Home() {
               ].map((proj, idx) => (
                 <motion.div 
                   key={idx} 
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.5, delay: (idx % 2) * 0.1 }}
-                  whileHover={{ y: -6 }}
-                  className="group border border-slate-200 rounded-2xl overflow-hidden hover:shadow-premium-lg transition-all duration-300 flex flex-col md:flex-row shadow-sm bg-white"
+                  className="group border border-slate-200 rounded-md overflow-hidden hover:border-wix-dark transition-all duration-300 flex flex-col md:flex-row shadow-sm bg-white"
                 >
                   <div className="md:w-1/2 h-56 md:h-auto overflow-hidden relative">
                     <img 
@@ -691,20 +706,20 @@ export default function Home() {
                       alt={proj.title} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <span className="absolute top-3 left-3 bg-navy-950 text-white font-bold text-[9px] px-2.5 py-1 rounded-full uppercase tracking-wider">
+                    <span className="absolute top-3 left-3 bg-wix-dark text-white font-bold text-[9px] px-3 py-1 rounded-none uppercase tracking-widest">
                       {proj.status}
                     </span>
                   </div>
                   <div className="p-6 md:w-1/2 flex flex-col justify-between space-y-4">
                     <div>
-                      <span className="text-[10px] text-orange-500 font-extrabold uppercase tracking-wide">{proj.category}</span>
-                      <h3 className="font-display font-extrabold text-base text-navy-950 mt-1.5 leading-snug">{proj.title}</h3>
-                      <div className="space-y-1.5 mt-3 text-xs text-navy-600">
-                        <p className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5" /> {proj.loc}</p>
-                        <p className="flex items-center gap-1.5"><Briefcase className="h-3.5 w-3.5" /> Built Area: {proj.area}</p>
+                      <span className="text-[10px] text-orange-500 font-extrabold uppercase tracking-widest">{proj.category}</span>
+                      <h3 className="font-display font-extrabold text-base text-wix-dark mt-1.5 leading-snug uppercase tracking-wide">{proj.title}</h3>
+                      <div className="space-y-1.5 mt-3 text-xs text-slate-500 font-medium">
+                        <p className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-slate-400" /> {proj.loc}</p>
+                        <p className="flex items-center gap-1.5"><Briefcase className="h-3.5 w-3.5 text-slate-400" /> Built Area: {proj.area}</p>
                       </div>
                     </div>
-                    <a href="#contact" className="inline-flex items-center gap-1 text-xs font-bold text-navy-950 hover:text-orange-500 uppercase tracking-wider">
+                    <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-wix-dark hover:text-orange-500 uppercase tracking-widest transition-colors">
                       View Project Case study <ArrowRight className="h-3.5 w-3.5" />
                     </a>
                   </div>
@@ -715,17 +730,29 @@ export default function Home() {
         </section>
 
         {/* SECTION 8: CUSTOMER TESTIMONIALS */}
-        <section className="py-20 bg-slate-50 border-y border-slate-100">
+        <section className="py-24 bg-wix-cream border-y border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={scrollRevealVariants}
+              className="text-center mb-16"
+            >
               <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Testimonials</span>
-              <h2 className="font-display text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
                 What Our Clients Say
               </h2>
-            </div>
+            </motion.div>
 
             {/* Testimonial Active Display Card with Fade Animation */}
-            <div className="max-w-4xl mx-auto min-h-[220px]">
+            <motion.div 
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+              className="max-w-4xl mx-auto min-h-[220px]"
+            >
               <AnimatePresence mode="wait">
                 <motion.div 
                   key={activeTestimonial}
@@ -733,12 +760,12 @@ export default function Home() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.25 }}
-                  className="bg-white border border-slate-200 rounded-2xl p-6 md:p-10 shadow-premium flex flex-col md:flex-row items-center gap-8 relative"
+                  className="bg-white border border-slate-200 rounded-md p-6 md:p-10 shadow-sm flex flex-col md:flex-row items-center gap-8 relative hover:border-wix-dark transition-all duration-300"
                 >
                   <img
                     src={testimonials[activeTestimonial].image}
                     alt={testimonials[activeTestimonial].name}
-                    className="w-24 h-24 rounded-2xl object-cover shadow-premium border border-slate-100"
+                    className="w-24 h-24 rounded-md object-cover border border-slate-200 shadow-sm"
                   />
                   <div className="space-y-4 flex-grow text-center md:text-left">
                     <div className="flex justify-center md:justify-start gap-1">
@@ -746,17 +773,17 @@ export default function Home() {
                         <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
                       ))}
                     </div>
-                    <p className="text-navy-950 text-sm md:text-base leading-relaxed italic">
+                    <p className="text-wix-dark text-sm md:text-base leading-relaxed italic font-medium">
                       "{testimonials[activeTestimonial].review}"
                     </p>
                     <div>
-                      <h4 className="font-display font-extrabold text-base text-navy-950">{testimonials[activeTestimonial].name}</h4>
-                      <p className="text-xs text-navy-600 font-medium">{testimonials[activeTestimonial].role}</p>
+                      <h4 className="font-display font-extrabold text-base text-wix-dark uppercase tracking-wider">{testimonials[activeTestimonial].name}</h4>
+                      <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mt-0.5">{testimonials[activeTestimonial].role}</p>
                     </div>
                   </div>
                 </motion.div>
               </AnimatePresence>
-            </div>
+            </motion.div>
 
             {/* Selector dots */}
             <div className="flex justify-center gap-2 mt-8">
@@ -765,8 +792,9 @@ export default function Home() {
                   key={idx}
                   onClick={() => setActiveTestimonial(idx)}
                   className={`h-2 rounded-full transition-all duration-300 ${
-                    activeTestimonial === idx ? "w-6 bg-orange-500 shadow-orange-glow" : "w-2 bg-slate-300"
+                    activeTestimonial === idx ? "w-6 bg-wix-dark" : "w-2 bg-slate-300"
                   }`}
+                  suppressHydrationWarning
                 />
               ))}
             </div>
@@ -774,7 +802,7 @@ export default function Home() {
         </section>
 
         {/* SECTION 9: BLOGS AND INSIGHTS */}
-        <section className="py-20 bg-white">
+        <section className="py-24 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial="hidden"
@@ -784,10 +812,10 @@ export default function Home() {
               className="text-center max-w-3xl mx-auto mb-16"
             >
               <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Technical Journal</span>
-              <h2 className="font-display text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
                 Engineering & Quantity Survey Insights
               </h2>
-              <p className="mt-4 text-sm text-navy-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
                 Stay updated with the latest technological strides in BIM LOD modeling, smart materials, and structural cost optimizations.
               </p>
             </motion.div>
@@ -824,12 +852,11 @@ export default function Home() {
               ].map((blog, idx) => (
                 <motion.div 
                   key={idx} 
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.4, delay: idx * 0.1 }}
-                  whileHover={{ y: -6 }}
-                  className="group border border-slate-200 hover:border-navy-950 rounded-2xl overflow-hidden hover:shadow-premium-lg transition-all duration-300 flex flex-col justify-between bg-white shadow-sm"
+                  className="group border border-slate-200 rounded-md overflow-hidden bg-white shadow-sm flex flex-col justify-between vfx-border-glow"
                 >
                   <div>
                     <div className="h-48 overflow-hidden relative">
@@ -838,30 +865,31 @@ export default function Home() {
                         alt={blog.title} 
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <span className="absolute top-3 right-3 bg-navy-950/80 backdrop-blur-sm text-white font-bold text-[9px] px-2.5 py-1 rounded uppercase tracking-wider">
+                      <span className="absolute top-3 right-3 bg-wix-dark/95 backdrop-blur-sm text-white font-bold text-[9px] px-2.5 py-1 rounded-none uppercase tracking-widest">
                         {blog.tag}
                       </span>
                     </div>
                     <div className="p-5 space-y-3">
-                      <div className="flex justify-between items-center text-[10px] font-bold text-navy-600 uppercase tracking-wide">
+                      <div className="flex justify-between items-center text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                         <span>{blog.category}</span>
                         <span>{blog.date}</span>
                       </div>
-                      <h3 className="font-display font-extrabold text-sm text-navy-950 leading-snug group-hover:text-orange-500 transition-colors">
+                      <h3 className="font-display font-extrabold text-sm text-wix-dark leading-snug group-hover:text-orange-500 transition-colors uppercase tracking-wide">
                         {blog.title}
                       </h3>
-                      <p className="text-[11px] text-navy-600 leading-relaxed">
+                      <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
                         {blog.desc}
                       </p>
                     </div>
                   </div>
-                  <div className="p-5 pt-0 flex items-center justify-between border-t border-slate-50 mt-4 pt-4">
-                    <a href="#contact" className="inline-flex items-center gap-1 text-[10px] font-extrabold text-navy-950 hover:text-orange-500 uppercase tracking-widest">
+                  <div className="p-5 pt-0 flex items-center justify-between border-t border-slate-100 mt-4 pt-4">
+                    <a href="#contact" className="inline-flex items-center gap-1.5 text-[10px] font-bold text-wix-dark hover:text-orange-500 uppercase tracking-widest transition-colors">
                       Read Article <ArrowRight className="h-3 w-3" />
                     </a>
                     <button
                       onClick={() => triggerDownload(blog.file)}
-                      className="inline-flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white font-bold px-3 py-1.5 rounded text-[10px] uppercase tracking-wider transition-all shadow-sm"
+                      className="inline-flex items-center gap-1.5 bg-wix-dark hover:bg-orange-500 text-white font-bold px-3 py-2 rounded-md text-[9px] uppercase tracking-widest transition-all cursor-pointer vfx-sheen"
+                      suppressHydrationWarning
                     >
                       <DownloadIcon className="h-3.5 w-3.5" />
                       Get Blueprint
@@ -874,30 +902,52 @@ export default function Home() {
         </section>
 
         {/* SECTION 10: SUSTAINABILITY SECTION */}
-        <section className="relative py-24 bg-navy-950 text-white overflow-hidden">
-          <div className="absolute inset-0 z-0 opacity-20">
+        <section className="relative py-24 bg-wix-dark text-white overflow-hidden border-b border-white/5">
+          {/* Green absolute ambient glow orb */}
+          <div className="absolute rounded-full pointer-events-none z-0 opacity-60 w-[500px] h-[500px] -top-1/4 -right-1/4 animate-pulse-slow"
+               style={{ background: "radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0) 70%)" }} />
+
+          <div className="absolute inset-0 z-0 opacity-15">
             <img
               src="https://images.unsplash.com/photo-1449034446853-66c86144b0ad?auto=format&fit=crop&q=80&w=1600"
               alt="Sustainable Infrastructure"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-navy-950"></div>
+            <div className="absolute inset-0 bg-wix-dark"></div>
           </div>
 
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              <div className="lg:col-span-6 space-y-6">
-                <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-900 text-emerald-400 text-xs font-semibold">
+              <motion.div 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={staggerContainerVariants}
+                className="lg:col-span-6 space-y-6"
+              >
+                <motion.div 
+                  variants={heroItemVariants}
+                  className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-md bg-white/5 border border-white/10 text-emerald-400 text-xs font-bold uppercase tracking-widest"
+                >
                   <Leaf className="h-3.5 w-3.5" />
                   <span>Green Buildings & Sustainability</span>
-                </div>
-                <h2 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
+                </motion.div>
+                <motion.h2 
+                  variants={heroItemVariants}
+                  className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl uppercase"
+                >
                   Eco-Conscious Structural Engineering
-                </h2>
-                <p className="text-sm text-slate-300 leading-relaxed">
+                </motion.h2>
+                <motion.p 
+                  variants={heroItemVariants}
+                  className="text-sm text-slate-300 leading-relaxed font-medium"
+                >
                   We integrate carbon-footprint reduction, smart materials, energy-efficient HVAC schematics, and rainwater harvesting structures directly into our blueprint designs.
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-bold uppercase tracking-wider">
+                </motion.p>
+                <motion.div 
+                  variants={heroItemVariants}
+                  className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-bold uppercase tracking-widest text-slate-300"
+                >
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="h-4.5 w-4.5 text-emerald-400" />
                     <span>Smart Concrete Recyclables</span>
@@ -914,8 +964,8 @@ export default function Home() {
                     <CheckCircle2 className="h-4.5 w-4.5 text-emerald-400" />
                     <span>Optimized Steel Truss Weights</span>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
 
               {/* Graphic cards */}
               <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -929,13 +979,13 @@ export default function Home() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: idx * 0.15 }}
-                    className="bg-glass-dark border border-white/5 p-6 rounded-2xl text-center flex flex-col justify-center"
+                    className="bg-white/5 border border-white/10 p-6 rounded-md text-center flex flex-col justify-center shadow-sm hover:border-emerald-500/50 transition-all duration-300"
                   >
-                    <span className="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">{item.title}</span>
+                    <span className="block text-[10px] uppercase font-bold text-slate-400 tracking-widest">{item.title}</span>
                     <p className="text-4xl font-extrabold font-display text-emerald-400 my-2">
                       -<AnimatedCounter value={item.val} suffix={item.suffix} />
                     </p>
-                    <p className="text-[11px] text-slate-300">{item.desc}</p>
+                    <p className="text-[11px] text-slate-300 font-medium">{item.desc}</p>
                   </motion.div>
                 ))}
               </div>
@@ -944,29 +994,43 @@ export default function Home() {
         </section>
 
         {/* SECTION 11: FAQ SECTION */}
-        <section className="py-20 bg-white">
+        <section className="py-24 bg-white">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={scrollRevealVariants}
+              className="text-center mb-16"
+            >
               <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">FAQ Desk</span>
-              <h2 className="font-display text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
                 Frequently Asked Questions
               </h2>
-            </div>
+            </motion.div>
 
-            <div className="space-y-4">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={staggerContainerVariants}
+              className="divide-y divide-slate-200 border-t border-b border-slate-200"
+            >
               {faqs.map((faq, idx) => {
                 const isOpen = activeFaq === idx;
                 return (
-                  <div 
+                  <motion.div 
                     key={idx} 
-                    className="border border-slate-200 rounded-xl overflow-hidden shadow-sm"
+                    variants={heroItemVariants}
+                    className="py-1"
                   >
                     <button
                       onClick={() => setActiveFaq(isOpen ? null : idx)}
-                      className="w-full flex justify-between items-center p-5 bg-white hover:bg-slate-50 transition-colors font-bold text-sm text-navy-950 text-left"
+                      className="w-full flex justify-between items-center py-6 bg-white hover:bg-slate-50/50 transition-colors font-bold text-sm text-wix-dark text-left focus:outline-none"
+                      suppressHydrationWarning
                     >
-                      <span>{faq.q}</span>
-                      <ChevronDown className={`h-4.5 w-4.5 text-navy-600 transition-transform duration-300 ${
+                      <span className="uppercase tracking-wide">{faq.q}</span>
+                      <ChevronDown className={`h-4.5 w-4.5 text-slate-500 transition-transform duration-300 ${
                         isOpen ? "transform rotate-180" : ""
                       }`} />
                     </button>
@@ -980,162 +1044,190 @@ export default function Home() {
                           transition={{ duration: 0.25, ease: "easeInOut" }}
                           className="overflow-hidden"
                         >
-                          <div className="p-5 bg-slate-50 border-t border-slate-100 text-xs text-navy-600 leading-relaxed">
+                          <div className="pb-6 text-xs text-slate-600 leading-relaxed font-medium">
                             {faq.a}
                           </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
-                  </div>
+                  </motion.div>
                 );
               })}
-            </div>
+            </motion.div>
           </div>
         </section>
 
         {/* SECTION 12: CONTACT SECTION */}
-        <section id="contact" className="py-20 bg-slate-50 border-t border-slate-100">
+        <section id="contact" className="py-24 bg-slate-50 border-t border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
               
               {/* Contacts info */}
-              <div className="lg:col-span-5 space-y-6">
-                <div>
+              <motion.div 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={staggerContainerVariants}
+                className="lg:col-span-5 space-y-6"
+              >
+                <motion.div variants={heroItemVariants}>
                   <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Get In Touch</span>
-                  <h2 className="font-display text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
+                  <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
                     Discuss Your Project
                   </h2>
-                  <p className="mt-4 text-xs text-navy-600 leading-relaxed">
+                  <p className="mt-4 text-xs text-slate-600 leading-relaxed font-medium">
                     Have architectural drafts, municipal drawings, or a commercial design concept ready? Connect with our project engineering desk for immediate guidance.
                   </p>
-                </div>
+                </motion.div>
 
                 <div className="space-y-4">
                   <motion.a 
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    variants={heroItemVariants}
+                    whileHover={{ y: -2 }}
                     href="https://wa.me/912067345000" 
                     target="_blank" 
-                    className="flex items-center gap-3 bg-white p-4 rounded-xl border border-slate-200 hover:border-orange-500 transition-all text-xs text-navy-950 font-bold"
+                    className="flex items-center gap-4 bg-white p-4 rounded-md border border-slate-200 hover:border-wix-dark transition-all text-xs text-wix-dark font-bold shadow-sm"
                   >
-                    <div className="h-9 w-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
+                    <div className="h-9 w-9 rounded-md bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0 border border-emerald-100">
                       <MessageCircle className="h-5 w-5" />
                     </div>
                     <div>
-                      <span className="block text-[9px] uppercase font-bold text-navy-600">WhatsApp Chat</span>
+                      <span className="block text-[9px] uppercase font-bold text-slate-500 tracking-widest">WhatsApp Chat</span>
                       <span>+91 20 6734 5000</span>
                     </div>
                   </motion.a>
 
-                  <div className="flex items-center gap-3 bg-white p-4 rounded-xl border border-slate-200 text-xs text-navy-950 font-bold">
-                    <div className="h-9 w-9 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center flex-shrink-0">
+                  <motion.div 
+                    variants={heroItemVariants}
+                    className="flex items-center gap-4 bg-white p-4 rounded-md border border-slate-200 text-xs text-wix-dark font-bold shadow-sm"
+                  >
+                    <div className="h-9 w-9 rounded-md bg-orange-50 text-orange-600 flex items-center justify-center flex-shrink-0 border border-orange-100">
                       <Phone className="h-5 w-5" />
                     </div>
                     <div>
-                      <span className="block text-[9px] uppercase font-bold text-navy-600">Call Engineering Desk</span>
+                      <span className="block text-[9px] uppercase font-bold text-slate-500 tracking-widest">Call Engineering Desk</span>
                       <span>+91 20 6734 5000</span>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="flex items-center gap-3 bg-white p-4 rounded-xl border border-slate-200 text-xs text-navy-950 font-bold">
-                    <div className="h-9 w-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
+                  <motion.div 
+                    variants={heroItemVariants}
+                    className="flex items-center gap-4 bg-white p-4 rounded-md border border-slate-200 text-xs text-wix-dark font-bold shadow-sm"
+                  >
+                    <div className="h-9 w-9 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0 border border-blue-100">
                       <Mail className="h-5 w-5" />
                     </div>
                     <div>
-                      <span className="block text-[9px] uppercase font-bold text-navy-600">Corporate Email</span>
+                      <span className="block text-[9px] uppercase font-bold text-slate-500 tracking-widest">Corporate Email</span>
                       <span>projects@civilathand.com</span>
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
 
                 {/* Google Map Mockup */}
-                <div className="h-44 rounded-xl overflow-hidden border border-slate-200 relative">
-                  <div className="absolute inset-0 bg-slate-200 flex flex-col items-center justify-center text-center p-4">
+                <motion.div 
+                  variants={heroItemVariants}
+                  className="h-44 rounded-md overflow-hidden border border-slate-200 relative shadow-sm"
+                >
+                  <div className="absolute inset-0 bg-slate-100 flex flex-col items-center justify-center text-center p-4">
                     <MapPin className="h-6 w-6 text-orange-500 animate-bounce mb-1" />
-                    <span className="text-xs font-bold text-navy-950">Civil At Hand Headquarters</span>
-                    <span className="text-[10px] text-navy-600 mt-0.5">Synergy Business Park, Kalyani Nagar, Pune</span>
+                    <span className="text-xs font-bold text-wix-dark uppercase tracking-widest">Civil At Hand Headquarters</span>
+                    <span className="text-[10px] text-slate-500 mt-1 font-semibold">Synergy Business Park, Kalyani Nagar, Pune</span>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
 
               {/* Contact Form */}
-              <form onSubmit={handleContactSubmit} className="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-premium space-y-4">
-                <h3 className="font-display font-extrabold text-lg text-navy-950 mb-2 uppercase tracking-wide">
+              <motion.form 
+                initial={{ opacity: 0, x: 25 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                onSubmit={handleContactSubmit} 
+                className="lg:col-span-7 bg-white border border-slate-200 rounded-md p-6 md:p-8 shadow-sm space-y-5"
+              >
+                <h3 className="font-display font-extrabold text-lg text-wix-dark mb-2 uppercase tracking-wide">
                   Schedule Free Technical Consultation
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-2">Your Name</label>
+                    <label className="block text-[10px] font-bold text-wix-dark uppercase tracking-widest mb-2">Your Name</label>
                     <input
                       type="text"
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="e.g. Rahul Patil"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 font-semibold text-navy-950"
+                      className="w-full bg-white border border-slate-300 rounded-md px-3 py-3 text-xs focus:outline-none focus:border-wix-dark focus:ring-0 text-slate-800 font-semibold transition-all"
+                      suppressHydrationWarning
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-2">Phone Number</label>
+                    <label className="block text-[10px] font-bold text-wix-dark uppercase tracking-widest mb-2">Phone Number</label>
                     <input
                       type="tel"
                       required
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="e.g. +91 98765 43210"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 font-semibold text-navy-950"
+                      className="w-full bg-white border border-slate-300 rounded-md px-3 py-3 text-xs focus:outline-none focus:border-wix-dark focus:ring-0 text-slate-800 font-semibold transition-all"
+                      suppressHydrationWarning
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-2">Email Address</label>
+                  <label className="block text-[10px] font-bold text-wix-dark uppercase tracking-widest mb-2">Email Address</label>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="e.g. rahul@example.com"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 font-semibold text-navy-950"
+                    className="w-full bg-white border border-slate-300 rounded-md px-3 py-3 text-xs focus:outline-none focus:border-wix-dark focus:ring-0 text-slate-800 font-semibold transition-all"
+                    suppressHydrationWarning
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-2">Required Engineering Service</label>
+                  <label className="block text-[10px] font-bold text-wix-dark uppercase tracking-widest mb-2">Required Engineering Service</label>
                   <select
                     value={service}
                     onChange={(e) => setService(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 font-semibold text-navy-950"
+                    className="w-full bg-white border border-slate-300 rounded-md px-3 py-3 text-xs focus:outline-none focus:border-wix-dark focus:ring-0 text-slate-800 font-semibold transition-all"
+                    suppressHydrationWarning
                   >
                     <option value="Architectural Design">Architectural Design & Planning</option>
-                    <option value="Structural Design">Structural Design & detialing</option>
+                    <option value="Structural Design">Structural Design & detailing</option>
                     <option value="BOQ Estimation">BOQ Estimation & Takeoff</option>
                     <option value="BIM Services">BIM LOD Modeling</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-2">Project Description</label>
+                  <label className="block text-[10px] font-bold text-wix-dark uppercase tracking-widest mb-2">Project Description</label>
                   <textarea
                     rows={4}
                     required
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Provide details about your project built area, location, or upload drawings in the client portal."
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 font-semibold text-navy-950"
+                    className="w-full bg-white border border-slate-300 rounded-md px-3 py-3 text-xs focus:outline-none focus:border-wix-dark focus:ring-0 text-slate-800 font-semibold transition-all"
+                    suppressHydrationWarning
                   ></textarea>
                 </div>
 
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
                   type="submit"
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-orange-glow"
+                  className="w-full bg-wix-dark hover:bg-orange-500 text-white font-bold py-4 rounded-md text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-1.5 cursor-pointer vfx-sheen"
+                  suppressHydrationWarning
                 >
                   {contactSuccess ? (
                     <>
-                      <CheckCircle2 className="h-4.5 w-4.5" />
+                      <CheckCircle2 className="h-4.5 w-4.5 text-emerald-400" />
                       Consultation Request Received!
                     </>
                   ) : (
@@ -1145,20 +1237,21 @@ export default function Home() {
                     </>
                   )}
                 </motion.button>
-              </form>
+              </motion.form>
 
             </div>
           </div>
         </section>
 
         {/* Latest Insights / Blog Section */}
-        <section className="py-16 border-t border-white/5 relative z-10">
+        <section className="py-24 bg-wix-dark text-white border-t border-white/5 relative z-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-3xl mx-auto mb-12">
-              <h2 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                Latest Engineering <span className="text-orange-500">Insights</span>
+              <span className="text-xs font-extrabold text-orange-400 uppercase tracking-widest block mb-2">Our Journal</span>
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl uppercase">
+                Latest Engineering <span className="text-orange-500 font-black">Insights</span>
               </h2>
-              <p className="mt-3 text-sm text-slate-300">
+              <p className="mt-3 text-sm text-slate-300 font-medium">
                 Explore tech briefs, building regulations audits, rebar schedules guidelines, and industry news published by our team.
               </p>
             </div>
@@ -1174,40 +1267,40 @@ export default function Home() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.3, delay: idx * 0.1 }}
-                    className="bg-glass-dark border border-white/5 rounded-2xl overflow-hidden shadow-premium group flex flex-col h-full hover:border-orange-500/30 transition-all duration-300"
+                    className="bg-white/5 border border-white/10 rounded-md overflow-hidden group flex flex-col h-full shadow-sm vfx-border-glow"
                   >
-                    <div className="h-44 overflow-hidden relative bg-slate-900 border-b border-white/5">
+                    <div className="h-44 overflow-hidden relative bg-slate-900 border-b border-white/10">
                       <img
                         src={post.image}
                         alt={post.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       <div className="absolute top-3 left-3">
-                        <span className="text-[9px] bg-orange-500 text-white px-2 py-0.5 rounded font-bold uppercase tracking-wider shadow-sm">
+                        <span className="text-[9px] bg-orange-500 text-white px-2 py-0.5 rounded-none font-bold uppercase tracking-widest shadow-sm">
                           {post.category}
                         </span>
                       </div>
                     </div>
-
+ 
                     <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
                       <div className="space-y-2 text-xs">
-                        <div className="flex gap-3 text-[9px] text-slate-400 font-bold uppercase tracking-wide">
+                        <div className="flex gap-3 text-[9px] text-slate-400 font-bold uppercase tracking-widest">
                           <span>{post.date}</span>
                           <span>•</span>
                           <span>{post.author}</span>
                         </div>
-                        <h4 className="font-display font-extrabold text-base text-white group-hover:text-orange-500 transition-colors line-clamp-2 leading-snug">
+                        <h4 className="font-display font-extrabold text-base text-white group-hover:text-orange-400 transition-colors line-clamp-2 leading-snug uppercase tracking-wide">
                           {post.title}
                         </h4>
-                        <p className="text-slate-300 leading-relaxed line-clamp-3">
+                        <p className="text-slate-300 leading-relaxed line-clamp-3 font-medium">
                           {post.summary}
                         </p>
                       </div>
-
+ 
                       <div className="pt-2">
                         <Link
                           href={`/blog/${post.id}`}
-                          className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-500 hover:text-white uppercase tracking-wider transition-colors"
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-400 hover:text-white uppercase tracking-widest transition-colors"
                         >
                           Read Post <ArrowRight className="h-3.5 w-3.5" />
                         </Link>
@@ -1216,13 +1309,13 @@ export default function Home() {
                   </motion.article>
                 ))}
             </div>
-
+ 
             <div className="text-center mt-12">
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-1.5 bg-navy-950 hover:bg-orange-600 text-white rounded-lg px-6 py-3 text-xs font-bold uppercase tracking-wider transition-all shadow-premium"
+                className="inline-block bg-white hover:bg-orange-500 text-wix-dark hover:text-white border border-white/10 font-bold px-8 py-4 text-xs uppercase tracking-widest transition-all rounded-md cursor-pointer vfx-sheen"
               >
-                View Engineering Blog <ArrowRight className="h-4 w-4" />
+                View Engineering Blog <ArrowRight className="inline-block h-4 w-4 ml-1.5" />
               </Link>
             </div>
           </div>

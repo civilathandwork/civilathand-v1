@@ -255,14 +255,14 @@ export const DashboardView: React.FC = () => {
                       placeholder="Enter file name (e.g. villa-layout.pdf)"
                       value={fileName}
                       onChange={(e) => setFileName(e.target.value)}
-                      className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                      className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm transition-all"
                     />
                     <input
                       type="text"
                       placeholder="File size (e.g. 4.8 MB) - Optional"
                       value={fileSize}
                       onChange={(e) => setFileSize(e.target.value)}
-                      className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                      className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm transition-all"
                     />
                   </div>
                 </div>
@@ -275,7 +275,7 @@ export const DashboardView: React.FC = () => {
                     <select
                       value={serviceType}
                       onChange={(e) => setServiceType(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-xs font-semibold focus:outline-none focus:border-orange-500 text-navy-950"
+                      className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-semibold focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 shadow-sm transition-all"
                     >
                       <option value="Architectural Design">Architectural Design & Planning</option>
                       <option value="Structural Design">Structural Detailing & Analysis</option>
@@ -517,7 +517,7 @@ export const DashboardView: React.FC = () => {
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
                   placeholder="Ask support about blueprints, layouts, or estimates..."
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-orange-500 text-navy-950 font-semibold"
+                  className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm transition-all"
                 />
                 <button
                   type="submit"

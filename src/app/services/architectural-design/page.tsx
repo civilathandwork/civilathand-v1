@@ -186,17 +186,17 @@ export default function ArchitecturalDesignPage() {
           
           {/* Breadcrumb / Back Navigation */}
           <div className="mb-8">
-            <Link href="/" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-orange-500 hover:text-white transition-colors duration-200">
+            <Link href="/" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-orange-500 hover:text-slate-800 transition-colors duration-200">
               <ArrowLeft className="h-4 w-4" /> Back to Services
             </Link>
           </div>
 
           {/* Heading */}
           <div className="mb-10 text-center md:text-left">
-            <h1 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+            <h1 className="font-display text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
               Architectural Design <span className="text-orange-500">Estimator</span>
             </h1>
-            <p className="mt-2 text-sm text-slate-300 max-w-2xl leading-relaxed">
+            <p className="mt-2 text-sm text-slate-600 max-w-2xl leading-relaxed">
               Get an instant structural and design estimate by providing your plot specifics, floor plans requirements, and design expectations.
             </p>
           </div>
@@ -205,10 +205,10 @@ export default function ArchitecturalDesignPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               
               {/* Left Column: Form Wizard */}
-              <div className={`${step > 1 ? "lg:col-span-8" : "lg:col-span-8 lg:col-start-3"} bg-glass-dark border border-white/5 rounded-2xl p-6 md:p-8 shadow-premium space-y-8`}>
+              <div className={`${step > 1 ? "lg:col-span-8" : "lg:col-span-8 lg:col-start-3"} bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-premium space-y-8`}>
                 
                 {/* Step Indicators */}
-                <div className="grid grid-cols-4 gap-2 border-b border-white/5 pb-6">
+                <div className="grid grid-cols-4 gap-2 border-b border-slate-100 pb-6">
                   {formSteps.map((s) => {
                     const Icon = s.icon;
                     const isActive = step === s.num;
@@ -219,7 +219,7 @@ export default function ArchitecturalDesignPage() {
                         <div className={`h-9 w-9 rounded-lg flex items-center justify-center transition-all ${
                           isActive ? "bg-orange-500 text-white shadow-orange-glow" :
                           isCompleted ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" :
-                          "bg-navy-900/40 text-slate-500 border border-white/5"
+                          "bg-slate-100 text-slate-500 border border-slate-200"
                         }`}>
                           {isCompleted ? <Check className="h-4.5 w-4.5" /> : <Icon className="h-4.5 w-4.5" />}
                         </div>
@@ -248,53 +248,53 @@ export default function ArchitecturalDesignPage() {
                         exit={{ opacity: 0, x: -15 }}
                         className="space-y-6"
                       >
-                        <h3 className="text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
+                        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
                           <User className="h-4 w-4 text-orange-500" />
                           Step 1: Customer Identification
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Full Name</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Full Name</label>
                             <input
                               type="text"
                               required
                               placeholder="Enter your full name"
                               value={fullName}
                               onChange={(e) => setFullName(e.target.value)}
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 font-semibold"
+                              className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold shadow-sm transition-all"
                             />
                           </div>
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Mobile Number</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Mobile Number</label>
                             <input
                               type="tel"
                               required
                               placeholder="e.g. +91 98765 43210"
                               value={mobileNumber}
                               onChange={(e) => setMobileNumber(e.target.value)}
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 font-semibold"
+                              className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold shadow-sm transition-all"
                             />
                           </div>
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Email Address</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Email Address</label>
                             <input
                               type="email"
                               required
                               placeholder="name@example.com"
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 font-semibold"
+                              className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold shadow-sm transition-all"
                             />
                           </div>
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">City & State</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">City & State</label>
                             <input
                               type="text"
                               required
                               placeholder="e.g. Pune, Maharashtra"
                               value={cityState}
                               onChange={(e) => setCityState(e.target.value)}
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 font-semibold"
+                              className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold shadow-sm transition-all"
                             />
                           </div>
                         </div>
@@ -310,48 +310,48 @@ export default function ArchitecturalDesignPage() {
                         exit={{ opacity: 0, x: -15 }}
                         className="space-y-6"
                       >
-                        <h3 className="text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
+                        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
                           <MapPin className="h-4 w-4 text-orange-500" />
                           Step 2: Plot and Geolocation Parameters
                         </h3>
                         
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Plot Length (feet)</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Plot Length (feet)</label>
                             <input
                               type="number"
                               min="10"
                               max="1000"
                               value={plotLength}
                               onChange={(e) => setPlotLength(Number(e.target.value))}
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 font-semibold"
+                              className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold shadow-sm transition-all"
                             />
                           </div>
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Plot Width (feet)</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Plot Width (feet)</label>
                             <input
                               type="number"
                               min="10"
                               max="1000"
                               value={plotWidth}
                               onChange={(e) => setPlotWidth(Number(e.target.value))}
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 font-semibold"
+                              className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold shadow-sm transition-all"
                             />
                           </div>
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Plot Area (sq. ft)</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Plot Area (sq. ft)</label>
                             <input
                               type="number"
                               disabled
                               value={plotArea}
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-slate-400 font-semibold cursor-not-allowed"
+                              className="w-full bg-slate-100 border border-slate-200 rounded-lg px-4 py-2.5 text-slate-500 font-semibold cursor-not-allowed shadow-none"
                             />
                           </div>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Facing Direction</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Facing Direction</label>
                             <div className="grid grid-cols-4 gap-2">
                               {(["North", "East", "South", "West"] as const).map((dir) => (
                                 <button
@@ -361,7 +361,7 @@ export default function ArchitecturalDesignPage() {
                                   className={`py-2 text-center rounded-lg border font-bold transition-all ${
                                     facingDirection === dir
                                       ? "bg-orange-500 border-orange-500 text-white shadow-sm"
-                                      : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
+                                      : "bg-slate-100 border-slate-200 text-slate-600 hover:bg-slate-200"
                                   }`}
                                 >
                                   {dir}
@@ -371,7 +371,7 @@ export default function ArchitecturalDesignPage() {
                           </div>
 
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Corner Plot</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Corner Plot</label>
                             <div className="grid grid-cols-2 gap-2">
                               {(["Yes", "No"] as const).map((val) => (
                                 <button
@@ -381,7 +381,7 @@ export default function ArchitecturalDesignPage() {
                                   className={`py-2 text-center rounded-lg border font-bold transition-all ${
                                     cornerPlot === val
                                       ? "bg-orange-500 border-orange-500 text-white shadow-sm"
-                                      : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
+                                      : "bg-slate-100 border-slate-200 text-slate-600 hover:bg-slate-200"
                                   }`}
                                 >
                                   {val}
@@ -391,24 +391,24 @@ export default function ArchitecturalDesignPage() {
                           </div>
 
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Road Width (feet)</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Road Width (feet)</label>
                             <input
                               type="number"
                               min="5"
                               value={roadWidth}
                               onChange={(e) => setRoadWidth(Number(e.target.value))}
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 font-semibold"
+                              className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold shadow-sm transition-all"
                             />
                           </div>
 
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Plot Site Address / Location</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Plot Site Address / Location</label>
                             <input
                               type="text"
                               placeholder="e.g. Plot No. 24, Viman Nagar Layout"
                               value={plotLocation}
                               onChange={(e) => setPlotLocation(e.target.value)}
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 font-semibold"
+                              className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold shadow-sm transition-all"
                             />
                           </div>
                         </div>
@@ -424,18 +424,18 @@ export default function ArchitecturalDesignPage() {
                         exit={{ opacity: 0, x: -15 }}
                         className="space-y-6"
                       >
-                        <h3 className="text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
+                        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
                           <Building2 className="h-4 w-4 text-orange-500" />
                           Step 3: Building Architecture Specifications
                         </h3>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Building Scope Type</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Building Scope Type</label>
                             <select
                               value={buildingType}
                               onChange={(e) => setBuildingType(e.target.value as BuildingType)}
-                              className="w-full bg-navy-900 border border-white/10 rounded-lg px-3 py-2.5 font-semibold text-white focus:outline-none focus:border-orange-500"
+                              className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 font-semibold text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm transition-all"
                             >
                               <option value="residential">Residential Home</option>
                               <option value="commercial">Commercial Space</option>
@@ -444,23 +444,23 @@ export default function ArchitecturalDesignPage() {
                           </div>
                           
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Number of Floors</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Number of Floors</label>
                             <input
                               type="number"
                               min="1"
                               max="10"
                               value={floors}
                               onChange={(e) => setFloors(Number(e.target.value))}
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 font-semibold"
+                              className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold shadow-sm transition-all"
                             />
                           </div>
 
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Staircase Design Type</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Staircase Design Type</label>
                             <select
                               value={stairType}
                               onChange={(e) => setStairType(e.target.value as any)}
-                              className="w-full bg-navy-900 border border-white/10 rounded-lg px-3 py-2.5 font-semibold text-white focus:outline-none focus:border-orange-500"
+                              className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 font-semibold text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm transition-all"
                             >
                               <option value="Internal RCC">Internal Concrete (RCC)</option>
                               <option value="External RCC">External Concrete (RCC)</option>
@@ -474,31 +474,31 @@ export default function ArchitecturalDesignPage() {
                         {buildingType === "residential" && (
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 border-t border-white/5 pt-5">
                             <div className="space-y-2">
-                              <label className="block font-bold text-slate-300 uppercase tracking-wide">Number of Bedrooms</label>
+                              <label className="block font-bold text-slate-700 uppercase tracking-wide">Number of Bedrooms</label>
                               <input
                                 type="number"
                                 min="0"
                                 value={bedrooms}
                                 onChange={(e) => setBedrooms(Number(e.target.value))}
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 font-semibold"
+                                className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold shadow-sm transition-all"
                               />
                             </div>
                             <div className="space-y-2">
-                              <label className="block font-bold text-slate-300 uppercase tracking-wide">Number of Bathrooms</label>
+                              <label className="block font-bold text-slate-700 uppercase tracking-wide">Number of Bathrooms</label>
                               <input
                                 type="number"
                                 min="0"
                                 value={bathrooms}
                                 onChange={(e) => setBathrooms(Number(e.target.value))}
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 font-semibold"
+                                className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 font-semibold shadow-sm transition-all"
                               />
                             </div>
                             <div className="space-y-2">
-                              <label className="block font-bold text-slate-300 uppercase tracking-wide">Kitchen Style</label>
+                              <label className="block font-bold text-slate-700 uppercase tracking-wide">Kitchen Style</label>
                               <select
                                 value={kitchenType}
                                 onChange={(e) => setKitchenType(e.target.value as any)}
-                                className="w-full bg-navy-900 border border-white/10 rounded-lg px-3 py-2.5 font-semibold text-white focus:outline-none focus:border-orange-500"
+                                className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 font-semibold text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm transition-all"
                               >
                                 <option value="Modular">Modular Layout</option>
                                 <option value="Semi-Modular">Semi-Modular Layout</option>
@@ -507,11 +507,11 @@ export default function ArchitecturalDesignPage() {
                               </select>
                             </div>
                             <div className="space-y-2">
-                              <label className="block font-bold text-slate-300 uppercase tracking-wide">Living Room Type</label>
+                              <label className="block font-bold text-slate-700 uppercase tracking-wide">Living Room Type</label>
                               <select
                                 value={livingRoom}
                                 onChange={(e) => setLivingRoom(e.target.value as any)}
-                                className="w-full bg-navy-900 border border-white/10 rounded-lg px-3 py-2.5 font-semibold text-white focus:outline-none focus:border-orange-500"
+                                className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 font-semibold text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm transition-all"
                               >
                                 <option value="Single">Single Standard Lounge</option>
                                 <option value="Double-height">Double-Height Ceiling</option>
@@ -523,11 +523,11 @@ export default function ArchitecturalDesignPage() {
 
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 border-t border-white/5 pt-5">
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Parking Needs</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Parking Needs</label>
                             <select
                               value={parkingRequirement}
                               onChange={(e) => setParkingRequirement(e.target.value as any)}
-                              className="w-full bg-navy-900 border border-white/10 rounded-lg px-2 py-2.5 font-semibold text-white focus:outline-none"
+                              className="w-full bg-white border border-slate-300 rounded-lg px-2 py-2.5 font-semibold text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm transition-all"
                             >
                               <option value="Car + Bike">Car & Bike Space</option>
                               <option value="Car Only">Car Only Space</option>
@@ -537,7 +537,7 @@ export default function ArchitecturalDesignPage() {
                           </div>
                           
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Balcony Area</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Balcony Area</label>
                             <div className="grid grid-cols-2 gap-1.5">
                               {(["Yes", "No"] as const).map((val) => (
                                 <button
@@ -547,7 +547,7 @@ export default function ArchitecturalDesignPage() {
                                   className={`py-2 text-center rounded-lg border font-bold transition-all ${
                                     balcony === val
                                       ? "bg-orange-500 border-orange-500 text-white"
-                                      : "bg-white/5 border-white/10 text-slate-300"
+                                      : "bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200"
                                   }`}
                                 >
                                   {val}
@@ -557,7 +557,7 @@ export default function ArchitecturalDesignPage() {
                           </div>
 
                           <div className="space-y-2">
-                            <label className="block font-bold text-slate-300 uppercase tracking-wide">Garden Space</label>
+                            <label className="block font-bold text-slate-700 uppercase tracking-wide">Garden Space</label>
                             <div className="grid grid-cols-2 gap-1.5">
                               {(["Yes", "No"] as const).map((val) => (
                                 <button
@@ -567,7 +567,7 @@ export default function ArchitecturalDesignPage() {
                                   className={`py-2 text-center rounded-lg border font-bold transition-all ${
                                     garden === val
                                       ? "bg-orange-500 border-orange-500 text-white"
-                                      : "bg-white/5 border-white/10 text-slate-300"
+                                      : "bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200"
                                   }`}
                                 >
                                   {val}
@@ -588,14 +588,14 @@ export default function ArchitecturalDesignPage() {
                         exit={{ opacity: 0, x: -15 }}
                         className="space-y-6"
                       >
-                        <h3 className="text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
+                        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
                           <Sparkles className="h-4 w-4 text-orange-500 animate-pulse" />
                           Step 4: Design Aesthetics and Document Takeoffs
                         </h3>
 
                         {/* Style Choices */}
                         <div className="space-y-3">
-                          <label className="block font-bold text-slate-300 uppercase tracking-wide">Architectural Design Style Theme</label>
+                          <label className="block font-bold text-slate-700 uppercase tracking-wide">Architectural Design Style Theme</label>
                           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                             {([
                               { id: "modern", name: "Modern" },
@@ -611,7 +611,7 @@ export default function ArchitecturalDesignPage() {
                                 className={`py-3 px-1 text-center rounded-lg border font-bold capitalize transition-all ${
                                   designStyle === style.id
                                     ? "bg-orange-500 border-orange-500 text-white shadow-premium"
-                                    : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
+                                    : "bg-slate-100 border-slate-200 text-slate-600 hover:bg-slate-200"
                                 }`}
                               >
                                 {style.name}
@@ -622,7 +622,7 @@ export default function ArchitecturalDesignPage() {
 
                         {/* File Upload Grid */}
                         <div className="border-t border-white/5 pt-5 space-y-4">
-                          <label className="block font-bold text-slate-300 uppercase tracking-wide">
+                          <label className="block font-bold text-slate-700 uppercase tracking-wide">
                             Attach Site Verification Documents (Simulated Upload)
                           </label>
                           
@@ -633,15 +633,15 @@ export default function ArchitecturalDesignPage() {
                               { label: "Existing Layout Drawings (if any)", val: docExisting, setter: setDocExisting, ph: "old-floor-layout.dwg" },
                               { label: "Design Reference / Ideas Images", val: docReference, setter: setDocReference, ph: "exterior-facade-concept.jpg" }
                             ].map((doc, idx) => (
-                              <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col justify-between space-y-3">
-                                <span className="font-bold text-slate-200">{doc.label}</span>
+                              <div key={idx} className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-3">
+                                <span className="font-bold text-slate-800">{doc.label}</span>
                                 <div className="flex gap-2">
                                   <input
                                     type="text"
                                     placeholder={`e.g. ${doc.ph}`}
                                     value={doc.val}
                                     onChange={(e) => doc.setter(e.target.value)}
-                                    className="bg-navy-950 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none w-full"
+                                    className="bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 w-full font-semibold shadow-sm transition-all"
                                   />
                                   <div className="bg-orange-500 hover:bg-orange-600 text-white px-3.5 py-1.5 rounded-lg flex items-center justify-center cursor-pointer shadow-sm">
                                     <Upload className="h-4 w-4" />
@@ -657,12 +657,12 @@ export default function ArchitecturalDesignPage() {
                   </AnimatePresence>
 
                   {/* Wizard Buttons */}
-                  <div className="flex justify-between border-t border-white/5 pt-6 mt-8">
+                  <div className="flex justify-between border-t border-slate-100 pt-6 mt-8">
                     {step > 1 ? (
                       <button
                         type="button"
                         onClick={handleBack}
-                        className="bg-navy-900 border border-white/10 text-slate-300 hover:bg-white/10 rounded-lg px-6 py-2.5 font-bold transition-all uppercase tracking-wider flex items-center gap-1.5"
+                        className="bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200 rounded-lg px-6 py-2.5 font-bold transition-all uppercase tracking-wider flex items-center gap-1.5"
                       >
                         <ChevronLeft className="h-4.5 w-4.5" /> Back
                       </button>
@@ -693,10 +693,10 @@ export default function ArchitecturalDesignPage() {
                 <div className="lg:col-span-4 space-y-6">
                   
                   {/* Cost Dashboard Card */}
-                  <div className="bg-glass-dark border border-white/5 rounded-2xl p-5 md:p-6 shadow-premium relative overflow-hidden">
+                  <div className="bg-white border border-slate-200 rounded-2xl p-5 md:p-6 shadow-premium relative overflow-hidden">
                     <div className="absolute top-0 right-0 h-32 w-32 bg-orange-500 rounded-full blur-3xl opacity-10 pointer-events-none"></div>
                     
-                    <h3 className="font-display font-extrabold text-lg text-white mb-4 flex items-center gap-2 border-b border-white/5 pb-3">
+                    <h3 className="font-display font-extrabold text-lg text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
                       <Calculator className="h-5 w-5 text-orange-500" />
                       Live Estimate Report
                     </h3>
@@ -704,17 +704,17 @@ export default function ArchitecturalDesignPage() {
                     <div className="space-y-5 text-xs">
                       
                       {/* Dimension Summary */}
-                      <div className="bg-white/5 p-3 rounded-lg border border-white/5 flex justify-between items-center">
+                      <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 flex justify-between items-center">
                         <div>
-                          <span className="block text-[9px] uppercase font-bold text-slate-400">Total Plot Area</span>
-                          <span className="text-sm font-extrabold text-white font-display mt-0.5 block">{plotArea.toLocaleString("en-IN")} Sq. Ft.</span>
+                          <span className="block text-[9px] uppercase font-bold text-slate-500">Total Plot Area</span>
+                          <span className="text-sm font-extrabold text-slate-900 font-display mt-0.5 block">{plotArea.toLocaleString("en-IN")} Sq. Ft.</span>
                         </div>
                         <div className="text-right">
-                          <span className="block text-[9px] uppercase font-bold text-slate-400">Est. Built-up Area</span>
+                          <span className="block text-[9px] uppercase font-bold text-slate-500">Est. Built-up Area</span>
                           {step >= 3 ? (
                             <span className="text-sm font-extrabold text-orange-500 font-display mt-0.5 block">{estimatedBuiltUpArea.toLocaleString("en-IN")} Sq. Ft.</span>
                           ) : (
-                            <span className="text-[10px] font-bold text-slate-500 mt-0.5 block italic">Awaiting Step 3</span>
+                            <span className="text-[10px] font-bold text-slate-400 mt-0.5 block italic">Awaiting Step 3</span>
                           )}
                         </div>
                       </div>
@@ -726,65 +726,65 @@ export default function ArchitecturalDesignPage() {
                             
                             {/* Design Fee */}
                             <div className="space-y-1">
-                              <div className="flex justify-between font-bold text-slate-200">
+                              <div className="flex justify-between font-bold text-slate-700">
                                 <span>Architectural Design Fee:</span>
-                                <span className="text-white">₹{totalDesignFee.toLocaleString("en-IN")}</span>
+                                <span className="text-slate-900">₹{totalDesignFee.toLocaleString("en-IN")}</span>
                               </div>
-                              <div className="flex justify-between text-[10px] text-slate-400">
+                              <div className="flex justify-between text-[10px] text-slate-500">
                                 <span>Design fee rate:</span>
                                 <span>₹{designRate}/sqft built-up</span>
                               </div>
-                              <div className="w-full bg-white/5 h-1 rounded-full overflow-hidden mt-1.5">
+                              <div className="w-full bg-slate-200 h-1 rounded-full overflow-hidden mt-1.5">
                                 <div className="bg-orange-500 h-full w-1/3 rounded-full" />
                               </div>
                             </div>
 
                             {/* Construction Cost */}
                             <div className="space-y-1">
-                              <div className="flex justify-between font-bold text-slate-200">
+                              <div className="flex justify-between font-bold text-slate-700">
                                 <span>Est. Structural Cost:</span>
-                                <span className="text-white">₹{totalConstructionCost.toLocaleString("en-IN")}</span>
+                                <span className="text-slate-900">₹{totalConstructionCost.toLocaleString("en-IN")}</span>
                               </div>
-                              <div className="flex justify-between text-[10px] text-slate-400">
+                              <div className="flex justify-between text-[10px] text-slate-500">
                                 <span>Average build rate:</span>
                                 <span>₹{constructionRate}/sqft built-up</span>
                               </div>
-                              <div className="w-full bg-white/5 h-1 rounded-full overflow-hidden mt-1.5">
+                              <div className="w-full bg-slate-200 h-1 rounded-full overflow-hidden mt-1.5">
                                 <div className="bg-orange-500 h-full w-3/4 rounded-full" />
                               </div>
                             </div>
 
                           </div>
 
-                          <hr className="border-white/5 my-4" />
+                          <hr className="border-slate-100 my-4" />
 
                           {/* Total Summary */}
-                          <div className="bg-navy-900/50 p-4 rounded-xl border border-white/5 space-y-2">
+                          <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
                             <div className="flex justify-between items-center">
-                              <span className="text-[10px] uppercase font-extrabold text-slate-400 tracking-wide">Estimated Design Fee</span>
-                              <span className="text-lg font-extrabold text-emerald-400 font-display">₹{totalDesignFee.toLocaleString("en-IN")}</span>
+                              <span className="text-[10px] uppercase font-extrabold text-slate-500 tracking-wide">Estimated Design Fee</span>
+                              <span className="text-lg font-extrabold text-emerald-600 font-display">₹{totalDesignFee.toLocaleString("en-IN")}</span>
                             </div>
-                            <p className="text-[10px] text-slate-400 leading-normal">
+                            <p className="text-[10px] text-slate-500 leading-normal">
                               Includes conceptual blueprint layout, structural load audits, MEP drawings, and standard 3D CAD visualization facade sets.
                             </p>
                           </div>
 
                           {/* IS Code Compliance Notice */}
-                          <div className="bg-orange-500/10 border border-orange-500/20 p-3.5 rounded-lg flex gap-2.5 items-start">
+                          <div className="bg-orange-50 border border-orange-200 p-3.5 rounded-lg flex gap-2.5 items-start">
                             <HardHat className="h-5 w-5 text-orange-500 flex-shrink-0 mt-0.5 animate-pulse" />
                             <div className="space-y-0.5">
-                              <span className="block text-[9px] uppercase font-extrabold text-orange-400 tracking-wide">IS-Code Compliance</span>
-                              <p className="text-[10px] text-slate-300 leading-normal">
+                              <span className="block text-[9px] uppercase font-extrabold text-orange-500 tracking-wide">IS-Code Compliance</span>
+                              <p className="text-[10px] text-slate-600 leading-normal">
                                 Calculations generated using standard Indian Standard boundary coverage coefficients and loading parameters.
                               </p>
                             </div>
                           </div>
                         </>
                       ) : (
-                        <div className="bg-orange-500/5 border border-orange-500/10 p-5 rounded-xl text-center space-y-2.5">
-                          <Calculator className="h-7 w-7 text-orange-500/40 mx-auto animate-pulse" />
+                        <div className="bg-orange-50 border border-orange-100 p-5 rounded-xl text-center space-y-2.5">
+                          <Calculator className="h-7 w-7 text-orange-500/60 mx-auto animate-pulse" />
                           <div className="space-y-1">
-                            <span className="block text-[10px] uppercase font-bold text-slate-300">Estimates Locked</span>
+                            <span className="block text-[10px] uppercase font-bold text-slate-700">Estimates Locked</span>
                             <p className="text-[9px] text-slate-500 leading-relaxed max-w-[200px] mx-auto">
                               Please complete Step 2 and proceed to Step 3 (Building Specifications) to calculate architectural fees and structural estimates.
                             </p>
@@ -800,47 +800,46 @@ export default function ArchitecturalDesignPage() {
 
             </div>
           ) : (
-            // Form Submitted Success view
             <motion.div 
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="bg-glass-dark border border-white/5 rounded-2xl p-8 md:p-12 text-center max-w-xl mx-auto shadow-premium space-y-6"
+              className="bg-white border border-slate-200 rounded-2xl p-8 md:p-12 text-center max-w-xl mx-auto shadow-premium space-y-6"
             >
-              <div className="h-16 w-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto border border-emerald-500/30">
+              <div className="h-16 w-16 bg-emerald-500/20 text-emerald-600 rounded-full flex items-center justify-center mx-auto border border-emerald-500/30">
                 <CheckCircle2 className="h-10 w-10 animate-bounce" />
               </div>
               <div className="space-y-2">
-                <h3 className="font-display font-extrabold text-2xl text-white">Design Request Received!</h3>
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <h3 className="font-display font-extrabold text-2xl text-slate-900">Design Request Received!</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">
                   Your customized plot and architecture details have been recorded. Our chartered engineers and design architects are currently auditing your parameters.
                 </p>
               </div>
 
-              <div className="bg-white/5 border border-white/5 rounded-xl p-4 text-xs text-left space-y-3">
-                <div className="flex justify-between border-b border-white/5 pb-2">
-                  <span className="text-slate-400">Estimated built-up area:</span>
-                  <span className="font-bold text-white">{estimatedBuiltUpArea.toLocaleString("en-IN")} sq. ft</span>
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-left space-y-3">
+                <div className="flex justify-between border-b border-slate-100 pb-2">
+                  <span className="text-slate-500">Estimated built-up area:</span>
+                  <span className="font-bold text-slate-900">{estimatedBuiltUpArea.toLocaleString("en-IN")} sq. ft</span>
                 </div>
-                <div className="flex justify-between border-b border-white/5 pb-2">
-                  <span className="text-slate-400">Architectural Design fee:</span>
-                  <span className="font-bold text-emerald-400">₹{totalDesignFee.toLocaleString("en-IN")}</span>
+                <div className="flex justify-between border-b border-slate-100 pb-2">
+                  <span className="text-slate-500">Architectural Design fee:</span>
+                  <span className="font-bold text-emerald-600">₹{totalDesignFee.toLocaleString("en-IN")}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Turnaround Time:</span>
-                  <span className="font-bold text-orange-400">24-48 Hours</span>
+                  <span className="text-slate-500">Turnaround Time:</span>
+                  <span className="font-bold text-orange-600">24-48 Hours</span>
                 </div>
               </div>
 
               <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
                 <Link 
                   href="/"
-                  className="bg-white/5 hover:bg-white/10 text-white rounded-lg px-6 py-2.5 text-xs font-bold text-center border border-white/10 uppercase tracking-wider"
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg px-6 py-2.5 text-xs font-bold text-center border border-slate-200 uppercase tracking-wider transition-all"
                 >
                   Return to Home
                 </Link>
                 <Link
                   href="/dashboard"
-                  className="bg-orange-500 hover:bg-orange-600 text-white rounded-lg px-6 py-2.5 text-xs font-bold text-center shadow-orange-glow uppercase tracking-wider"
+                  className="bg-orange-500 hover:bg-orange-600 text-white rounded-lg px-6 py-2.5 text-xs font-bold text-center shadow-orange-glow uppercase tracking-wider transition-all"
                 >
                   Check Portal Status
                 </Link>

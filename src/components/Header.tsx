@@ -84,13 +84,13 @@ export const Header: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-glass shadow-premium transition-all duration-300">
+    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-slate-200/60 transition-all duration-300">
       {/* Upper Utility Bar (Dual-Tier) */}
-      <div className="bg-navy-950 border-b border-navy-900 text-slate-300 text-[10px] py-1.5 hidden md:block">
+      <div className="bg-slate-900 border-b border-slate-800 text-slate-300 text-[10px] py-1.5 hidden md:block">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <span className="font-bold text-white uppercase tracking-wider">Civil At Hand Group</span>
-            <span className="text-navy-800">|</span>
+            <span className="text-slate-700">|</span>
             <Link href="/" className="hover:text-orange-500 transition-colors">Corporate Home</Link>
           </div>
           <div className="flex items-center gap-3">
@@ -99,15 +99,15 @@ export const Header: React.FC = () => {
             </Link>
             {isAdminView && (
               <>
-                <span className="text-navy-800">|</span>
+                <span className="text-slate-700">|</span>
                 <Link href="/cah-expert-control" className="hover:text-orange-500 transition-colors font-bold">
                   Expert Connect
                 </Link>
               </>
             )}
-            <span className="text-navy-800">|</span>
+            <span className="text-slate-700">|</span>
             <span className="hover:text-orange-500 cursor-pointer transition-colors">Partner Portal</span>
-            <span className="text-navy-800">|</span>
+            <span className="text-slate-700">|</span>
             {/* Social Icons */}
             <div className="flex items-center gap-2 ml-1">
               <a href="#" className="hover:text-orange-500 text-slate-400 transition-colors"><FacebookIcon className="h-3.5 w-3.5" /></a>
@@ -128,15 +128,15 @@ export const Header: React.FC = () => {
               <motion.div 
                 whileHover={{ scale: 1.05, rotate: [0, -10, 10, 0] }}
                 transition={{ duration: 0.5 }}
-                className="flex h-11 w-11 items-center justify-center rounded-lg bg-navy-950 overflow-hidden shadow-premium"
+                className="flex h-11 w-11 items-center justify-center rounded-lg bg-wix-dark overflow-hidden shadow-sm border border-slate-100"
               >
                 <img src="/logo.jpg" alt="Civil At Hand Logo" className="h-full w-full object-cover" />
               </motion.div>
               <div>
-                <span className="font-display text-xl font-extrabold tracking-tight text-navy-950">
+                <span className="font-display text-xl font-extrabold tracking-tight text-wix-dark">
                   CIVIL <span className="text-orange-500 font-bold">AT HAND</span>
                 </span>
-                <span className="block text-[10px] font-semibold uppercase tracking-widest text-navy-600">
+                <span className="block text-[10px] font-bold uppercase tracking-widest text-slate-500">
                   Design and consultancy
                 </span>
               </div>
@@ -149,7 +149,7 @@ export const Header: React.FC = () => {
               <Link
                 key={link.name}
                 href={link.href}
-                className="relative text-sm font-semibold text-navy-950 hover:text-orange-500 transition-colors duration-200 group py-1"
+                className="relative text-xs font-bold uppercase tracking-widest text-wix-dark hover:text-orange-500 transition-colors duration-200 group py-1"
               >
                 {link.name}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 group-hover:w-full"></span>
@@ -167,7 +167,8 @@ export const Header: React.FC = () => {
                 transition={{ repeat: Infinity, repeatDelay: 3, duration: 0.5 }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative rounded-full p-2 text-navy-950 hover:bg-slate-100 hover:text-orange-500 transition-all duration-200 focus:outline-none"
+                className="relative rounded-full p-2 text-wix-dark hover:bg-slate-100 hover:text-orange-500 transition-all duration-200 focus:outline-none"
+                suppressHydrationWarning
               >
                 <Bell className="h-5.5 w-5.5" />
                 <AnimatePresence>
@@ -243,14 +244,13 @@ export const Header: React.FC = () => {
               </AnimatePresence>
             </div>
 
-            {/* Client Dashboard Link */}
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/dashboard"
-                className={`flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition-all duration-300 ${
+                className={`flex items-center gap-1.5 border px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all duration-300 vfx-sheen ${
                   isDashboardView
-                    ? "bg-orange-500 text-white shadow-orange-glow"
-                    : "bg-navy-950 text-white hover:bg-orange-600 hover:shadow-orange-glow"
+                    ? "bg-orange-500 border-orange-500 text-white shadow-sm"
+                    : "bg-wix-dark border-wix-dark text-white hover:bg-transparent hover:text-wix-dark"
                 }`}
               >
                 <User className="h-3.5 w-3.5" />
@@ -263,7 +263,7 @@ export const Header: React.FC = () => {
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                 <Link
                   href="/cah-expert-control"
-                  className="flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition-all duration-300 border bg-navy-950 text-white border-navy-950"
+                  className="flex items-center gap-1.5 border border-wix-dark bg-transparent text-wix-dark hover:bg-wix-dark hover:text-white px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all duration-300"
                 >
                   <Settings className="h-3.5 w-3.5" />
                   Admin Panel

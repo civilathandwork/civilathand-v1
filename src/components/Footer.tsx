@@ -45,13 +45,13 @@ export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-navy-950 text-slate-100 pt-16 pb-8 border-t border-navy-900">
+    <footer className="bg-wix-dark text-slate-100 pt-16 pb-8 border-t border-slate-800">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand Info */}
           <div>
             <div className="flex items-center gap-2 mb-5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white overflow-hidden shadow-premium">
+              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white overflow-hidden shadow-sm border border-slate-700">
                 <img src="/logo.jpg" alt="Civil At Hand Logo" className="h-full w-full object-cover" />
               </div>
               <span className="font-display text-lg font-extrabold tracking-tight text-white">
@@ -62,13 +62,13 @@ export const Footer: React.FC = () => {
               Engineering excellence powered by smart automation. We deliver enterprise-grade structural design, quantity surveying, and BIM modeling to builders, architects, and industrial clients worldwide.
             </p>
             <div className="flex items-center gap-3">
-              <a href="#" className="h-8 w-8 rounded-lg bg-navy-900 flex items-center justify-center text-slate-400 hover:text-orange-500 hover:bg-navy-800 transition-all">
+              <a href="#" className="h-8 w-8 rounded-md bg-slate-800/60 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-all">
                 <FacebookIcon className="h-4 w-4" />
               </a>
-              <a href="#" className="h-8 w-8 rounded-lg bg-navy-900 flex items-center justify-center text-slate-400 hover:text-orange-500 hover:bg-navy-800 transition-all">
+              <a href="#" className="h-8 w-8 rounded-md bg-slate-800/60 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-all">
                 <TwitterIcon className="h-4 w-4" />
               </a>
-              <a href="#" className="h-8 w-8 rounded-lg bg-navy-900 flex items-center justify-center text-slate-400 hover:text-orange-500 hover:bg-navy-800 transition-all">
+              <a href="#" className="h-8 w-8 rounded-md bg-slate-800/60 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-all">
                 <LinkedinIcon className="h-4 w-4" />
               </a>
             </div>
@@ -76,8 +76,8 @@ export const Footer: React.FC = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-display font-bold text-sm text-white uppercase tracking-wider mb-5">Services & Tools</h3>
-            <ul className="space-y-3 text-xs text-slate-400">
+            <h3 className="font-display font-bold text-xs text-white uppercase tracking-widest mb-5">Services & Tools</h3>
+            <ul className="space-y-3 text-xs text-slate-400 font-medium">
               <li>
                 <Link href="/#services" className="hover:text-orange-500 transition-colors">Architectural Design</Link>
               </li>
@@ -104,12 +104,14 @@ export const Footer: React.FC = () => {
 
           {/* Contacts */}
           <div>
-            <h3 className="font-display font-bold text-sm text-white uppercase tracking-wider mb-5">Corporate Office</h3>
+            <h3 className="font-display font-bold text-xs text-white uppercase tracking-widest mb-5">Corporate Office</h3>
             <ul className="space-y-4 text-xs text-slate-400">
               <li className="flex items-start gap-2.5">
                 <MapPin className="h-4 w-4 text-orange-500 flex-shrink-0 mt-0.5" />
                 <span>
                   Civil At Hand Design and consultancy,<br />
+                  Synergy Business Park, Kalyani Nagar,<br />
+                  Pune, MH, India
                 </span>
               </li>
               <li className="flex items-center gap-2.5">
@@ -125,11 +127,10 @@ export const Footer: React.FC = () => {
 
           {/* Newsletter / Credentials */}
           <div>
-            <h3 className="font-display font-bold text-sm text-white uppercase tracking-wider mb-5">Credentials & Insights</h3>
-            <div className="flex items-center gap-2 mb-4 bg-navy-900 p-3 rounded-lg border border-navy-800">
+            <div className="flex items-center gap-2 mb-4 bg-slate-800/40 p-3 rounded border border-slate-700">
               <ShieldCheck className="h-7 w-7 text-orange-500 flex-shrink-0" />
               <div>
-                <p className="text-xs font-bold text-white">ISO 9001:2015 Certified</p>
+                <p className="text-xs font-bold text-white uppercase tracking-wider">ISO 9001:2015 Certified</p>
                 <p className="text-[10px] text-slate-400">Quality Management Systems</p>
               </div>
             </div>
@@ -140,18 +141,20 @@ export const Footer: React.FC = () => {
             {subscribed ? (
               <p className="text-xs text-emerald-500 font-semibold">Thank you for subscribing!</p>
             ) : (
-              <form onSubmit={handleSubmit} className="flex">
+              <form onSubmit={handleSubmit} className="flex border-b border-slate-700 focus-within:border-orange-500 transition-colors duration-300 pb-1">
                 <input
                   type="email"
                   required
                   placeholder="Enter email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-navy-900 border border-navy-800 rounded-l-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-orange-500 transition-colors"
+                  className="w-full bg-transparent border-none px-1 py-2 text-xs text-slate-100 placeholder-slate-600 focus:outline-none"
+                  suppressHydrationWarning
                 />
                 <button
                   type="submit"
-                  className="bg-orange-500 hover:bg-orange-600 text-white rounded-r-lg px-3 flex items-center justify-center transition-colors"
+                  className="text-slate-400 hover:text-white px-2 flex items-center justify-center transition-colors"
+                  suppressHydrationWarning
                 >
                   <ArrowRight className="h-4 w-4" />
                 </button>
@@ -160,7 +163,7 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <hr className="border-navy-900 mb-8" />
+        <hr className="border-slate-800 mb-8" />
 
         <div className="flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-4">
           <p>© {currentYear} Civil At Hand : Design & Consultancy All rights reserved.</p>
