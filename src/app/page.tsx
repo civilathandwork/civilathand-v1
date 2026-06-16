@@ -46,10 +46,14 @@ const DownloadIcon = (props: any) => (
 );
 
 // Custom Animated Counter Component
-const AnimatedCounter: React.FC<{ value: number; suffix?: string; duration?: number }> = ({ value, suffix = "", duration = 1.5 }) => {
-  const [count, setCount] = useState(0);
+const AnimatedCounter: React.FC<{ value: number | string; suffix?: string; duration?: number }> = ({ value, suffix = "", duration = 1.5 }) => {
+  const [count, setCount] = useState<number | string>(typeof value === "number" ? 0 : value);
 
   useEffect(() => {
+    if (typeof value !== "number") {
+      setCount(value);
+      return;
+    }
     let start = 0;
     const end = value;
     if (start === end) return;
@@ -72,7 +76,7 @@ const AnimatedCounter: React.FC<{ value: number; suffix?: string; duration?: num
     return () => clearInterval(timer);
   }, [value, duration]);
 
-  return <span>{count.toLocaleString("en-IN")}{suffix}</span>;
+  return <span>{typeof count === "number" ? count.toLocaleString("en-IN") : count}{suffix}</span>;
 };
 
 export default function Home() {
@@ -360,10 +364,10 @@ export default function Home() {
               {/* Animated Statistics */}
               <div className="lg:col-span-5 grid grid-cols-2 gap-4">
                 {[
-                  { value: 1200, suffix: "+", label: "Projects Delivered", desc: "Industrial & residential" },
-                  { value: 450, suffix: "+", label: "Clients Served", desc: "Builders & architects" },
-                  { value: 15, suffix: "+", label: "Years of Experience", desc: "Expert senior engineers" },
-                  { value: 25, suffix: "M+", label: "Square Feet Designed", desc: "Structural space audits" },
+                  { value: 21, suffix: "+", label: "Projects Completed", desc: "Residential & Commercial Solutions" },
+                  { value: 11, suffix: "+", label: "Happy Clients", desc: "Trusted by Homeowners & Businesses" },
+                  { value: 100, suffix: "%", label: "Commitment", desc: "Quality, Accuracy & Professional Service" },
+                  { value: "FAST", suffix: " DELIVERY", label: "On-Time", desc: "Project Execution" },
                 ].map((stat, idx) => (
                   <motion.div 
                     key={idx}
