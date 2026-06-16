@@ -209,7 +209,7 @@ export const Footer: React.FC = () => {
           <div className="flex gap-6">
             <Link href="/privacy-policy" className="hover:text-slate-300">Privacy Policy</Link>
             <Link href="/terms-and-conditions" className="hover:text-slate-300">Terms & Conditions</Link>
-            <a href="#" className="hover:text-slate-300">Engineering Disclaimers</a>
+            <Link href="/engineering-disclaimer" className="hover:text-slate-300">Engineering Disclaimer</Link>
           </div>
         </div>
       </div>
