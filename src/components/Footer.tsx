@@ -208,7 +208,7 @@ export const Footer: React.FC = () => {
           <p>© {currentYear} Civil At Hand : Design & Consultancy All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/privacy-policy" className="hover:text-slate-300">Privacy Policy</Link>
-            <a href="#" className="hover:text-slate-300">Terms of Service</a>
+            <Link href="/terms-and-conditions" className="hover:text-slate-300">Terms & Conditions</Link>
             <a href="#" className="hover:text-slate-300">Engineering Disclaimers</a>
           </div>
         </div>
