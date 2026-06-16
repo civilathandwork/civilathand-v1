@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useProjects } from "@/context/ProjectContext";
@@ -19,12 +19,6 @@ import {
 } from "lucide-react";
 
 // Custom Social SVG Components for Header Top Utility Bar
-const FacebookIcon = (props: any) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-  </svg>
-);
-
 const TwitterIcon = (props: any) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
@@ -53,8 +47,44 @@ const YoutubeIcon = (props: any) => (
   </svg>
 );
 
+const TelegramIcon = (props: any) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 8.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+  </svg>
+);
+
+const PinterestIcon = (props: any) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M12.24 2C6.59 2 2 6.58 2 12.23c0 4.33 2.71 8.01 6.6 9.43-.1-.83-.19-2.07.04-2.96.21-.8 1.37-5.81 1.37-5.81s-.35-.7-.35-1.74c0-1.63.95-2.85 2.13-2.85 1 0 1.48.75 1.48 1.65 0 1-.64 2.51-.97 3.9-.28 1.17.59 2.12 1.74 2.12 2.09 0 3.7-2.2 3.7-5.38 0-2.81-2.02-4.78-4.91-4.78-3.35 0-5.32 2.51-5.32 5.11 0 1 .39 2.09.88 2.68.1.12.11.22.08.34l-.33 1.33c-.05.22-.17.27-.4.16-1.5-.7-2.43-2.88-2.43-4.63 0-3.77 2.74-7.24 7.92-7.24 4.16 0 7.39 2.96 7.39 6.91 0 4.13-2.6 7.45-6.22 7.45-1.21 0-2.36-.63-2.75-1.37l-.75 2.84c-.27 1.04-.99 2.34-1.48 3.13C10.74 21.84 11.48 22 12.24 22 17.89 22 22.48 17.41 22.48 11.77 22.48 6.12 17.89 2 12.24 2z"/>
+  </svg>
+);
+
+const ThreadsIcon = (props: any) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M12.016 0C5.38 0 0 5.38 0 12.016c0 6.637 5.38 12.017 12.016 12.017c1.378 0 2.715-.226 3.992-.676a1.144 1.144 0 0 0 .763-1.077c0-.493-.314-.94-.783-1.083a1.144 1.144 0 0 0-1.265.342c-.85.834-1.892 1.256-3.09 1.256c-5.275 0-9.569-4.294-9.569-9.569c0-5.275 4.294-9.569 9.569-9.569c5.275 0 9.569 4.294 9.569 9.569c0 1.921-.497 3.527-1.478 4.774c-.982 1.246-2.316 1.879-3.966 1.879c-.838 0-1.569-.214-2.176-.638c-.606-.424-1.01-.986-1.201-1.672h-.056c-.25.864-.727 1.522-1.417 1.954c-.69.432-1.477.653-2.348.653c-1.583 0-2.846-.532-3.759-1.582c-.914-1.05-1.376-2.483-1.376-4.263c0-1.81.474-3.267 1.41-4.332c.937-1.066 2.228-1.609 3.84-1.609c1.025 0 1.9.274 2.595.816c.695.542 1.135 1.263 1.309 2.148h.056c.218-.84.664-1.477 1.328-1.899c.664-.421 1.455-.634 2.355-.634c2.203 0 3.992.83 5.319 2.469c1.328 1.639 2.001 3.864 2.001 6.619c0 6.636-5.38 12.016-12.016 12.016zM8.337 13.916c0 .991.226 1.761.677 2.288c.451.527 1.054.793 1.794.793c.712 0 1.272-.25 1.666-.745c.394-.495.594-1.199.594-2.094v-1.62c-.004-.799-.2-1.428-.59-1.87c-.389-.442-.94-.666-1.64-.666c-.722 0-1.282.253-1.668.752c-.386.499-.583 1.258-.583 2.25v1.212z"/>
+  </svg>
+);
+
 export const Header: React.FC = () => {
   const pathname = usePathname();
+  const isHome = pathname === "/";
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    // Run once initially to check scroll on mount/refresh
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const isHomeDark = isHome && !scrolled;
   const { notifications, markNotificationsAsRead } = useProjects();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
@@ -84,9 +114,17 @@ export const Header: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-slate-200/60 transition-all duration-300">
+    <header className={`z-50 w-full transition-all duration-300 ${
+      isHome 
+        ? scrolled 
+          ? "fixed top-0 left-0 bg-white/95 border-b border-slate-200/60 text-wix-dark shadow-sm backdrop-blur-md" 
+          : "absolute top-0 left-0 bg-transparent border-b border-white/5 text-white"
+        : "sticky top-0 bg-white/95 border-b border-slate-200/60 text-wix-dark"
+    }`}>
       {/* Upper Utility Bar (Dual-Tier) */}
-      <div className="bg-slate-900 border-b border-slate-800 text-slate-300 text-[10px] py-1.5 hidden md:block">
+      <div className={`bg-slate-900 border-b border-slate-800 text-slate-300 text-[10px] hidden md:block transition-all duration-300 overflow-hidden ${
+        scrolled ? "max-h-0 py-0 border-b-0 opacity-0" : "max-h-10 py-1.5 opacity-100"
+      }`}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <span className="font-bold text-white uppercase tracking-wider">Civil At Hand Group</span>
@@ -109,12 +147,14 @@ export const Header: React.FC = () => {
             <span className="hover:text-orange-500 cursor-pointer transition-colors">Partner Portal</span>
             <span className="text-slate-700">|</span>
             {/* Social Icons */}
-            <div className="flex items-center gap-2 ml-1">
-              <a href="#" className="hover:text-orange-500 text-slate-400 transition-colors"><FacebookIcon className="h-3.5 w-3.5" /></a>
-              <a href="#" className="hover:text-orange-500 text-slate-400 transition-colors"><TwitterIcon className="h-3.5 w-3.5" /></a>
-              <a href="#" className="hover:text-orange-500 text-slate-400 transition-colors"><LinkedinIcon className="h-3.5 w-3.5" /></a>
-              <a href="#" className="hover:text-orange-500 text-slate-400 transition-colors"><InstagramIcon className="h-3.5 w-3.5" /></a>
-              <a href="#" className="hover:text-orange-500 text-slate-400 transition-colors"><YoutubeIcon className="h-3.5 w-3.5" /></a>
+            <div className="flex items-center gap-2.5 ml-1">
+              <a href="https://x.com/CivilAtHand" target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 text-slate-400 transition-colors" title="X (Twitter)"><TwitterIcon className="h-3.5 w-3.5" /></a>
+              <a href="https://www.linkedin.com/company/civil-at-hand" target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 text-slate-400 transition-colors" title="LinkedIn"><LinkedinIcon className="h-3.5 w-3.5" /></a>
+              <a href="https://www.instagram.com/civilathand/" target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 text-slate-400 transition-colors" title="Instagram"><InstagramIcon className="h-3.5 w-3.5" /></a>
+              <a href="https://www.youtube.com/@civilathand" target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 text-slate-400 transition-colors" title="YouTube"><YoutubeIcon className="h-3.5 w-3.5" /></a>
+              <a href="https://t.me/civilathand" target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 text-slate-400 transition-colors" title="Telegram"><TelegramIcon className="h-3.5 w-3.5" /></a>
+              <a href="https://in.pinterest.com/civilathand" target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 text-slate-400 transition-colors" title="Pinterest"><PinterestIcon className="h-3.5 w-3.5" /></a>
+              <a href="https://www.threads.com/@civilathand" target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 text-slate-400 transition-colors" title="Threads"><ThreadsIcon className="h-3.5 w-3.5" /></a>
             </div>
           </div>
         </div>
@@ -133,10 +173,10 @@ export const Header: React.FC = () => {
                 <img src="/logo.jpg" alt="Civil At Hand Logo" className="h-full w-full object-cover" />
               </motion.div>
               <div>
-                <span className="font-display text-xl font-extrabold tracking-tight text-wix-dark">
+                <span className={`font-display text-xl font-extrabold tracking-tight ${isHomeDark ? "text-white" : "text-wix-dark"}`}>
                   CIVIL <span className="text-orange-500 font-bold">AT HAND</span>
                 </span>
-                <span className="block text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                <span className={`block text-[10px] font-bold uppercase tracking-widest ${isHomeDark ? "text-slate-400" : "text-slate-500"}`}>
                   Design and consultancy
                 </span>
               </div>
@@ -149,7 +189,9 @@ export const Header: React.FC = () => {
               <Link
                 key={link.name}
                 href={link.href}
-                className="relative text-xs font-bold uppercase tracking-widest text-wix-dark hover:text-orange-500 transition-colors duration-200 group py-1"
+                className={`relative text-xs font-bold uppercase tracking-widest transition-colors duration-200 group py-1 ${
+                  isHomeDark ? "text-slate-300 hover:text-white" : "text-wix-dark hover:text-orange-500"
+                }`}
               >
                 {link.name}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 group-hover:w-full"></span>
@@ -167,7 +209,9 @@ export const Header: React.FC = () => {
                 transition={{ repeat: Infinity, repeatDelay: 3, duration: 0.5 }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative rounded-full p-2 text-wix-dark hover:bg-slate-100 hover:text-orange-500 transition-all duration-200 focus:outline-none"
+                className={`relative rounded-full p-2 transition-all duration-200 focus:outline-none ${
+                  isHomeDark ? "text-slate-300 hover:bg-white/10 hover:text-white" : "text-wix-dark hover:bg-slate-100 hover:text-orange-500"
+                }`}
                 suppressHydrationWarning
               >
                 <Bell className="h-5.5 w-5.5" />
@@ -244,13 +288,16 @@ export const Header: React.FC = () => {
               </AnimatePresence>
             </div>
 
+            {/* Client Dashboard Link */}
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/dashboard"
-                className={`flex items-center gap-1.5 border px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all duration-300 vfx-sheen ${
+                className={`flex items-center gap-1.5 border px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all duration-300 ${
                   isDashboardView
                     ? "bg-orange-500 border-orange-500 text-white shadow-sm"
-                    : "bg-wix-dark border-wix-dark text-white hover:bg-transparent hover:text-wix-dark"
+                    : isHomeDark
+                      ? "bg-white border-white text-wix-dark hover:bg-transparent hover:text-white"
+                      : "bg-wix-dark border-wix-dark text-white hover:bg-transparent hover:text-wix-dark"
                 }`}
               >
                 <User className="h-3.5 w-3.5" />
@@ -263,7 +310,11 @@ export const Header: React.FC = () => {
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                 <Link
                   href="/cah-expert-control"
-                  className="flex items-center gap-1.5 border border-wix-dark bg-transparent text-wix-dark hover:bg-wix-dark hover:text-white px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all duration-300"
+                  className={`flex items-center gap-1.5 border px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all duration-300 bg-transparent ${
+                    isHomeDark 
+                      ? "border-white text-white hover:bg-white hover:text-wix-dark" 
+                      : "border-wix-dark text-wix-dark hover:bg-wix-dark hover:text-white"
+                  }`}
                 >
                   <Settings className="h-3.5 w-3.5" />
                   Admin Panel
@@ -276,7 +327,7 @@ export const Header: React.FC = () => {
           <div className="flex items-center gap-3 md:hidden">
             <button
               onClick={handleNotifClick}
-              className="relative rounded-full p-2 text-navy-950 hover:bg-slate-100"
+              className={`relative rounded-full p-2 transition-all ${isHomeDark ? "text-white hover:bg-white/10" : "text-navy-950 hover:bg-slate-100"}`}
             >
               <Bell className="h-5 w-5" />
               {unreadCount > 0 && (
@@ -287,7 +338,7 @@ export const Header: React.FC = () => {
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="rounded-lg p-2 text-navy-950 hover:bg-slate-100 focus:outline-none"
+              className={`rounded-lg p-2 transition-all focus:outline-none ${isHomeDark ? "text-white hover:bg-white/10" : "text-navy-950 hover:bg-slate-100"}`}
             >
               {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -303,7 +354,11 @@ export const Header: React.FC = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden border-t border-slate-100 bg-white px-4 py-4 shadow-premium-lg overflow-hidden"
+            className={`md:hidden border-t overflow-hidden px-4 py-4 shadow-premium-lg ${
+              isHomeDark 
+                ? "bg-wix-dark border-white/10 text-white" 
+                : "bg-white border-slate-100 text-wix-dark"
+            }`}
           >
             <nav className="flex flex-col gap-4">
               {navLinks.map((link) => (
@@ -311,7 +366,9 @@ export const Header: React.FC = () => {
                   key={link.name}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-sm font-semibold text-navy-950 hover:text-orange-500"
+                  className={`text-sm font-semibold transition-colors ${
+                    isHomeDark ? "text-slate-300 hover:text-white" : "text-navy-950 hover:text-orange-500"
+                  }`}
                 >
                   {link.name}
                 </Link>
@@ -320,7 +377,9 @@ export const Header: React.FC = () => {
               <Link
                 href="/dashboard"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-2 rounded-lg bg-navy-950 px-4 py-2.5 text-xs font-bold text-white"
+                className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold transition-all ${
+                  isHomeDark ? "bg-white text-wix-dark hover:bg-slate-200" : "bg-navy-950 text-white hover:bg-slate-800"
+                }`}
               >
                 <User className="h-4 w-4" />
                 Client Portal
@@ -329,7 +388,11 @@ export const Header: React.FC = () => {
                 <Link
                   href="/cah-expert-control"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-navy-950 px-4 py-2.5 text-xs font-bold text-navy-950"
+                  className={`flex items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-xs font-bold transition-all ${
+                    isHomeDark 
+                      ? "border-white text-white hover:bg-white hover:text-wix-dark" 
+                      : "border-navy-950 text-navy-950 hover:bg-slate-100"
+                  }`}
                 >
                   <Settings className="h-4 w-4" />
                   Admin Panel

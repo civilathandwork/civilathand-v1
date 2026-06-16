@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ProjectProvider } from "@/context/ProjectContext";
+import { FloatingSocials } from "@/components/FloatingSocials";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,6 +18,7 @@ export default function RootLayout({
       <body>
         <ProjectProvider>
           {children}
+          <FloatingSocials />
         </ProjectProvider>
       </body>
     </html>

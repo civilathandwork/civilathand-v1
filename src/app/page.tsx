@@ -292,22 +292,16 @@ export default function Home() {
 
       <main className="flex-grow">
         {/* SECTION 1: HERO SECTION */}
-        <section className="relative min-h-[90vh] flex items-center bg-wix-dark text-white overflow-hidden py-20">
+        <section className="relative min-h-screen flex items-center bg-wix-dark text-white overflow-hidden pt-32 pb-20 md:pt-40 md:pb-24">
           {/* Background Image with Dark Overlay */}
           <div className="absolute inset-0 z-0">
             <img 
-              src="/indian_construction_site.png" 
-              alt="Indian Infrastructure Construction" 
+              src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80&w=1600" 
+              alt="Industrial Engineering" 
               className="w-full h-full object-cover opacity-45 object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-wix-dark/95 via-wix-dark/85 to-wix-dark/60"></div>
+            <div className="absolute inset-0 bg-wix-dark/65"></div>
           </div>
-
-          {/* Ambient Glowing Orbs */}
-          <div className="absolute rounded-full pointer-events-none z-0 opacity-60 w-[450px] h-[450px] top-1/4 -left-20 animate-pulse-slow"
-               style={{ background: "radial-gradient(circle, rgba(255, 107, 0, 0.15) 0%, rgba(255, 107, 0, 0) 70%)" }} />
-          <div className="absolute rounded-full pointer-events-none z-0 opacity-60 w-[450px] h-[450px] bottom-1/4 -right-20 animate-pulse-slow"
-               style={{ background: "radial-gradient(circle, rgba(0, 41, 255, 0.12) 0%, rgba(0, 41, 255, 0) 70%)" }} />
 
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 w-full">
             <motion.div 
@@ -347,7 +341,7 @@ export default function Home() {
                   <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
                     <a
                       href="#contact"
-                      className="inline-block rounded-md bg-orange-500 hover:bg-orange-600 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm vfx-sheen"
+                      className="inline-block rounded-md bg-orange-500 hover:bg-orange-600 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm"
                     >
                       Get Free Consultation
                     </a>
@@ -392,31 +386,25 @@ export default function Home() {
         </section>
 
         {/* SECTION 2: TRUST SECTION */}
-        <section className="bg-white py-12 border-b border-slate-200 overflow-hidden relative">
-          {/* Ambient shading on sides for premium visual blend */}
-          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none" />
-          
+        <section className="bg-white py-6 md:py-8 border-b border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex w-max gap-8 animate-ticker py-2">
+            <div className="grid grid-cols-1 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-slate-200">
               {[
                 { title: "ISO 9001:2015", label: "Quality Standards", icon: Award, desc: "Certified engineering design quality management systems." },
                 { title: "Rapid Turnaround", label: "CAD Detailing", icon: Clock, desc: "24-48hr vectorization and structural drawings delivery." },
                 { title: "AI-Powered Quantities", label: "Automated Estimations", icon: Cpu, desc: "IS-code standardized material calculations and BOQs." },
                 { title: "Chartered SE / BIM", label: "Expert Auditors", icon: UserCheck, desc: "Double-checked reviews by senior structural engineers." },
                 { title: "Milestone Escrow", label: "Secure Payments", icon: ShieldCheck, desc: "Payments split by project phase and unlocked on file delivery." },
-              ].concat([
-                { title: "ISO 9001:2015", label: "Quality Standards", icon: Award, desc: "Certified engineering design quality management systems." },
-                { title: "Rapid Turnaround", label: "CAD Detailing", icon: Clock, desc: "24-48hr vectorization and structural drawings delivery." },
-                { title: "AI-Powered Quantities", label: "Automated Estimations", icon: Cpu, desc: "IS-code standardized material calculations and BOQs." },
-                { title: "Chartered SE / BIM", label: "Expert Auditors", icon: UserCheck, desc: "Double-checked reviews by senior structural engineers." },
-                { title: "Milestone Escrow", label: "Secure Payments", icon: ShieldCheck, desc: "Payments split by project phase and unlocked on file delivery." },
-              ]).map((badge, idx) => {
+              ].map((badge, idx) => {
                 const Icon = badge.icon;
                 return (
-                  <div 
+                  <motion.div 
                     key={idx}
-                    className="w-[280px] flex-shrink-0 px-6 border-r border-slate-200 last:border-0 group flex flex-col justify-between"
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: idx * 0.05 }}
+                    className="px-6 py-4 md:py-6 group flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex items-center gap-2 mb-2">
@@ -426,7 +414,7 @@ export default function Home() {
                       <p className="text-[10px] text-orange-600 font-extrabold uppercase tracking-widest">{badge.label}</p>
                       <p className="text-[10px] text-slate-500 mt-2 leading-relaxed">{badge.desc}</p>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
@@ -462,7 +450,7 @@ export default function Home() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.4, delay: (idx % 3) * 0.05 }}
-                    className="group border border-slate-200 rounded-md p-6 bg-white hover:bg-slate-50/50 flex flex-col justify-between shadow-sm vfx-border-glow"
+                    className="group border border-slate-200 hover:border-wix-dark rounded-md p-6 bg-white hover:bg-slate-50/50 transition-all duration-300 flex flex-col justify-between shadow-sm"
                   >
                     <div>
                       <div className="h-10 w-10 rounded-md bg-slate-50 text-wix-dark group-hover:bg-wix-dark group-hover:text-white flex items-center justify-center mb-4 border border-slate-200 transition-colors">
@@ -856,7 +844,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.4, delay: idx * 0.1 }}
-                  className="group border border-slate-200 rounded-md overflow-hidden bg-white shadow-sm flex flex-col justify-between vfx-border-glow"
+                  className="group border border-slate-200 hover:border-wix-dark rounded-md overflow-hidden bg-white shadow-sm flex flex-col justify-between transition-all duration-300"
                 >
                   <div>
                     <div className="h-48 overflow-hidden relative">
@@ -888,7 +876,7 @@ export default function Home() {
                     </a>
                     <button
                       onClick={() => triggerDownload(blog.file)}
-                      className="inline-flex items-center gap-1.5 bg-wix-dark hover:bg-orange-500 text-white font-bold px-3 py-2 rounded-md text-[9px] uppercase tracking-widest transition-all cursor-pointer vfx-sheen"
+                      className="inline-flex items-center gap-1.5 bg-wix-dark hover:bg-orange-500 text-white font-bold px-3 py-2 rounded-md text-[9px] uppercase tracking-widest transition-all cursor-pointer"
                       suppressHydrationWarning
                     >
                       <DownloadIcon className="h-3.5 w-3.5" />
@@ -903,10 +891,6 @@ export default function Home() {
 
         {/* SECTION 10: SUSTAINABILITY SECTION */}
         <section className="relative py-24 bg-wix-dark text-white overflow-hidden border-b border-white/5">
-          {/* Green absolute ambient glow orb */}
-          <div className="absolute rounded-full pointer-events-none z-0 opacity-60 w-[500px] h-[500px] -top-1/4 -right-1/4 animate-pulse-slow"
-               style={{ background: "radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0) 70%)" }} />
-
           <div className="absolute inset-0 z-0 opacity-15">
             <img
               src="https://images.unsplash.com/photo-1449034446853-66c86144b0ad?auto=format&fit=crop&q=80&w=1600"
@@ -1222,7 +1206,7 @@ export default function Home() {
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
                   type="submit"
-                  className="w-full bg-wix-dark hover:bg-orange-500 text-white font-bold py-4 rounded-md text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-1.5 cursor-pointer vfx-sheen"
+                  className="w-full bg-wix-dark hover:bg-orange-500 text-white font-bold py-4 rounded-md text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                   suppressHydrationWarning
                 >
                   {contactSuccess ? (
@@ -1267,7 +1251,7 @@ export default function Home() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.3, delay: idx * 0.1 }}
-                    className="bg-white/5 border border-white/10 rounded-md overflow-hidden group flex flex-col h-full shadow-sm vfx-border-glow"
+                    className="bg-white/5 border border-white/10 rounded-md overflow-hidden group flex flex-col h-full hover:border-orange-500/50 transition-all duration-300 shadow-sm"
                   >
                     <div className="h-44 overflow-hidden relative bg-slate-900 border-b border-white/10">
                       <img
@@ -1281,7 +1265,7 @@ export default function Home() {
                         </span>
                       </div>
                     </div>
- 
+
                     <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
                       <div className="space-y-2 text-xs">
                         <div className="flex gap-3 text-[9px] text-slate-400 font-bold uppercase tracking-widest">
@@ -1296,7 +1280,7 @@ export default function Home() {
                           {post.summary}
                         </p>
                       </div>
- 
+
                       <div className="pt-2">
                         <Link
                           href={`/blog/${post.id}`}
@@ -1309,11 +1293,11 @@ export default function Home() {
                   </motion.article>
                 ))}
             </div>
- 
+
             <div className="text-center mt-12">
               <Link
                 href="/blog"
-                className="inline-block bg-white hover:bg-orange-500 text-wix-dark hover:text-white border border-white/10 font-bold px-8 py-4 text-xs uppercase tracking-widest transition-all rounded-md cursor-pointer vfx-sheen"
+                className="inline-block bg-white hover:bg-orange-500 text-wix-dark hover:text-white border border-white/10 font-bold px-8 py-4 text-xs uppercase tracking-widest transition-all rounded-md cursor-pointer"
               >
                 View Engineering Blog <ArrowRight className="inline-block h-4 w-4 ml-1.5" />
               </Link>
