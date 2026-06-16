@@ -207,7 +207,7 @@ export const Footer: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-4">
           <p>© {currentYear} Civil At Hand : Design & Consultancy All rights reserved.</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-slate-300">Privacy Policy</a>
+            <Link href="/privacy-policy" className="hover:text-slate-300">Privacy Policy</Link>
             <a href="#" className="hover:text-slate-300">Terms of Service</a>
             <a href="#" className="hover:text-slate-300">Engineering Disclaimers</a>
           </div>
