@@ -180,8 +180,8 @@ export default function EngineeringDisclaimerPage() {
                 <div className="space-y-1 text-slate-600 font-medium">
                   <p>
                     Email:{" "}
-                    <a href="mailto:info.civilathand@gmail.com" className="text-orange-600 hover:text-orange-700 underline">
-                      info.civilathand@gmail.com
+                    <a href="mailto:info@civilathand.in" className="text-orange-600 hover:text-orange-700 underline">
+                      info@civilathand.in
                     </a>
                   </p>
                   <p>

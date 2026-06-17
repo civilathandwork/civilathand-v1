@@ -184,8 +184,8 @@ export default function PrivacyPolicyPage() {
                 </ul>
                 <p>
                   To exercise any of these rights, please contact us at{" "}
-                  <a href="mailto:info.civilathand@gmail.com" className="text-orange-600 hover:text-orange-700 underline font-semibold">
-                    info.civilathand@gmail.com
+                  <a href="mailto:info@civilathand.in" className="text-orange-600 hover:text-orange-700 underline font-semibold">
+                    info@civilathand.in
                   </a>
                   . We will respond to your request within 30 days.
                 </p>
@@ -218,8 +218,8 @@ export default function PrivacyPolicyPage() {
                 </h2>
                 <p>
                   Our services are not directed to individuals under the age of 18. We do not knowingly collect personal information from minors. If you believe we have inadvertently collected information from a minor, please contact us immediately at{" "}
-                  <a href="mailto:info.civilathand@gmail.com" className="text-orange-600 hover:text-orange-700 underline font-semibold">
-                    info.civilathand@gmail.com
+                  <a href="mailto:info@civilathand.in" className="text-orange-600 hover:text-orange-700 underline font-semibold">
+                    info@civilathand.in
                   </a>{" "}
                   and we will take steps to delete it.
                 </p>
