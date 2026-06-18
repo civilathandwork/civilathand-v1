@@ -109,6 +109,26 @@ export const AdminView: React.FC = () => {
   const [editorMode, setEditorMode] = useState<"write" | "preview">("write");
   const [showTemplates, setShowTemplates] = useState(false);
 
+  const handleEditorKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const isMod = e.ctrlKey || e.metaKey;
+    if (!isMod) return;
+
+    const key = e.key.toLowerCase();
+    if (key === "b") {
+      e.preventDefault();
+      insertFormatting("**", "**");
+    } else if (key === "i") {
+      e.preventDefault();
+      insertFormatting("*", "*");
+    } else if (key === "h") {
+      e.preventDefault();
+      insertFormatting("### ");
+    } else if (key === "k") {
+      e.preventDefault();
+      insertFormatting("[", "](https://)");
+    }
+  };
+
   const insertFormatting = (before: string, after: string = "") => {
     const textarea = document.getElementById("blogContentTextarea") as HTMLTextAreaElement;
     if (!textarea) return;
@@ -164,12 +184,31 @@ export const AdminView: React.FC = () => {
   };
 
   const insertTemplate = (templateType: "spec" | "takeoff") => {
-    const specTemplate = `### Concrete Quality Spec Sheet\n- Concrete Grade: M25\n- Testing Standard: IS 516\n- 7-Day Target Strength: 16.5 N/mm²\n- 28-Day Target Strength: 25 N/mm²\n\n### Site Inspection Checklist\n- Check concrete slump before placing\n- Verify rebar clear cover spacing\n- Cure with ponding method for 14 days`;
-    const takeoffTemplate = `### Structural Quantity Takeoff\n- Member ID: column-C1-ground-floor\n- Cement Grade: OPC 43\n- Steel Bar Diameter: 12mm / 16mm / 20mm\n- Sand Zone: Zone II River Sand\n\n### Estimation Details\n- Coarse Aggregate required: 8.5 m³\n- Steel reinforcement required: 1.25 Tons\n- Total Cement required: 180 Bags`;
+    const specTemplate = `### Concrete Quality Spec Sheet\n- Concrete Grade: M25\n- Testing Standard: IS 516\n- 7-Day Target Strength: 16.5 N/mm²\n- 28-Day Target Strength: 25 N/mm²\n\n### Site Inspection Checklist\n- Check concrete slump before placing\n- Verify rebar clear cover spacing\n- Cure with ponding method for 14 days\n`;
+    const takeoffTemplate = `### Structural Quantity Takeoff\n- Member ID: column-C1-ground-floor\n- Cement Grade: OPC 43\n- Steel Bar Diameter: 12mm / 16mm / 20mm\n- Sand Zone: Zone II River Sand\n\n### Estimation Details\n- Coarse Aggregate required: 8.5 m³\n- Steel reinforcement required: 1.25 Tons\n- Total Cement required: 180 Bags\n`;
 
     const templateText = templateType === "spec" ? specTemplate : takeoffTemplate;
-    setBlogContent(templateText);
+    
+    const textarea = document.getElementById("blogContentTextarea") as HTMLTextAreaElement;
+    if (!textarea) {
+      setBlogContent(templateText);
+      setShowTemplates(false);
+      return;
+    }
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+
+    const newContent = text.substring(0, start) + templateText + text.substring(end);
+    setBlogContent(newContent);
     setShowTemplates(false);
+
+    setTimeout(() => {
+      textarea.focus();
+      const newCursorPos = start + templateText.length;
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+    }, 0);
   };
 
   const parseInlineStyles = (text: string) => {
@@ -983,6 +1022,7 @@ export const AdminView: React.FC = () => {
                                   <div className="flex flex-wrap items-center gap-1 bg-slate-50 border-b border-slate-200 px-2 py-1.5 text-slate-600 select-none">
                                     <button
                                       type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
                                       onClick={() => insertFormatting("**", "**")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="Bold (Ctrl+B)"
@@ -991,6 +1031,7 @@ export const AdminView: React.FC = () => {
                                     </button>
                                     <button
                                       type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
                                       onClick={() => insertFormatting("*", "*")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="Italic (Ctrl+I)"
@@ -999,6 +1040,7 @@ export const AdminView: React.FC = () => {
                                     </button>
                                     <button
                                       type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
                                       onClick={() => insertFormatting("### ")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="H3 Heading"
@@ -1008,6 +1050,7 @@ export const AdminView: React.FC = () => {
                                     <div className="h-4 w-[1px] bg-slate-300 mx-1" />
                                     <button
                                       type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
                                       onClick={() => insertFormatting("- ")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="Bullet List"
@@ -1016,6 +1059,7 @@ export const AdminView: React.FC = () => {
                                     </button>
                                     <button
                                       type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
                                       onClick={() => insertFormatting("1. ")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="Numbered List"
@@ -1024,6 +1068,7 @@ export const AdminView: React.FC = () => {
                                     </button>
                                     <button
                                       type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
                                       onClick={() => insertFormatting("> ")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="Blockquote"
@@ -1033,6 +1078,7 @@ export const AdminView: React.FC = () => {
                                     <div className="h-4 w-[1px] bg-slate-300 mx-1" />
                                     <button
                                       type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
                                       onClick={() => insertFormatting("[", "](https://)")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="Insert Link"
@@ -1041,6 +1087,7 @@ export const AdminView: React.FC = () => {
                                     </button>
                                     <button
                                       type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
                                       onClick={clearFormatting}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="Clear Selection Formatting"
@@ -1053,6 +1100,7 @@ export const AdminView: React.FC = () => {
                                     <div className="relative">
                                       <button
                                         type="button"
+                                        onMouseDown={(e) => e.preventDefault()}
                                         onClick={() => setShowTemplates(!showTemplates)}
                                         className="flex items-center gap-1 px-2 py-1 bg-orange-50 hover:bg-orange-100 text-orange-700 rounded text-[9px] font-bold uppercase transition-all"
                                         title="Insert Engineering Templates"
@@ -1064,6 +1112,7 @@ export const AdminView: React.FC = () => {
                                         <div className="absolute left-0 mt-1.5 w-48 bg-white border border-slate-200 rounded-lg shadow-premium-lg z-20 py-1 text-slate-800 text-[10px] font-semibold divide-y divide-slate-100">
                                           <button
                                             type="button"
+                                            onMouseDown={(e) => e.preventDefault()}
                                             onClick={() => insertTemplate("spec")}
                                             className="w-full text-left px-3 py-2 hover:bg-slate-50 transition-colors block"
                                           >
@@ -1071,6 +1120,7 @@ export const AdminView: React.FC = () => {
                                           </button>
                                           <button
                                             type="button"
+                                            onMouseDown={(e) => e.preventDefault()}
                                             onClick={() => insertTemplate("takeoff")}
                                             className="w-full text-left px-3 py-2 hover:bg-slate-50 transition-colors block"
                                           >
@@ -1087,6 +1137,7 @@ export const AdminView: React.FC = () => {
                                     rows={10}
                                     value={blogContent}
                                     onChange={(e) => setBlogContent(e.target.value)}
+                                    onKeyDown={handleEditorKeyDown}
                                     placeholder="Write full article body. Supports standard formatting."
                                     className="w-full bg-transparent border-none px-3 py-2.5 text-xs focus:outline-none text-slate-800 font-semibold resize-y min-h-[220px]"
                                   />
