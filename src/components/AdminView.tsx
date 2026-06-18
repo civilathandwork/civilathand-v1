@@ -19,7 +19,16 @@ import {
   AlertCircle,
   BookOpen,
   Trash2,
-  Edit3
+  Edit3,
+  Bold,
+  Italic,
+  Heading,
+  List,
+  ListOrdered,
+  Link2,
+  Quote,
+  Eraser,
+  Sparkles
 } from "lucide-react";
 
 export const AdminView: React.FC = () => {
@@ -92,6 +101,122 @@ export const AdminView: React.FC = () => {
   const [blogImage, setBlogImage] = useState("");
   const [blogStatus, setBlogStatus] = useState<BlogPost["status"]>("published");
   const [editingBlogId, setEditingBlogId] = useState<string | null>(null);
+
+  // Formatting Editor States & Helpers
+  const [editorMode, setEditorMode] = useState<"write" | "preview">("write");
+  const [showTemplates, setShowTemplates] = useState(false);
+
+  const insertFormatting = (before: string, after: string = "") => {
+    const textarea = document.getElementById("blogContentTextarea") as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selection = text.substring(start, end);
+
+    const replacement = before + selection + after;
+    const newContent = text.substring(0, start) + replacement + text.substring(end);
+    
+    setBlogContent(newContent);
+    
+    setTimeout(() => {
+      textarea.focus();
+      if (selection) {
+        const newCursorPos = start + replacement.length;
+        textarea.setSelectionRange(newCursorPos, newCursorPos);
+      } else {
+        const newCursorPos = start + before.length;
+        textarea.setSelectionRange(newCursorPos, newCursorPos);
+      }
+    }, 0);
+  };
+
+  const clearFormatting = () => {
+    const textarea = document.getElementById("blogContentTextarea") as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selection = text.substring(start, end);
+
+    if (!selection) return;
+
+    const cleared = selection
+      .replace(/\*\*/g, "")
+      .replace(/\*/g, "")
+      .replace(/###\s/g, "")
+      .replace(/-\s/g, "")
+      .replace(/^\d+\.\s/g, "")
+      .replace(/>\s/g, "");
+
+    const newContent = text.substring(0, start) + cleared + text.substring(end);
+    setBlogContent(newContent);
+
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start, start + cleared.length);
+    }, 0);
+  };
+
+  const insertTemplate = (templateType: "spec" | "takeoff") => {
+    const specTemplate = `### Concrete Quality Spec Sheet\n- Concrete Grade: M25\n- Testing Standard: IS 516\n- 7-Day Target Strength: 16.5 N/mm²\n- 28-Day Target Strength: 25 N/mm²\n\n### Site Inspection Checklist\n- Check concrete slump before placing\n- Verify rebar clear cover spacing\n- Cure with ponding method for 14 days`;
+    const takeoffTemplate = `### Structural Quantity Takeoff\n- Member ID: column-C1-ground-floor\n- Cement Grade: OPC 43\n- Steel Bar Diameter: 12mm / 16mm / 20mm\n- Sand Zone: Zone II River Sand\n\n### Estimation Details\n- Coarse Aggregate required: 8.5 m³\n- Steel reinforcement required: 1.25 Tons\n- Total Cement required: 180 Bags`;
+
+    const templateText = templateType === "spec" ? specTemplate : takeoffTemplate;
+    setBlogContent(templateText);
+    setShowTemplates(false);
+  };
+
+  const parseInlineStyles = (text: string) => {
+    let formatted = text;
+    formatted = formatted.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    formatted = formatted.replace(/\*(.*?)\*/g, "<em>$1</em>");
+    formatted = formatted.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="text-orange-600 underline font-semibold">$1</a>');
+    return <span dangerouslySetInnerHTML={{ __html: formatted }} />;
+  };
+
+  const renderPreviewContent = (content: string) => {
+    return content.split("\n\n").map((block, idx) => {
+      const trimmedBlock = block.trim();
+      if (trimmedBlock.startsWith("###")) {
+        return (
+          <h3 key={idx} className="font-display font-bold text-sm text-navy-950 mt-4 mb-2 border-b border-slate-100 pb-1 uppercase tracking-wide">
+            {parseInlineStyles(trimmedBlock.replace("###", "").trim())}
+          </h3>
+        );
+      }
+      if (trimmedBlock.startsWith("-")) {
+        const items = trimmedBlock.split("\n").map(item => item.replace("-", "").trim());
+        return (
+          <ul key={idx} className="list-disc pl-5 my-2 space-y-1 text-slate-700 text-xs">
+            {items.map((it, i) => <li key={i}>{parseInlineStyles(it)}</li>)}
+          </ul>
+        );
+      }
+      if (trimmedBlock.match(/^\d+\./)) {
+        const items = trimmedBlock.split("\n").map(item => item.replace(/^\d+\./, "").trim());
+        return (
+          <ol key={idx} className="list-decimal pl-5 my-2 space-y-1 text-slate-700 text-xs">
+            {items.map((it, i) => <li key={i}>{parseInlineStyles(it)}</li>)}
+          </ol>
+        );
+      }
+      if (trimmedBlock.startsWith(">")) {
+        return (
+          <blockquote key={idx} className="border-l-4 border-orange-500 pl-3 italic text-slate-500 my-3 font-medium bg-slate-50 py-1 rounded-r">
+            {parseInlineStyles(trimmedBlock.replace(">", "").trim())}
+          </blockquote>
+        );
+      }
+      return (
+        <p key={idx} className="text-slate-700 my-2 text-xs">
+          {parseInlineStyles(trimmedBlock)}
+        </p>
+      );
+    });
+  };
 
   // Handle Blog Submit
   const handleBlogSubmit = (e: React.FormEvent) => {
@@ -649,15 +774,157 @@ export const AdminView: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1">Full Article Content (Markdown/Text)</label>
-                      <textarea
-                        required
-                        rows={6}
-                        value={blogContent}
-                        onChange={(e) => setBlogContent(e.target.value)}
-                        placeholder="Write full article body. Supports standard formatting."
-                        className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm resize-y transition-all"
-                      />
+                      <div className="flex justify-between items-center mb-1">
+                        <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider">
+                          Full Article Content
+                        </label>
+                        {/* Editor Mode Tabs */}
+                        <div className="flex bg-slate-200 p-0.5 rounded-lg border border-slate-300">
+                          <button
+                            type="button"
+                            onClick={() => setEditorMode("write")}
+                            className={`px-2.5 py-0.5 rounded-md text-[9px] font-bold uppercase transition-all ${
+                              editorMode === "write" ? "bg-white text-navy-950 shadow-sm" : "text-navy-600 hover:text-navy-950"
+                            }`}
+                          >
+                            Write
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setEditorMode("preview")}
+                            className={`px-2.5 py-0.5 rounded-md text-[9px] font-bold uppercase transition-all ${
+                              editorMode === "preview" ? "bg-white text-navy-950 shadow-sm" : "text-navy-600 hover:text-navy-950"
+                            }`}
+                          >
+                            Preview
+                          </button>
+                        </div>
+                      </div>
+
+                      {editorMode === "write" ? (
+                        <div className="border border-slate-300 rounded-lg overflow-hidden bg-white shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600 transition-all">
+                          {/* Rich Formatting Toolbar */}
+                          <div className="flex flex-wrap items-center gap-1 bg-slate-50 border-b border-slate-200 px-2 py-1.5 text-slate-600 select-none">
+                            <button
+                              type="button"
+                              onClick={() => insertFormatting("**", "**")}
+                              className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                              title="Bold (Ctrl+B)"
+                            >
+                              <Bold className="h-3.5 w-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => insertFormatting("*", "*")}
+                              className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                              title="Italic (Ctrl+I)"
+                            >
+                              <Italic className="h-3.5 w-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => insertFormatting("### ")}
+                              className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                              title="H3 Heading"
+                            >
+                              <Heading className="h-3.5 w-3.5" />
+                            </button>
+                            <div className="h-4 w-[1px] bg-slate-300 mx-1" />
+                            <button
+                              type="button"
+                              onClick={() => insertFormatting("- ")}
+                              className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                              title="Bullet List"
+                            >
+                              <List className="h-3.5 w-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => insertFormatting("1. ")}
+                              className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                              title="Numbered List"
+                            >
+                              <ListOrdered className="h-3.5 w-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => insertFormatting("> ")}
+                              className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                              title="Blockquote"
+                            >
+                              <Quote className="h-3.5 w-3.5" />
+                            </button>
+                            <div className="h-4 w-[1px] bg-slate-300 mx-1" />
+                            <button
+                              type="button"
+                              onClick={() => insertFormatting("[", "](https://)")}
+                              className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                              title="Insert Link"
+                            >
+                              <Link2 className="h-3.5 w-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={clearFormatting}
+                              className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                              title="Clear Selection Formatting"
+                            >
+                              <Eraser className="h-3.5 w-3.5" />
+                            </button>
+                            <div className="h-4 w-[1px] bg-slate-300 mx-1" />
+                            {/* Pre-made Templates Dropdown */}
+                            <div className="relative">
+                              <button
+                                type="button"
+                                onClick={() => setShowTemplates(!showTemplates)}
+                                className="flex items-center gap-1 px-2 py-1 bg-orange-50 hover:bg-orange-100 text-orange-700 rounded text-[9px] font-bold uppercase transition-all"
+                                title="Insert Engineering Templates"
+                              >
+                                <Sparkles className="h-3 w-3" />
+                                Templates
+                              </button>
+                              {showTemplates && (
+                                <div className="absolute left-0 mt-1.5 w-48 bg-white border border-slate-200 rounded-lg shadow-premium-lg z-20 py-1 text-slate-800 text-[10px] font-semibold divide-y divide-slate-100">
+                                  <button
+                                    type="button"
+                                    onClick={() => insertTemplate("spec")}
+                                    className="w-full text-left px-3 py-2 hover:bg-slate-50 transition-colors block"
+                                  >
+                                    Concrete Grade & Spec Sheet
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => insertTemplate("takeoff")}
+                                    className="w-full text-left px-3 py-2 hover:bg-slate-50 transition-colors block"
+                                  >
+                                    Material Quantity Takeoff (BOQ)
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          <textarea
+                            id="blogContentTextarea"
+                            required
+                            rows={8}
+                            value={blogContent}
+                            onChange={(e) => setBlogContent(e.target.value)}
+                            placeholder="Write full article body. Supports standard formatting."
+                            className="w-full bg-transparent border-none px-3 py-2 text-xs focus:outline-none text-slate-800 font-semibold resize-y"
+                          />
+
+                          {/* Stats footer (word counter, character counter) */}
+                          <div className="bg-slate-50 border-t border-slate-100 px-3 py-1 flex justify-between text-[9px] font-bold text-slate-500 uppercase tracking-wider select-none">
+                            <span>Words: {blogContent.trim() === "" ? 0 : blogContent.trim().split(/\s+/).length}</span>
+                            <span>Chars: {blogContent.length}</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="border border-slate-300 rounded-lg p-4 bg-slate-50 min-h-[190px] overflow-y-auto max-h-[300px] prose prose-slate text-xs leading-relaxed font-medium">
+                          {blogContent ? renderPreviewContent(blogContent) : <span className="text-slate-400 italic">Nothing to preview. Start writing!</span>}
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex gap-2.5 pt-2">
