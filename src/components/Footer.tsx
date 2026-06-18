@@ -114,28 +114,28 @@ export const Footer: React.FC = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-display font-bold text-xs text-white uppercase tracking-widest mb-5">Services & Tools</h3>
+            <h3 className="font-display font-bold text-xs text-white uppercase tracking-widest mb-5">Quick Links</h3>
             <ul className="space-y-3 text-xs text-slate-400 font-medium">
               <li>
-                <Link href="/#services" className="hover:text-orange-500 transition-colors">Architectural Design</Link>
+                <Link href="/" className="hover:text-orange-500 transition-colors">Home</Link>
               </li>
               <li>
-                <Link href="/#services" className="hover:text-orange-500 transition-colors">Structural Detailing</Link>
+                <Link href="/#services" className="hover:text-orange-500 transition-colors">Our Services</Link>
               </li>
               <li>
-                <Link href="/#services" className="hover:text-orange-500 transition-colors">BIM Modelling & Coordination</Link>
+                <Link href="/#sectors" className="hover:text-orange-500 transition-colors">Market Sectors</Link>
               </li>
               <li>
-                <Link href="/#calculators" className="hover:text-orange-500 transition-colors">Construction Cost Estimator</Link>
+                <Link href="/#calculators" className="hover:text-orange-500 transition-colors">Design Calculators</Link>
               </li>
               <li>
-                <Link href="/#calculators" className="hover:text-orange-500 transition-colors">Steel & Concrete Calculators</Link>
-              </li>
-              <li>
-                <Link href="/#calculators" className="hover:text-orange-500 transition-colors">AI BOQ Takeoffs</Link>
+                <Link href="/#portfolio" className="hover:text-orange-500 transition-colors">Project Portfolio</Link>
               </li>
               <li>
                 <Link href="/blog" className="hover:text-orange-500 transition-colors font-bold text-orange-500">Engineering Blog</Link>
+              </li>
+              <li>
+                <Link href="/#contact" className="hover:text-orange-500 transition-colors">Contact Us</Link>
               </li>
             </ul>
           </div>
