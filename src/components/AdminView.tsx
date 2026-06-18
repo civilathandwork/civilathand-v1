@@ -29,7 +29,8 @@ import {
   Quote,
   Eraser,
   Sparkles,
-  X
+  X,
+  Upload
 } from "lucide-react";
 
 export const AdminView: React.FC = () => {
@@ -882,14 +883,54 @@ export const AdminView: React.FC = () => {
                                 />
                               </div>
                               <div>
-                                <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1.5">Banner Image URL</label>
-                                <input
-                                  type="text"
-                                  value={blogImage}
-                                  onChange={(e) => setBlogImage(e.target.value)}
-                                  placeholder="Optional image link"
-                                  className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:bg-white text-slate-800 font-semibold shadow-sm transition-all"
-                                />
+                                <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1.5">Banner Image</label>
+                                <div className="flex items-center gap-3">
+                                  {blogImage && (
+                                    <div className="relative h-11 w-16 rounded-lg overflow-hidden border border-slate-300 bg-slate-50 group flex-shrink-0">
+                                      <img src={blogImage} alt="Banner Preview" className="h-full w-full object-cover" />
+                                      <button
+                                        type="button"
+                                        onClick={() => setBlogImage("")}
+                                        className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[8px] font-bold transition-all uppercase tracking-wide cursor-pointer"
+                                      >
+                                        Remove
+                                      </button>
+                                    </div>
+                                  )}
+                                  <div className="relative flex-grow">
+                                    <input
+                                      type="file"
+                                      accept="image/*"
+                                      onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        if (!file) return;
+                                        
+                                        // Max 5MB limit
+                                        if (file.size > 5 * 1024 * 1024) {
+                                          alert("File size exceeds 5MB limit. Please upload a smaller image.");
+                                          return;
+                                        }
+
+                                        const reader = new FileReader();
+                                        reader.onloadend = () => {
+                                          if (typeof reader.result === "string") {
+                                            setBlogImage(reader.result);
+                                          }
+                                        };
+                                        reader.readAsDataURL(file);
+                                      }}
+                                      className="hidden"
+                                      id="blogImageUploadInput"
+                                    />
+                                    <label
+                                      htmlFor="blogImageUploadInput"
+                                      className="flex items-center justify-center gap-1.5 w-full bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm cursor-pointer transition-all border-dashed"
+                                    >
+                                      <Upload className="h-3.5 w-3.5 text-slate-500" />
+                                      {blogImage ? "Change Image" : "Upload Banner Image"}
+                                    </label>
+                                  </div>
+                                </div>
                               </div>
                             </div>
 
