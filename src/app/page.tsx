@@ -103,8 +103,7 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [contactSuccess, setContactSuccess] = useState(false);
 
-  // FAQ Active State
-  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+
 
   // Testimonials Carousel State
   const [activeTestimonial, setActiveTestimonial] = useState(0);
@@ -254,12 +253,7 @@ export default function Home() {
     { name: "Suresh Pillai", role: "VP Projects, InfraCorp Ltd.", review: "Their BIM LOD 400 modeling saved us lakhs in onsite clash resolution. The site supervision audits and digital checklists kept our steel fabrication perfectly aligned with drawings.", rating: 5, image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150" }
   ];
 
-  const faqs = [
-    { q: "How accurate are your construction cost estimations?", a: "Our calculators use regional material rates and standard IS (Indian Standard) code equations. For customized blueprints, our engineering audit verifies structural tolerances, concrete grade adjustments, and reinforcement steel ratios, achieving over 98% accuracy." },
-    { q: "What formats do you support for drawing uploads?", a: "We support PDF drawings, scans, hand-drawn schematics, and vector CAD files (.DWG, .DXF). Our automated analyzer parses PDF boundaries, and our engineering team manually audits the CAD file structure to deliver verified designs." },
-    { q: "How long does it take to get a detailed Bill of Quantities (BOQ)?", a: "Our automated AI BOQ Takeoff provides an initial estimate in minutes. An expert engineering audit review and certified GFC (Good For Construction) quotation is returned to your dashboard within 24 hours." },
-    { q: "Can I coordinate project milestones and release payments through the platform?", a: "Yes. The Client Portal tracks design progress in real-time, displays itemized invoices for each milestone (e.g. Architectural, Structural, MEP), and supports secure payment completions. Verified structural blueprints are unlocked upon payment." }
-  ];
+
 
   // Framer Motion Animation Variants
   const heroContainerVariants = {
@@ -888,69 +882,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SECTION 11: FAQ SECTION */}
-        <section className="py-24 bg-white">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={scrollRevealVariants}
-              className="text-center mb-16"
-            >
-              <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">FAQ Desk</span>
-              <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
-                Frequently Asked Questions
-              </h2>
-            </motion.div>
 
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={staggerContainerVariants}
-              className="divide-y divide-slate-200 border-t border-b border-slate-200"
-            >
-              {faqs.map((faq, idx) => {
-                const isOpen = activeFaq === idx;
-                return (
-                  <motion.div 
-                    key={idx} 
-                    variants={heroItemVariants}
-                    className="py-1"
-                  >
-                    <button
-                      onClick={() => setActiveFaq(isOpen ? null : idx)}
-                      className="w-full flex justify-between items-center py-6 bg-white hover:bg-slate-50/50 transition-colors font-bold text-sm text-wix-dark text-left focus:outline-none"
-                      suppressHydrationWarning
-                    >
-                      <span className="uppercase tracking-wide">{faq.q}</span>
-                      <ChevronDown className={`h-4.5 w-4.5 text-slate-500 transition-transform duration-300 ${
-                        isOpen ? "transform rotate-180" : ""
-                      }`} />
-                    </button>
-                    
-                    <AnimatePresence initial={false}>
-                      {isOpen && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.25, ease: "easeInOut" }}
-                          className="overflow-hidden"
-                        >
-                          <div className="pb-6 text-xs text-slate-600 leading-relaxed font-medium">
-                            {faq.a}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </div>
-        </section>
 
         {/* SECTION 12: CONTACT SECTION */}
         <section id="contact" className="py-24 bg-slate-50 border-t border-slate-200">
