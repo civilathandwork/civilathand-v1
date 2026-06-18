@@ -137,7 +137,11 @@ export default function BlogDetailPage({ params }: { params: Promise<{ id: strin
 
               {/* Post Content Body */}
               <div className="prose prose-invert max-w-none text-justify">
-                {renderContent(post.content)}
+                {post.content.includes("<p>") || post.content.includes("<h3>") || post.content.includes("<ul>") ? (
+                  <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                ) : (
+                  renderContent(post.content)
+                )}
               </div>
 
             </article>

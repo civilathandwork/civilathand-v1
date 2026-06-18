@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useProjects, Lead, Project, BlogPost } from "@/context/ProjectContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -109,156 +109,80 @@ export const AdminView: React.FC = () => {
   const [editorMode, setEditorMode] = useState<"write" | "preview">("write");
   const [showTemplates, setShowTemplates] = useState(false);
 
-  const handleEditorKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const editorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isBlogModalOpen && editorMode === "write") {
+      if (editorRef.current && editorRef.current.innerHTML !== blogContent) {
+        editorRef.current.innerHTML = blogContent;
+      }
+    }
+  }, [isBlogModalOpen, editorMode]);
+
+  const convertMarkdownToHtml = (markdown: string): string => {
+    if (!markdown) return "";
+    let html = markdown;
+    html = html.replace(/^###\s+(.*?)$/gm, "<h3>$1</h3>");
+    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
+    html = html.replace(/^\-\s+(.*?)$/gm, "<li>$1</li>");
+    html = html.replace(/(<li>.*?<\/li>)+/g, (match) => `<ul>${match}</ul>`);
+    return html.split("\n\n").map(p => {
+      const trimmed = p.trim();
+      if (!trimmed) return "";
+      if (trimmed.startsWith("<h") || trimmed.startsWith("<ul") || trimmed.startsWith("<ol") || trimmed.startsWith("<li>")) return trimmed;
+      return `<p>${trimmed}</p>`;
+    }).join("");
+  };
+
+  const handleEditorInput = (e: React.FormEvent<HTMLDivElement>) => {
+    setBlogContent(e.currentTarget.innerHTML);
+  };
+
+  const handleEditorKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const isMod = e.ctrlKey || e.metaKey;
-    if (!isMod) return;
-
-    const key = e.key.toLowerCase();
-    if (key === "b") {
-      e.preventDefault();
-      insertFormatting("**", "**");
-    } else if (key === "i") {
-      e.preventDefault();
-      insertFormatting("*", "*");
-    } else if (key === "h") {
-      e.preventDefault();
-      insertFormatting("### ");
-    } else if (key === "k") {
-      e.preventDefault();
-      insertFormatting("[", "](https://)");
-    }
-  };
-
-  const insertFormatting = (before: string, after: string = "") => {
-    const textarea = document.getElementById("blogContentTextarea") as HTMLTextAreaElement;
-    if (!textarea) return;
-
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const text = textarea.value;
-    const selection = text.substring(start, end);
-
-    const replacement = before + selection + after;
-    const newContent = text.substring(0, start) + replacement + text.substring(end);
-    
-    setBlogContent(newContent);
-    
-    setTimeout(() => {
-      textarea.focus();
-      if (selection) {
-        const newCursorPos = start + replacement.length;
-        textarea.setSelectionRange(newCursorPos, newCursorPos);
-      } else {
-        const newCursorPos = start + before.length;
-        textarea.setSelectionRange(newCursorPos, newCursorPos);
+    if (isMod) {
+      const key = e.key.toLowerCase();
+      if (key === "b") {
+        e.preventDefault();
+        runCommand("bold");
+      } else if (key === "i") {
+        e.preventDefault();
+        runCommand("italic");
+      } else if (key === "h") {
+        e.preventDefault();
+        runCommand("formatBlock", "<h3>");
+      } else if (key === "k") {
+        e.preventDefault();
+        const url = prompt("Enter link URL:", "https://");
+        if (url) {
+          runCommand("createLink", url);
+        }
       }
-    }, 0);
-  };
-
-  const clearFormatting = () => {
-    const textarea = document.getElementById("blogContentTextarea") as HTMLTextAreaElement;
-    if (!textarea) return;
-
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const text = textarea.value;
-    const selection = text.substring(start, end);
-
-    if (!selection) return;
-
-    const cleared = selection
-      .replace(/\*\*/g, "")
-      .replace(/\*/g, "")
-      .replace(/###\s/g, "")
-      .replace(/-\s/g, "")
-      .replace(/^\d+\.\s/g, "")
-      .replace(/>\s/g, "");
-
-    const newContent = text.substring(0, start) + cleared + text.substring(end);
-    setBlogContent(newContent);
-
-    setTimeout(() => {
-      textarea.focus();
-      textarea.setSelectionRange(start, start + cleared.length);
-    }, 0);
-  };
-
-  const insertTemplate = (templateType: "spec" | "takeoff") => {
-    const specTemplate = `### Concrete Quality Spec Sheet\n- Concrete Grade: M25\n- Testing Standard: IS 516\n- 7-Day Target Strength: 16.5 N/mm²\n- 28-Day Target Strength: 25 N/mm²\n\n### Site Inspection Checklist\n- Check concrete slump before placing\n- Verify rebar clear cover spacing\n- Cure with ponding method for 14 days\n`;
-    const takeoffTemplate = `### Structural Quantity Takeoff\n- Member ID: column-C1-ground-floor\n- Cement Grade: OPC 43\n- Steel Bar Diameter: 12mm / 16mm / 20mm\n- Sand Zone: Zone II River Sand\n\n### Estimation Details\n- Coarse Aggregate required: 8.5 m³\n- Steel reinforcement required: 1.25 Tons\n- Total Cement required: 180 Bags\n`;
-
-    const templateText = templateType === "spec" ? specTemplate : takeoffTemplate;
-    
-    const textarea = document.getElementById("blogContentTextarea") as HTMLTextAreaElement;
-    if (!textarea) {
-      setBlogContent(templateText);
-      setShowTemplates(false);
-      return;
     }
+  };
 
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const text = textarea.value;
+  const runCommand = (command: string, value: string = "") => {
+    document.execCommand(command, false, value);
+    if (editorRef.current) {
+      setBlogContent(editorRef.current.innerHTML);
+    }
+  };
 
-    const newContent = text.substring(0, start) + templateText + text.substring(end);
-    setBlogContent(newContent);
+  const insertTemplateHtml = (templateType: "spec" | "takeoff") => {
+    const specTemplate = `<h3>Concrete Quality Spec Sheet</h3><ul><li>Concrete Grade: M25</li><li>Testing Standard: IS 516</li><li>7-Day Target Strength: 16.5 N/mm²</li><li>28-Day Target Strength: 25 N/mm²</li></ul><h3>Site Inspection Checklist</h3><ul><li>Check concrete slump before placing</li><li>Verify rebar clear cover spacing</li><li>Cure with ponding method for 14 days</li></ul><p></p>`;
+    const takeoffTemplate = `<h3>Structural Quantity Takeoff</h3><ul><li>Member ID: column-C1-ground-floor</li><li>Cement Grade: OPC 43</li><li>Steel Bar Diameter: 12mm / 16mm / 20mm</li><li>Sand Zone: Zone II River Sand</li></ul><h3>Estimation Details</h3><ul><li>Coarse Aggregate required: 8.5 m³</li><li>Steel reinforcement required: 1.25 Tons</li><li>Total Cement required: 180 Bags</li></ul><p></p>`;
+    const templateHtml = templateType === "spec" ? specTemplate : takeoffTemplate;
+    
+    if (editorRef.current) {
+      editorRef.current.focus();
+      document.execCommand("insertHTML", false, templateHtml);
+      setBlogContent(editorRef.current.innerHTML);
+    }
     setShowTemplates(false);
-
-    setTimeout(() => {
-      textarea.focus();
-      const newCursorPos = start + templateText.length;
-      textarea.setSelectionRange(newCursorPos, newCursorPos);
-    }, 0);
   };
 
-  const parseInlineStyles = (text: string) => {
-    let formatted = text;
-    formatted = formatted.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-    formatted = formatted.replace(/\*(.*?)\*/g, "<em>$1</em>");
-    formatted = formatted.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="text-orange-600 underline font-semibold">$1</a>');
-    return <span dangerouslySetInnerHTML={{ __html: formatted }} />;
-  };
 
-  const renderPreviewContent = (content: string) => {
-    return content.split("\n\n").map((block, idx) => {
-      const trimmedBlock = block.trim();
-      if (trimmedBlock.startsWith("###")) {
-        return (
-          <h3 key={idx} className="font-display font-bold text-sm text-navy-950 mt-4 mb-2 border-b border-slate-100 pb-1 uppercase tracking-wide">
-            {parseInlineStyles(trimmedBlock.replace("###", "").trim())}
-          </h3>
-        );
-      }
-      if (trimmedBlock.startsWith("-")) {
-        const items = trimmedBlock.split("\n").map(item => item.replace("-", "").trim());
-        return (
-          <ul key={idx} className="list-disc pl-5 my-2 space-y-1 text-slate-700 text-xs">
-            {items.map((it, i) => <li key={i}>{parseInlineStyles(it)}</li>)}
-          </ul>
-        );
-      }
-      if (trimmedBlock.match(/^\d+\./)) {
-        const items = trimmedBlock.split("\n").map(item => item.replace(/^\d+\./, "").trim());
-        return (
-          <ol key={idx} className="list-decimal pl-5 my-2 space-y-1 text-slate-700 text-xs">
-            {items.map((it, i) => <li key={i}>{parseInlineStyles(it)}</li>)}
-          </ol>
-        );
-      }
-      if (trimmedBlock.startsWith(">")) {
-        return (
-          <blockquote key={idx} className="border-l-4 border-orange-500 pl-3 italic text-slate-500 my-3 font-medium bg-slate-50 py-1 rounded-r">
-            {parseInlineStyles(trimmedBlock.replace(">", "").trim())}
-          </blockquote>
-        );
-      }
-      return (
-        <p key={idx} className="text-slate-700 my-2 text-xs">
-          {parseInlineStyles(trimmedBlock)}
-        </p>
-      );
-    });
-  };
 
   // Handle Blog Submit
   const handleBlogSubmit = (e: React.FormEvent) => {
@@ -315,7 +239,11 @@ export const AdminView: React.FC = () => {
     setEditingBlogId(post.id);
     setBlogTitle(post.title);
     setBlogSummary(post.summary);
-    setBlogContent(post.content);
+    
+    const isHtml = post.content.includes("<p>") || post.content.includes("<h3>") || post.content.includes("<ul>");
+    const contentHtml = isHtml ? post.content : convertMarkdownToHtml(post.content);
+    setBlogContent(contentHtml);
+    
     setBlogCategory(post.category);
     setBlogAuthor(post.author);
     setBlogImage(post.image);
@@ -1023,7 +951,7 @@ export const AdminView: React.FC = () => {
                                     <button
                                       type="button"
                                       onMouseDown={(e) => e.preventDefault()}
-                                      onClick={() => insertFormatting("**", "**")}
+                                      onClick={() => runCommand("bold")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="Bold (Ctrl+B)"
                                     >
@@ -1032,7 +960,7 @@ export const AdminView: React.FC = () => {
                                     <button
                                       type="button"
                                       onMouseDown={(e) => e.preventDefault()}
-                                      onClick={() => insertFormatting("*", "*")}
+                                      onClick={() => runCommand("italic")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="Italic (Ctrl+I)"
                                     >
@@ -1041,7 +969,7 @@ export const AdminView: React.FC = () => {
                                     <button
                                       type="button"
                                       onMouseDown={(e) => e.preventDefault()}
-                                      onClick={() => insertFormatting("### ")}
+                                      onClick={() => runCommand("formatBlock", "<h3>")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="H3 Heading"
                                     >
@@ -1051,7 +979,7 @@ export const AdminView: React.FC = () => {
                                     <button
                                       type="button"
                                       onMouseDown={(e) => e.preventDefault()}
-                                      onClick={() => insertFormatting("- ")}
+                                      onClick={() => runCommand("insertUnorderedList")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="Bullet List"
                                     >
@@ -1060,7 +988,7 @@ export const AdminView: React.FC = () => {
                                     <button
                                       type="button"
                                       onMouseDown={(e) => e.preventDefault()}
-                                      onClick={() => insertFormatting("1. ")}
+                                      onClick={() => runCommand("insertOrderedList")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="Numbered List"
                                     >
@@ -1069,7 +997,7 @@ export const AdminView: React.FC = () => {
                                     <button
                                       type="button"
                                       onMouseDown={(e) => e.preventDefault()}
-                                      onClick={() => insertFormatting("> ")}
+                                      onClick={() => runCommand("formatBlock", "<blockquote>")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="Blockquote"
                                     >
@@ -1079,7 +1007,10 @@ export const AdminView: React.FC = () => {
                                     <button
                                       type="button"
                                       onMouseDown={(e) => e.preventDefault()}
-                                      onClick={() => insertFormatting("[", "](https://)")}
+                                      onClick={() => {
+                                        const url = prompt("Enter link URL:", "https://");
+                                        if (url) runCommand("createLink", url);
+                                      }}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="Insert Link"
                                     >
@@ -1088,7 +1019,7 @@ export const AdminView: React.FC = () => {
                                     <button
                                       type="button"
                                       onMouseDown={(e) => e.preventDefault()}
-                                      onClick={clearFormatting}
+                                      onClick={() => runCommand("removeFormat")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="Clear Selection Formatting"
                                     >
@@ -1113,7 +1044,7 @@ export const AdminView: React.FC = () => {
                                           <button
                                             type="button"
                                             onMouseDown={(e) => e.preventDefault()}
-                                            onClick={() => insertTemplate("spec")}
+                                            onClick={() => insertTemplateHtml("spec")}
                                             className="w-full text-left px-3 py-2 hover:bg-slate-50 transition-colors block"
                                           >
                                             Concrete Grade & Spec Sheet
@@ -1121,7 +1052,7 @@ export const AdminView: React.FC = () => {
                                           <button
                                             type="button"
                                             onMouseDown={(e) => e.preventDefault()}
-                                            onClick={() => insertTemplate("takeoff")}
+                                            onClick={() => insertTemplateHtml("takeoff")}
                                             className="w-full text-left px-3 py-2 hover:bg-slate-50 transition-colors block"
                                           >
                                             Material Quantity Takeoff (BOQ)
@@ -1131,16 +1062,56 @@ export const AdminView: React.FC = () => {
                                     </div>
                                   </div>
 
-                                  <textarea
-                                    id="blogContentTextarea"
-                                    required
-                                    rows={10}
-                                    value={blogContent}
-                                    onChange={(e) => setBlogContent(e.target.value)}
-                                    onKeyDown={handleEditorKeyDown}
-                                    placeholder="Write full article body. Supports standard formatting."
-                                    className="w-full bg-transparent border-none px-3 py-2.5 text-xs focus:outline-none text-slate-800 font-semibold resize-y min-h-[220px]"
-                                  />
+                                  <div className="relative w-full">
+                                    <style dangerouslySetInnerHTML={{ __html: `
+                                      #blogContentTextarea:empty::before {
+                                        content: attr(data-placeholder);
+                                        color: #94a3b8;
+                                        font-style: italic;
+                                        position: absolute;
+                                        left: 12px;
+                                        top: 10px;
+                                        pointer-events: none;
+                                      }
+                                      #blogContentTextarea h3 {
+                                        font-size: 1.15em;
+                                        font-weight: 800;
+                                        margin-top: 12px;
+                                        margin-bottom: 6px;
+                                        color: #0f172a;
+                                      }
+                                      #blogContentTextarea ul {
+                                        list-style-type: disc;
+                                        padding-left: 20px;
+                                        margin-top: 6px;
+                                        margin-bottom: 6px;
+                                      }
+                                      #blogContentTextarea ol {
+                                        list-style-type: decimal;
+                                        padding-left: 20px;
+                                        margin-top: 6px;
+                                        margin-bottom: 6px;
+                                      }
+                                      #blogContentTextarea blockquote {
+                                        border-left: 4px solid #ff6b00;
+                                        padding-left: 12px;
+                                        font-style: italic;
+                                        color: #64748b;
+                                        margin-top: 10px;
+                                        margin-bottom: 10px;
+                                      }
+                                    `}} />
+                                    <div
+                                      ref={editorRef}
+                                      id="blogContentTextarea"
+                                      contentEditable={true}
+                                      onInput={handleEditorInput}
+                                      onKeyDown={handleEditorKeyDown}
+                                      data-placeholder="Write full article body. Supports visual editing: Bold, Italic, Headings, and Lists."
+                                      className="w-full bg-transparent border-none px-3 py-2.5 text-xs focus:outline-none text-slate-800 font-semibold overflow-y-auto min-h-[220px] max-h-[350px] outline-none prose prose-slate"
+                                      style={{ minHeight: "220px" }}
+                                    />
+                                  </div>
 
                                   {/* Stats footer */}
                                   <div className="bg-slate-50 border-t border-slate-100 px-3 py-1 flex justify-between text-[9px] font-bold text-slate-500 uppercase tracking-wider select-none">
@@ -1149,9 +1120,10 @@ export const AdminView: React.FC = () => {
                                   </div>
                                 </div>
                               ) : (
-                                <div className="border border-slate-300 rounded-lg p-4 bg-slate-50 min-h-[305px] overflow-y-auto max-h-[380px] prose prose-slate text-xs leading-relaxed font-medium">
-                                  {blogContent ? renderPreviewContent(blogContent) : <span className="text-slate-400 italic">Nothing to preview. Start writing!</span>}
-                                </div>
+                                <div 
+                                  className="border border-slate-300 rounded-lg p-4 bg-slate-50 min-h-[305px] overflow-y-auto max-h-[380px] prose prose-slate text-xs leading-relaxed font-medium"
+                                  dangerouslySetInnerHTML={{ __html: blogContent || '<span class="text-slate-400 italic">Nothing to preview. Start writing!</span>' }}
+                                />
                               )}
                             </div>
                           </div>
