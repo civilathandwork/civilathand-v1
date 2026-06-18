@@ -109,6 +109,13 @@ export default function Home() {
   // Testimonials Carousel State
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     addLead({
