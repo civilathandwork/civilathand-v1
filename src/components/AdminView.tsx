@@ -30,7 +30,18 @@ import {
   Eraser,
   Sparkles,
   X,
-  Upload
+  Upload,
+  Underline,
+  Strikethrough,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
+  Code,
+  Subscript,
+  Superscript,
+  Minus,
+  Paintbrush
 } from "lucide-react";
 
 export const AdminView: React.FC = () => {
@@ -108,6 +119,7 @@ export const AdminView: React.FC = () => {
   // Formatting Editor States & Helpers
   const [editorMode, setEditorMode] = useState<"write" | "preview">("write");
   const [showTemplates, setShowTemplates] = useState(false);
+  const [showColors, setShowColors] = useState(false);
 
   const editorRef = useRef<HTMLDivElement>(null);
 
@@ -149,6 +161,9 @@ export const AdminView: React.FC = () => {
       } else if (key === "i") {
         e.preventDefault();
         runCommand("italic");
+      } else if (key === "u") {
+        e.preventDefault();
+        runCommand("underline");
       } else if (key === "h") {
         e.preventDefault();
         runCommand("formatBlock", "<h3>");
@@ -948,6 +963,7 @@ export const AdminView: React.FC = () => {
                                 <div className="border border-slate-300 rounded-lg overflow-hidden bg-white shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600 transition-all">
                                   {/* Rich Formatting Toolbar */}
                                   <div className="flex flex-wrap items-center gap-1 bg-slate-50 border-b border-slate-200 px-2 py-1.5 text-slate-600 select-none">
+                                    {/* Group 1: Text Styles */}
                                     <button
                                       type="button"
                                       onMouseDown={(e) => e.preventDefault()}
@@ -969,13 +985,81 @@ export const AdminView: React.FC = () => {
                                     <button
                                       type="button"
                                       onMouseDown={(e) => e.preventDefault()}
+                                      onClick={() => runCommand("underline")}
+                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                                      title="Underline (Ctrl+U)"
+                                    >
+                                      <Underline className="h-3.5 w-3.5" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
+                                      onClick={() => runCommand("strikeThrough")}
+                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                                      title="Strikethrough"
+                                    >
+                                      <Strikethrough className="h-3.5 w-3.5" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
+                                      onClick={() => runCommand("subscript")}
+                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                                      title="Subscript"
+                                    >
+                                      <Subscript className="h-3.5 w-3.5" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
+                                      onClick={() => runCommand("superscript")}
+                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                                      title="Superscript"
+                                    >
+                                      <Superscript className="h-3.5 w-3.5" />
+                                    </button>
+                                    <div className="h-4 w-[1px] bg-slate-300 mx-1 flex-shrink-0" />
+
+                                    {/* Group 2: Headings & Block Formats */}
+                                    <button
+                                      type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
                                       onClick={() => runCommand("formatBlock", "<h3>")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
                                       title="H3 Heading"
                                     >
                                       <Heading className="h-3.5 w-3.5" />
                                     </button>
-                                    <div className="h-4 w-[1px] bg-slate-300 mx-1" />
+                                    <button
+                                      type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
+                                      onClick={() => runCommand("formatBlock", "<pre>")}
+                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                                      title="Code Block"
+                                    >
+                                      <Code className="h-3.5 w-3.5" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
+                                      onClick={() => runCommand("formatBlock", "<blockquote>")}
+                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                                      title="Blockquote"
+                                    >
+                                      <Quote className="h-3.5 w-3.5" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
+                                      onClick={() => runCommand("insertHorizontalRule")}
+                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                                      title="Horizontal Divider"
+                                    >
+                                      <Minus className="h-3.5 w-3.5" />
+                                    </button>
+                                    <div className="h-4 w-[1px] bg-slate-300 mx-1 flex-shrink-0" />
+
+                                    {/* Group 3: Lists */}
                                     <button
                                       type="button"
                                       onMouseDown={(e) => e.preventDefault()}
@@ -994,16 +1078,48 @@ export const AdminView: React.FC = () => {
                                     >
                                       <ListOrdered className="h-3.5 w-3.5" />
                                     </button>
+                                    <div className="h-4 w-[1px] bg-slate-300 mx-1 flex-shrink-0" />
+
+                                    {/* Group 4: Alignments */}
                                     <button
                                       type="button"
                                       onMouseDown={(e) => e.preventDefault()}
-                                      onClick={() => runCommand("formatBlock", "<blockquote>")}
+                                      onClick={() => runCommand("justifyLeft")}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
-                                      title="Blockquote"
+                                      title="Align Left"
                                     >
-                                      <Quote className="h-3.5 w-3.5" />
+                                      <AlignLeft className="h-3.5 w-3.5" />
                                     </button>
-                                    <div className="h-4 w-[1px] bg-slate-300 mx-1" />
+                                    <button
+                                      type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
+                                      onClick={() => runCommand("justifyCenter")}
+                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                                      title="Align Center"
+                                    >
+                                      <AlignCenter className="h-3.5 w-3.5" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
+                                      onClick={() => runCommand("justifyRight")}
+                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                                      title="Align Right"
+                                    >
+                                      <AlignRight className="h-3.5 w-3.5" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
+                                      onClick={() => runCommand("justifyFull")}
+                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                                      title="Justify Text"
+                                    >
+                                      <AlignJustify className="h-3.5 w-3.5" />
+                                    </button>
+                                    <div className="h-4 w-[1px] bg-slate-300 mx-1 flex-shrink-0" />
+
+                                    {/* Group 5: Insert actions & Color */}
                                     <button
                                       type="button"
                                       onMouseDown={(e) => e.preventDefault()}
@@ -1012,10 +1128,49 @@ export const AdminView: React.FC = () => {
                                         if (url) runCommand("createLink", url);
                                       }}
                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
-                                      title="Insert Link"
+                                      title="Insert Link (Ctrl+K)"
                                     >
                                       <Link2 className="h-3.5 w-3.5" />
                                     </button>
+
+                                    {/* Text Color Dropdown */}
+                                    <div className="relative">
+                                      <button
+                                        type="button"
+                                        onMouseDown={(e) => e.preventDefault()}
+                                        onClick={() => setShowColors(!showColors)}
+                                        className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors flex items-center"
+                                        title="Text Color"
+                                      >
+                                        <Paintbrush className="h-3.5 w-3.5" />
+                                      </button>
+                                      {showColors && (
+                                        <div className="absolute left-0 mt-1.5 p-1.5 bg-white border border-slate-200 rounded-lg shadow-premium-lg z-25 flex gap-1 animate-fadeIn select-none">
+                                          {[
+                                            { name: "Orange", hex: "#ff6b00" },
+                                            { name: "Navy", hex: "#0a192f" },
+                                            { name: "Slate", hex: "#475569" },
+                                            { name: "Green", hex: "#10b981" },
+                                            { name: "Red", hex: "#ef4444" },
+                                            { name: "Black", hex: "#000000" }
+                                          ].map((color) => (
+                                            <button
+                                              key={color.hex}
+                                              type="button"
+                                              onMouseDown={(e) => e.preventDefault()}
+                                              onClick={() => {
+                                                runCommand("foreColor", color.hex);
+                                                setShowColors(false);
+                                              }}
+                                              className="w-5 h-5 rounded-full border border-slate-350 cursor-pointer shadow-sm hover:scale-110 transition-transform"
+                                              style={{ backgroundColor: color.hex }}
+                                              title={color.name}
+                                            />
+                                          ))}
+                                        </div>
+                                      )}
+                                    </div>
+
                                     <button
                                       type="button"
                                       onMouseDown={(e) => e.preventDefault()}
@@ -1025,7 +1180,7 @@ export const AdminView: React.FC = () => {
                                     >
                                       <Eraser className="h-3.5 w-3.5" />
                                     </button>
-                                    <div className="h-4 w-[1px] bg-slate-300 mx-1" />
+                                    <div className="h-4 w-[1px] bg-slate-300 mx-1 flex-shrink-0" />
                                     
                                     {/* Pre-made Templates Dropdown */}
                                     <div className="relative">
@@ -1099,6 +1254,20 @@ export const AdminView: React.FC = () => {
                                         color: #64748b;
                                         margin-top: 10px;
                                         margin-bottom: 10px;
+                                      }
+                                      #blogContentTextarea pre {
+                                        background-color: #f1f5f9;
+                                        padding: 8px 12px;
+                                        border-radius: 6px;
+                                        font-family: monospace;
+                                        margin-top: 8px;
+                                        margin-bottom: 8px;
+                                        overflow-x: auto;
+                                      }
+                                      #blogContentTextarea hr {
+                                        border: none;
+                                        border-top: 2px dashed #cbd5e1;
+                                        margin: 16px 0;
                                       }
                                     `}} />
                                     <div
