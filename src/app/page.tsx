@@ -23,7 +23,7 @@ import {
   Mail, 
   MessageCircle, 
   ChevronDown, 
-  UserCheck, 
+  Globe, 
   Leaf, 
   Compass, 
   ArrowRight,
@@ -395,7 +395,7 @@ export default function Home() {
               {[
                 { title: "Rapid Turnaround", label: "CAD Detailing", icon: Clock, desc: "24-48hr vectorization and structural drawings delivery." },
                 { title: "AI-Powered Quantities", label: "Automated Estimations", icon: Cpu, desc: "IS-code standardized material calculations and BOQs." },
-                { title: "Chartered SE / BIM", label: "Expert Auditors", icon: UserCheck, desc: "Double-checked reviews by senior structural engineers." },
+                { title: "Global Remote Engineering", label: "Global Delivery", icon: Globe, desc: "Serving builders, architects and contractors worldwide." },
                 { title: "Secure Milestone Payments", label: "Secure Payments", icon: ShieldCheck, desc: "Pay project-wise with complete transparency." },
               ].map((badge, idx) => {
                 const Icon = badge.icon;
