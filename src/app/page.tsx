@@ -942,7 +942,7 @@ export default function Home() {
                   <motion.a 
                     variants={heroItemVariants}
                     whileHover={{ y: -2 }}
-                    href="mailto:info.civilathand@gmail.com"
+                    href="mailto:info.civilathand@zohomail.in"
                     className="flex items-center gap-4 bg-white p-4 rounded-md border border-slate-200 hover:border-wix-dark transition-all text-xs text-wix-dark font-bold shadow-sm"
                   >
                     <div className="h-9 w-9 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0 border border-blue-100">
@@ -950,7 +950,7 @@ export default function Home() {
                     </div>
                     <div>
                       <span className="block text-[9px] uppercase font-bold text-slate-500 tracking-widest">Corporate Email</span>
-                      <span>info.civilathand@gmail.com</span>
+                      <span>info.civilathand@zohomail.in</span>
                     </div>
                   </motion.a>
                 </div>
