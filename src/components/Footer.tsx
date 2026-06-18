@@ -7,8 +7,7 @@ import {
   Phone, 
   MapPin, 
   FileCheck, 
-  ArrowRight, 
-  ShieldCheck 
+  ArrowRight 
 } from "lucide-react";
 
 const TwitterIcon = (props: any) => (
@@ -170,14 +169,6 @@ export const Footer: React.FC = () => {
 
           {/* Newsletter / Credentials */}
           <div>
-            <div className="flex items-center gap-2 mb-4 bg-slate-800/40 p-3 rounded border border-slate-700">
-              <ShieldCheck className="h-7 w-7 text-orange-500 flex-shrink-0" />
-              <div>
-                <p className="text-xs font-bold text-white uppercase tracking-wider">ISO 9001:2015 Certified</p>
-                <p className="text-[10px] text-slate-400">Quality Management Systems</p>
-              </div>
-            </div>
-            
             <p className="text-xs text-slate-400 mb-3 leading-relaxed">
               Subscribe to our weekly civil engineering design and tech newsletter.
             </p>

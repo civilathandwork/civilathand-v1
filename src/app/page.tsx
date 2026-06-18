@@ -24,7 +24,6 @@ import {
   MessageCircle, 
   ChevronDown, 
   UserCheck, 
-  Award, 
   Leaf, 
   Compass, 
   ArrowRight,
@@ -392,9 +391,8 @@ export default function Home() {
         {/* SECTION 2: TRUST SECTION */}
         <section className="bg-white py-6 md:py-8 border-b border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-slate-200">
+            <div className="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-slate-200">
               {[
-                { title: "ISO 9001:2015", label: "Quality Standards", icon: Award, desc: "Certified engineering design quality management systems." },
                 { title: "Rapid Turnaround", label: "CAD Detailing", icon: Clock, desc: "24-48hr vectorization and structural drawings delivery." },
                 { title: "AI-Powered Quantities", label: "Automated Estimations", icon: Cpu, desc: "IS-code standardized material calculations and BOQs." },
                 { title: "Chartered SE / BIM", label: "Expert Auditors", icon: UserCheck, desc: "Double-checked reviews by senior structural engineers." },
