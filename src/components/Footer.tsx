@@ -148,7 +148,7 @@ export const Footer: React.FC = () => {
                 <MapPin className="h-4 w-4 text-orange-500 flex-shrink-0 mt-0.5" />
                 <span>
                   Civil At Hand : Design and consultancy,<br />
-                  Haryana , India,<br />
+                  Haryana, India
                 </span>
               </li>
               <li className="flex items-center gap-2.5">

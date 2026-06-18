@@ -963,7 +963,7 @@ export default function Home() {
                   <div className="absolute inset-0 bg-slate-100 flex flex-col items-center justify-center text-center p-4">
                     <MapPin className="h-6 w-6 text-orange-500 animate-bounce mb-1" />
                     <span className="text-xs font-bold text-wix-dark uppercase tracking-widest">Civil At Hand Headquarters</span>
-                    <span className="text-[10px] text-slate-500 mt-1 font-semibold">Synergy Business Park, Kalyani Nagar, Pune</span>
+                    <span className="text-[10px] text-slate-500 mt-1 font-semibold">Haryana, India</span>
                   </div>
                 </motion.div>
               </motion.div>
