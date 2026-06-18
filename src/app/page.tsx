@@ -21,7 +21,6 @@ import {
   CheckCircle2, 
   Phone, 
   Mail, 
-  MessageCircle, 
   ChevronDown, 
   Globe, 
   Leaf, 
@@ -908,21 +907,7 @@ export default function Home() {
                 </motion.div>
 
                 <div className="space-y-4">
-                  <motion.a 
-                    variants={heroItemVariants}
-                    whileHover={{ y: -2 }}
-                    href="https://wa.me/message/JNVZ7YY6BQJ3L1" 
-                    target="_blank" 
-                    className="flex items-center gap-4 bg-white p-4 rounded-md border border-slate-200 hover:border-wix-dark transition-all text-xs text-wix-dark font-bold shadow-sm"
-                  >
-                    <div className="h-9 w-9 rounded-md bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0 border border-emerald-100">
-                      <MessageCircle className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <span className="block text-[9px] uppercase font-bold text-slate-500 tracking-widest">WhatsApp Chat</span>
-                      <span className="text-orange-600 hover:text-orange-700 underline break-all">wa.me/message/JNVZ7YY6BQJ3L1</span>
-                    </div>
-                  </motion.a>
+
 
                   <motion.a 
                     variants={heroItemVariants}
