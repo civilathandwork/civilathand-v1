@@ -114,7 +114,7 @@ export const Footer: React.FC = () => {
             </a>
 
             <a 
-              href="https://wa.me/message/JNVZ7YY6BQJ3L1" 
+              href="https://whatsapp.com/channel/0029VbD0UJw3mFYFp3tWzF2X" 
               target="_blank" 
               rel="noopener noreferrer"
               className="bg-slate-100/60 border border-slate-200/80 rounded-full px-5 py-2.5 flex items-center gap-3 text-xs font-bold text-wix-dark hover:bg-white hover:border-slate-400 hover:-translate-y-0.5 transition-all duration-300 shadow-sm"
