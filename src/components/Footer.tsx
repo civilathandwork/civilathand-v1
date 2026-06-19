@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { 
   Mail, 
   Phone, 
   MapPin, 
-  FileCheck, 
-  ArrowRight 
+  FileCheck 
 } from "lucide-react";
 
 const TwitterIcon = (props: any) => (
@@ -57,23 +56,14 @@ const ThreadsIcon = (props: any) => (
 );
 
 export const Footer: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email) {
-      setSubscribed(true);
-      setEmail("");
-    }
-  };
 
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-wix-dark text-slate-100 pt-16 pb-8 border-t border-slate-800">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-12 mb-12">
           {/* Brand Info */}
           <div>
             <div className="flex items-center gap-2 mb-5">
@@ -166,34 +156,7 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Newsletter / Credentials */}
-          <div>
-            <p className="text-xs text-slate-400 mb-3 leading-relaxed">
-              Subscribe to our weekly civil engineering design and tech newsletter.
-            </p>
-            {subscribed ? (
-              <p className="text-xs text-emerald-500 font-semibold">Thank you for subscribing!</p>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex border-b border-slate-700 focus-within:border-orange-500 transition-colors duration-300 pb-1">
-                <input
-                  type="email"
-                  required
-                  placeholder="Enter email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-transparent border-none px-1 py-2 text-xs text-slate-100 placeholder-slate-600 focus:outline-none"
-                  suppressHydrationWarning
-                />
-                <button
-                  type="submit"
-                  className="text-slate-400 hover:text-white px-2 flex items-center justify-center transition-colors"
-                  suppressHydrationWarning
-                >
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-              </form>
-            )}
-          </div>
+
         </div>
 
         <hr className="border-slate-800 mb-8" />
