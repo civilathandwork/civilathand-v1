@@ -279,3 +279,115 @@ a, button, select, input, textarea, label, svg {
 
 
 
+
+/* Fallback styling for WYSIWYG/markdown blog contents (prose-wix light theme equivalent) */
+.prose-wix {
+  color: #1e293b !important;
+}
+
+.prose-wix p {
+  color: #334155 !important;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.75;
+  font-size: 1rem;
+}
+
+.prose-wix h1,
+.prose-wix h2,
+.prose-wix h3,
+.prose-wix h4 {
+  color: #111111 !important;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.prose-wix h1 {
+  font-size: 1.875rem;
+}
+
+.prose-wix h2 {
+  font-size: 1.5rem;
+}
+
+.prose-wix h3 {
+  font-size: 1.25rem;
+}
+
+.prose-wix ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  color: #334155 !important;
+}
+
+.prose-wix ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  color: #334155 !important;
+}
+
+.prose-wix li {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  color: #334155 !important;
+}
+
+.prose-wix a {
+  color: #ff6b00 !important;
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.prose-wix a:hover {
+  color: #e05e00 !important;
+}
+
+.prose-wix blockquote {
+  border-left: 4px solid #ff6b00;
+  padding-left: 1.25rem;
+  font-style: italic;
+  color: #475569 !important;
+  background-color: #faf9f6;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  margin: 1.75rem 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.prose-wix hr {
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+  margin: 2.5rem 0;
+}
+
+.prose-wix pre, 
+.prose-wix code {
+  font-family: monospace;
+  background-color: #f1f5f9;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+  color: #e05e00 !important;
+}
+
+.prose-wix pre {
+  padding: 1.25rem;
+  overflow-x: auto;
+  margin: 1.75rem 0;
+  border: 1px solid #e2e8f0;
+}
+
+.prose-wix pre code {
+  background-color: transparent;
+  padding: 0;
+  color: #1e293b !important;
+}
