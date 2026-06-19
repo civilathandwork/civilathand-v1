@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ProjectProvider } from "@/context/ProjectContext";
 import { FloatingSocials } from "@/components/FloatingSocials";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,6 +21,21 @@ export default function RootLayout({
           {children}
           <FloatingSocials />
         </ProjectProvider>
+
+        {/* Google Analytics (gtag.js) */}
+        <Script 
+          src="https://www.googletagmanager.com/gtag/js?id=G-4N1HBTWPR4" 
+          strategy="afterInteractive" 
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-4N1HBTWPR4');
+          `}
+        </Script>
       </body>
     </html>
   );
