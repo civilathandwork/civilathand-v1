@@ -62,11 +62,11 @@ export const Footer: React.FC = () => {
 
   return (
     <>
-      {/* Connect With Me Section */}
+      {/* Connect With Us Section */}
       <section className="bg-wix-cream py-16 border-t border-slate-200/60">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold text-wix-dark tracking-tight text-center mb-10">
-            Connect <span className="text-amber-500 italic font-serif font-medium">With Me</span>
+            Connect <span className="text-amber-500 italic font-serif font-medium">With Us</span>
           </h2>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <a 
