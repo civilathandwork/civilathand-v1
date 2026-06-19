@@ -6,13 +6,89 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useProjects, BlogPost } from "@/context/ProjectContext";
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, User, BookOpen, Clock, ChevronRight } from "lucide-react";
+import { ArrowLeft, Calendar, User, BookOpen, Clock, ChevronRight, Share2 } from "lucide-react";
 
 export default function BlogDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { blogs } = useProjects();
 
   const post = blogs.find((b) => b.id === id);
+
+  const [shareUrl, setShareUrl] = React.useState("");
+  const [copied, setCopied] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      setShareUrl(window.location.href);
+    }
+  }, []);
+
+  const handleCopyLink = () => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const shareLinks = post ? [
+    {
+      name: "Copy Link",
+      icon: (
+        <svg className="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+        </svg>
+      ),
+      action: handleCopyLink,
+      color: "hover:bg-slate-100 hover:text-slate-900 text-slate-500",
+      tooltip: copied ? "Copied!" : "Copy Link",
+    },
+    {
+      name: "WhatsApp",
+      icon: (
+        <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.504-5.714-1.466L0 24zm6.59-4.846c1.6.95 3.16 1.448 4.743 1.449 5.48 0 9.932-4.457 9.935-9.94.002-2.656-1.03-5.153-2.903-7.03C16.55 1.753 14.06 1.72 12.012 1.72c-5.485 0-9.94 4.456-9.943 9.94-.001 2.013.524 3.986 1.522 5.73l-.997 3.637 3.737-.98c1.61.879 3.23 1.253 4.726 1.253zM16.518 13.5c-.244-.122-1.45-.714-1.674-.795-.224-.082-.387-.122-.55.122-.162.243-.63.795-.772.957-.142.162-.284.182-.528.06-1.127-.565-1.93-1.002-2.693-2.307-.202-.345.202-.321.579-1.07.06-.122.03-.228-.015-.31-.045-.082-.387-.932-.53-1.277-.14-.335-.297-.289-.408-.295-.106-.005-.228-.006-.35-.006a.673.673 0 0 0-.488.228c-.162.182-.62.607-.62 1.479s.636 1.716.724 1.838c.09.122 1.252 1.911 3.033 2.68.423.183.754.293.102.353-.1.082-.38.256-.474.327.243.203.497.35.795.39.297.04.593.02.871-.04.28-.06.77-.315.88-.62.11-.305.11-.565.07-.62-.04-.055-.16-.096-.4-.217z"/>
+        </svg>
+      ),
+      url: `https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + " - " + shareUrl)}`,
+      color: "hover:bg-green-50 hover:text-green-600 text-slate-500",
+      tooltip: "WhatsApp",
+    },
+    {
+      name: "LinkedIn",
+      icon: (
+        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+        </svg>
+      ),
+      url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
+      color: "hover:bg-blue-50 hover:text-blue-600 text-slate-500",
+      tooltip: "LinkedIn",
+    },
+    {
+      name: "Twitter",
+      icon: (
+        <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg>
+      ),
+      url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(shareUrl)}`,
+      color: "hover:bg-slate-100 hover:text-slate-900 text-slate-500",
+      tooltip: "Twitter / X",
+    },
+    {
+      name: "Facebook",
+      icon: (
+        <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/>
+        </svg>
+      ),
+      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+      color: "hover:bg-blue-50 hover:text-blue-700 text-slate-500",
+      tooltip: "Facebook",
+    }
+  ] : [];
 
   // Get related posts (published, same category or other, excluding current post)
   const relatedPosts = blogs
@@ -144,6 +220,47 @@ export default function BlogDetailPage({ params }: { params: Promise<{ id: strin
                 )}
               </div>
 
+              {/* Share Article Section */}
+              <div className="border-t border-slate-100 pt-6 mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex items-center gap-2 text-slate-500">
+                  <Share2 className="h-4 w-4 text-orange-500" />
+                  <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">Share this article</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {shareLinks.map((share, index) => {
+                    if (share.action) {
+                      return (
+                        <button
+                          key={index}
+                          onClick={share.action}
+                          className={`h-9 w-9 rounded-lg border border-slate-200/80 flex items-center justify-center transition-all duration-300 relative group cursor-pointer ${share.color}`}
+                          title={share.tooltip}
+                        >
+                          {share.icon}
+                          {copied && (
+                            <span className="absolute -top-8 bg-slate-800 text-white text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider animate-bounce">
+                              Copied!
+                            </span>
+                          )}
+                        </button>
+                      );
+                    }
+                    return (
+                      <a
+                        key={index}
+                        href={share.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`h-9 w-9 rounded-lg border border-slate-200/80 flex items-center justify-center transition-all duration-300 relative group ${share.color}`}
+                        title={share.tooltip}
+                      >
+                        {share.icon}
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+
             </article>
 
             {/* Right Column: Sticky Sidebar with Details & Related Posts */}
@@ -163,6 +280,46 @@ export default function BlogDetailPage({ params }: { params: Promise<{ id: strin
                     <span className="block text-xs font-bold text-slate-800">{post.author}</span>
                     <span className="block text-[10px] text-slate-500 mt-0.5">Chartered Design Partner</span>
                   </div>
+                </div>
+              </div>
+
+              {/* Share Article Widget */}
+              <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-premium space-y-4">
+                <h4 className="font-display font-extrabold text-xs text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-2">
+                  Share Article
+                </h4>
+                <div className="flex flex-wrap items-center gap-2">
+                  {shareLinks.map((share, index) => {
+                    if (share.action) {
+                      return (
+                        <button
+                          key={index}
+                          onClick={share.action}
+                          className={`h-9 w-9 rounded-lg border border-slate-200/80 flex items-center justify-center transition-all duration-300 relative group cursor-pointer ${share.color}`}
+                          title={share.tooltip}
+                        >
+                          {share.icon}
+                          {copied && (
+                            <span className="absolute -top-8 bg-slate-800 text-white text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider animate-bounce">
+                              Copied!
+                            </span>
+                          )}
+                        </button>
+                      );
+                    }
+                    return (
+                      <a
+                        key={index}
+                        href={share.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`h-9 w-9 rounded-lg border border-slate-200/80 flex items-center justify-center transition-all duration-300 relative group ${share.color}`}
+                        title={share.tooltip}
+                      >
+                        {share.icon}
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
 
