@@ -196,22 +196,6 @@ export default function BlogDetailPage({ params }: { params: Promise<{ id: strin
                 </div>
               )}
 
-              {/* Engineering Calculator CTA */}
-              <div className="bg-gradient-to-br from-orange-500/10 to-transparent border border-orange-500/20 rounded-2xl p-6 shadow-premium space-y-3">
-                <span className="block text-[9px] uppercase font-extrabold text-orange-500 tracking-wider">Quick Calculation</span>
-                <h5 className="font-display font-extrabold text-sm text-white">Need an Instant Cost Quote?</h5>
-                <p className="text-[10px] text-slate-300 leading-normal">
-                  Skip the guesswork. Try our standard-compliant concrete, steel, and budget calculators to get figures instantly.
-                </p>
-                <div className="pt-2">
-                  <Link 
-                    href="/#calculators"
-                    className="inline-block bg-orange-500 hover:bg-orange-600 text-white rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider transition-colors shadow-sm"
-                  >
-                    Launch Calculators
-                  </Link>
-                </div>
-              </div>
 
             </aside>
             
