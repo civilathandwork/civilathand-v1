@@ -15,8 +15,8 @@ export const FloatingSocials: React.FC = () => {
 
   const socials = [
     { name: "WhatsApp Chat", href: "https://wa.me/message/JNVZ7YY6BQJ3L1", icon: MessageCircle },
-    { name: "Call Engineering Desk", href: "tel:+917703977002", icon: Phone },
-    { name: "Corporate Email", href: "mailto:info.civilathand@zohomail.in", icon: Mail }
+    { name: "Call Desk", href: "tel:+917703977002", icon: Phone },
+    { name: "Support Email", href: "mailto:info.civilathand@zohomail.in", icon: Mail }
   ];
 
   // Close when clicking outside on mobile
