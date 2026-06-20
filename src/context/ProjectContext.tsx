@@ -86,14 +86,14 @@ interface ProjectContextType {
   chatMessages: ChatMessage[];
   blogs: BlogPost[];
   addLead: (lead: Omit<Lead, "id" | "date" | "status">) => Promise<void>;
-  addProject: (project: Omit<Project, "id" | "dateStarted" | "progress" | "status">) => void;
-  updateProjectStatus: (id: string, status: Project["status"]) => void;
-  uploadDrawing: (file: Omit<DrawingFile, "id" | "uploadDate" | "status">) => void;
-  payInvoice: (id: string) => void;
-  generateInvoice: (projectId: string, amount: number) => void;
-  addNotification: (title: string, message: string, type: Notification["type"], isAdmin: boolean) => void;
-  markNotificationsAsRead: (isAdmin: boolean) => void;
-  sendChatMessage: (text: string, sender: ChatMessage["sender"]) => void;
+  addProject: (project: Omit<Project, "id" | "dateStarted" | "progress" | "status">) => Promise<void>;
+  updateProjectStatus: (id: string, status: Project["status"]) => Promise<void>;
+  uploadDrawing: (file: Omit<DrawingFile, "id" | "uploadDate" | "status">) => Promise<void>;
+  payInvoice: (id: string) => Promise<void>;
+  generateInvoice: (projectId: string, amount: number) => Promise<void>;
+  addNotification: (title: string, message: string, type: Notification["type"], isAdmin: boolean) => Promise<void>;
+  markNotificationsAsRead: (isAdmin: boolean) => Promise<void>;
+  sendChatMessage: (text: string, sender: ChatMessage["sender"]) => Promise<void>;
   addBlog: (blog: Omit<BlogPost, "id" | "date">) => Promise<void>;
   updateBlog: (id: string, blog: Partial<BlogPost>) => Promise<void>;
   deleteBlog: (id: string) => Promise<void>;
@@ -326,22 +326,9 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load from local storage and API
+  // Load from database API
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedProjects = localStorage.getItem("cah_projects");
-      const storedDrawings = localStorage.getItem("cah_drawings");
-      const storedInvoices = localStorage.getItem("cah_invoices");
-      const storedNotifs = localStorage.getItem("cah_notifications");
-      const storedChats = localStorage.getItem("cah_chats");
-
-      setProjects(storedProjects ? JSON.parse(storedProjects) : initialProjects);
-      setDrawings(storedDrawings ? JSON.parse(storedDrawings) : initialDrawings);
-      setInvoices(storedInvoices ? JSON.parse(storedInvoices) : initialInvoices);
-      setNotifications(storedNotifs ? JSON.parse(storedNotifs) : initialNotifications);
-      setChatMessages(storedChats ? JSON.parse(storedChats) : initialChatMessages);
-
-      // Fetch leads and blogs asynchronously from the backend API
       Promise.all([
         fetch("/api/leads", { cache: "no-store" })
           .then((res) => {
@@ -360,28 +347,67 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
           .catch((err) => {
             console.error("Failed to fetch blogs, using fallback:", err);
             return initialBlogs;
+          }),
+        fetch("/api/projects", { cache: "no-store" })
+          .then((res) => {
+            if (!res.ok) throw new Error("Failed to fetch projects");
+            return res.json();
+          })
+          .catch((err) => {
+            console.error("Failed to fetch projects, using fallback:", err);
+            return initialProjects;
+          }),
+        fetch("/api/drawings", { cache: "no-store" })
+          .then((res) => {
+            if (!res.ok) throw new Error("Failed to fetch drawings");
+            return res.json();
+          })
+          .catch((err) => {
+            console.error("Failed to fetch drawings, using fallback:", err);
+            return initialDrawings;
+          }),
+        fetch("/api/invoices", { cache: "no-store" })
+          .then((res) => {
+            if (!res.ok) throw new Error("Failed to fetch invoices");
+            return res.json();
+          })
+          .catch((err) => {
+            console.error("Failed to fetch invoices, using fallback:", err);
+            return initialInvoices;
+          }),
+        fetch("/api/notifications", { cache: "no-store" })
+          .then((res) => {
+            if (!res.ok) throw new Error("Failed to fetch notifications");
+            return res.json();
+          })
+          .catch((err) => {
+            console.error("Failed to fetch notifications, using fallback:", err);
+            return initialNotifications;
+          }),
+        fetch("/api/chats", { cache: "no-store" })
+          .then((res) => {
+            if (!res.ok) throw new Error("Failed to fetch chats");
+            return res.json();
+          })
+          .catch((err) => {
+            console.error("Failed to fetch chats, using fallback:", err);
+            return initialChatMessages;
           })
       ])
-        .then(([leadsData, blogsData]) => {
+        .then(([leadsData, blogsData, projectsData, drawingsData, invoicesData, notificationsData, chatsData]) => {
           setLeads(Array.isArray(leadsData) ? leadsData : initialLeads);
           setBlogs(Array.isArray(blogsData) ? blogsData : initialBlogs);
+          setProjects(Array.isArray(projectsData) ? projectsData : initialProjects);
+          setDrawings(Array.isArray(drawingsData) ? drawingsData : initialDrawings);
+          setInvoices(Array.isArray(invoicesData) ? invoicesData : initialInvoices);
+          setNotifications(Array.isArray(notificationsData) ? notificationsData : initialNotifications);
+          setChatMessages(Array.isArray(chatsData) ? chatsData : initialChatMessages);
         })
         .finally(() => {
           setIsLoaded(true);
         });
     }
   }, []);
-
-  // Save to local storage (excluding blogs/leads, which are stored server-side)
-  useEffect(() => {
-    if (isLoaded) {
-      localStorage.setItem("cah_projects", JSON.stringify(projects));
-      localStorage.setItem("cah_drawings", JSON.stringify(drawings));
-      localStorage.setItem("cah_invoices", JSON.stringify(invoices));
-      localStorage.setItem("cah_notifications", JSON.stringify(notifications));
-      localStorage.setItem("cah_chats", JSON.stringify(chatMessages));
-    }
-  }, [projects, drawings, invoices, notifications, chatMessages, isLoaded]);
 
   // Methods
   const addLead = async (newLeadData: Omit<Lead, "id" | "date" | "status">) => {
@@ -394,7 +420,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (!res.ok) throw new Error("Failed to persist lead in DB");
       const createdLead: Lead = await res.json();
       setLeads((prev) => [createdLead, ...prev]);
-      addNotification(
+      await addNotification(
         "New Lead Received",
         `${createdLead.name} requested a quote for ${createdLead.service}.`,
         "success",
@@ -410,7 +436,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         status: "new"
       };
       setLeads((prev) => [fallbackLead, ...prev]);
-      addNotification(
+      await addNotification(
         "New Lead Received (Local Mode)",
         `${fallbackLead.name} requested a quote for ${fallbackLead.service}.`,
         "success",
@@ -451,224 +477,337 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
-  const addProject = (projData: Omit<Project, "id" | "dateStarted" | "progress" | "status">) => {
-    const project: Project = {
-      ...projData,
-      id: `proj-${Date.now()}`,
-      dateStarted: new Date().toISOString().split("T")[0],
-      status: "Uploaded",
-      progress: 10,
-    };
-    setProjects((prev) => [project, ...prev]);
-    addNotification(
-      "Project Created",
-      `New project "${project.title}" initialized under review.`,
-      "info",
-      false
-    );
-    addNotification(
-      "New Project Initialized",
-      `Project "${project.title}" created by client ${project.clientName}.`,
-      "info",
-      true
-    );
+  const addProject = async (projData: Omit<Project, "id" | "dateStarted" | "progress" | "status">) => {
+    try {
+      const res = await fetch("/api/projects", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(projData)
+      });
+      if (!res.ok) throw new Error("Failed to create project in DB");
+      const createdProj: Project = await res.json();
+      setProjects((prev) => [createdProj, ...prev]);
+
+      await addNotification(
+        "Project Created",
+        `New project "${createdProj.title}" initialized under review.`,
+        "info",
+        false
+      );
+      await addNotification(
+        "New Project Initialized",
+        `Project "${createdProj.title}" created by client ${createdProj.clientName}.`,
+        "info",
+        true
+      );
+    } catch (err) {
+      console.error("Error adding project:", err);
+      // Fallback
+      const fallbackProj: Project = {
+        ...projData,
+        id: `proj-${Date.now()}`,
+        dateStarted: new Date().toISOString().split("T")[0],
+        status: "Uploaded",
+        progress: 10,
+      };
+      setProjects((prev) => [fallbackProj, ...prev]);
+    }
   };
 
-  const updateProjectStatus = (id: string, status: Project["status"]) => {
+  const updateProjectStatus = async (id: string, status: Project["status"]) => {
     let progress = 10;
     if (status === "Under Review") progress = 25;
     if (status === "Designing") progress = 60;
     if (status === "Completed") progress = 100;
 
-    setProjects((prev) =>
-      prev.map((proj) =>
-        proj.id === id ? { ...proj, status, progress } : proj
-      )
-    );
+    try {
+      const targetProj = projects.find((p) => p.id === id);
+      if (!targetProj) return;
 
-    const targetProj = projects.find((p) => p.id === id);
-    if (targetProj) {
-      addNotification(
+      const res = await fetch(`/api/projects/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...targetProj, status, progress })
+      });
+      if (!res.ok) throw new Error("Failed to update project status in DB");
+      const updatedProj: Project = await res.json();
+
+      setProjects((prev) => prev.map((p) => p.id === id ? updatedProj : p));
+
+      await addNotification(
         "Project Status Updated",
-        `Your project "${targetProj.title}" status is now "${status}".`,
+        `Your project "${updatedProj.title}" status is now "${status}".`,
         status === "Completed" ? "success" : "info",
         false
       );
+    } catch (err) {
+      console.error("Error updating project status:", err);
+      setProjects((prev) =>
+        prev.map((proj) =>
+          proj.id === id ? { ...proj, status, progress } : proj
+        )
+      );
     }
   };
 
-  const uploadDrawing = (drawMeta: Omit<DrawingFile, "id" | "uploadDate" | "status">) => {
-    const file: DrawingFile = {
-      ...drawMeta,
-      id: `draw-${Date.now()}`,
-      uploadDate: new Date().toISOString().split("T")[0],
-      status: "Analyzing",
-    };
-    setDrawings((prev) => [file, ...prev]);
-
-    // Add to project files if matching service or create a mock project
-    const matchProj = projects.find((p) => p.service === file.serviceType);
-    if (matchProj) {
-      setProjects((prev) =>
-        prev.map((p) =>
-          p.id === matchProj.id
-            ? { ...p, drawings: [...p.drawings, file.name] }
-            : p
-        )
-      );
-    } else {
-      // Auto create a mock project when a user uploads drawings
-      addProject({
-        title: `Design Request: ${file.serviceType}`,
-        clientName: "Guest Client",
-        service: file.serviceType,
-        areaSqFt: 2000,
-        location: "Mumbai, MH",
-        drawings: [file.name],
+  const uploadDrawing = async (drawMeta: Omit<DrawingFile, "id" | "uploadDate" | "status">) => {
+    try {
+      const res = await fetch("/api/drawings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(drawMeta)
       });
-    }
+      if (!res.ok) throw new Error("Failed to save drawing in DB");
+      const createdDrawing: DrawingFile = await res.json();
+      setDrawings((prev) => [createdDrawing, ...prev]);
 
-    addNotification(
-      "Drawing Uploaded",
-      `File "${file.name}" is being analyzed by our CAD/BIM engine.`,
-      "info",
-      false
-    );
+      // Add to project files if matching service or create a mock project
+      const matchProj = projects.find((p) => p.service === createdDrawing.serviceType);
+      if (matchProj) {
+        const updatedDrawings = [...matchProj.drawings, createdDrawing.name];
+        const projRes = await fetch(`/api/projects/${matchProj.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...matchProj, drawings: updatedDrawings })
+        });
+        if (projRes.ok) {
+          const updatedProj: Project = await projRes.json();
+          setProjects((prev) => prev.map((p) => p.id === matchProj.id ? updatedProj : p));
+        }
+      } else {
+        // Auto create a mock project when a user uploads drawings
+        await addProject({
+          title: `Design Request: ${createdDrawing.serviceType}`,
+          clientName: "Guest Client",
+          service: createdDrawing.serviceType,
+          areaSqFt: 2000,
+          location: "Mumbai, MH",
+          drawings: [createdDrawing.name],
+        });
+      }
 
-    addNotification(
-      "New File Uploaded",
-      `Client uploaded drawing: ${file.name} for ${file.serviceType}.`,
-      "info",
-      true
-    );
-
-    // Simulate AI analysis complete after 5 seconds
-    setTimeout(() => {
-      setDrawings((prev) =>
-        prev.map((d) => (d.id === file.id ? { ...d, status: "Ready" } : d))
+      await addNotification(
+        "Drawing Uploaded",
+        `File "${createdDrawing.name}" is being analyzed by our CAD/BIM engine.`,
+        "info",
+        false
       );
-    }, 5000);
+
+      await addNotification(
+        "New File Uploaded",
+        `Client uploaded drawing: ${createdDrawing.name} for ${createdDrawing.serviceType}.`,
+        "info",
+        true
+      );
+
+      // Simulate AI analysis complete after 5 seconds
+      setTimeout(async () => {
+        try {
+          const readyRes = await fetch(`/api/drawings/${createdDrawing.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...createdDrawing, status: "Ready" })
+          });
+          if (readyRes.ok) {
+            const readyDrawing: DrawingFile = await readyRes.json();
+            setDrawings((prev) => prev.map((d) => d.id === createdDrawing.id ? readyDrawing : d));
+          }
+        } catch (err) {
+          console.error("Error updating drawing status to Ready:", err);
+          setDrawings((prev) =>
+            prev.map((d) => (d.id === createdDrawing.id ? { ...d, status: "Ready" } : d))
+          );
+        }
+      }, 5000);
+    } catch (err) {
+      console.error("Error uploading drawing:", err);
+    }
   };
 
-  const payInvoice = (id: string) => {
-    setInvoices((prev) =>
-      prev.map((inv) => (inv.id === id ? { ...inv, status: "Paid" } : inv))
-    );
+  const payInvoice = async (id: string) => {
+    try {
+      const targetInv = invoices.find((i) => i.id === id);
+      if (!targetInv) return;
 
-    const targetInv = invoices.find((i) => i.id === id);
-    if (targetInv) {
-      // Mark project invoice paid
-      setProjects((prev) =>
-        prev.map((p) =>
-          p.id === targetInv.projectId ? { ...p, invoicePaid: true } : p
-        )
-      );
+      const res = await fetch(`/api/invoices/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...targetInv, status: "Paid" })
+      });
+      if (!res.ok) throw new Error("Failed to pay invoice in DB");
+      const paidInv: Invoice = await res.json();
+      setInvoices((prev) => prev.map((inv) => inv.id === id ? paidInv : inv));
 
-      addNotification(
+      const targetProj = projects.find((p) => p.id === paidInv.projectId);
+      if (targetProj) {
+        const projRes = await fetch(`/api/projects/${targetProj.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...targetProj, invoicePaid: true })
+        });
+        if (projRes.ok) {
+          const updatedProj: Project = await projRes.json();
+          setProjects((prev) => prev.map((p) => p.id === targetProj.id ? updatedProj : p));
+        }
+      }
+
+      await addNotification(
         "Payment Confirmed",
-        `Receipt generated for Invoice #${targetInv.id.toUpperCase()}. Amount: ₹${targetInv.amount.toLocaleString("en-IN")}.`,
+        `Receipt generated for Invoice #${paidInv.id.toUpperCase()}. Amount: ₹${paidInv.amount.toLocaleString("en-IN")}.`,
         "success",
         false
       );
 
-      addNotification(
+      await addNotification(
         "Payment Received",
-        `Client paid ₹${targetInv.amount.toLocaleString("en-IN")} for ${targetInv.projectTitle}.`,
+        `Client paid ₹${paidInv.amount.toLocaleString("en-IN")} for ${paidInv.projectTitle}.`,
         "success",
         true
       );
+    } catch (err) {
+      console.error("Error paying invoice:", err);
     }
   };
 
-  const generateInvoice = (projectId: string, amount: number) => {
-    const proj = projects.find((p) => p.id === projectId);
-    if (proj) {
-      const invoice: Invoice = {
-        id: `inv-${Date.now().toString().slice(-4)}`,
+  const generateInvoice = async (projectId: string, amount: number) => {
+    try {
+      const proj = projects.find((p) => p.id === projectId);
+      if (!proj) return;
+
+      const newInvData = {
         projectId,
         projectTitle: proj.title,
         amount,
-        dueDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000)
-          .toISOString()
-          .split("T")[0],
-        status: "Unpaid",
-        dateGenerated: new Date().toISOString().split("T")[0],
+        dueDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
       };
 
-      setInvoices((prev) => [invoice, ...prev]);
+      const res = await fetch("/api/invoices", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newInvData)
+      });
+      if (!res.ok) throw new Error("Failed to create invoice in DB");
+      const createdInv: Invoice = await res.json();
+      setInvoices((prev) => [createdInv, ...prev]);
 
-      // Set quote amount in project
-      setProjects((prev) =>
-        prev.map((p) =>
-          p.id === projectId ? { ...p, quoteAmount: amount, invoicePaid: false } : p
-        )
-      );
+      const projRes = await fetch(`/api/projects/${projectId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...proj, quoteAmount: amount, invoicePaid: false })
+      });
+      if (projRes.ok) {
+        const updatedProj: Project = await projRes.json();
+        setProjects((prev) => prev.map((p) => p.id === projectId ? updatedProj : p));
+      }
 
-      addNotification(
+      await addNotification(
         "Invoice Generated",
         `A new quotation and invoice of ₹${amount.toLocaleString("en-IN")} is ready for "${proj.title}".`,
         "warning",
         false
       );
+    } catch (err) {
+      console.error("Error generating invoice:", err);
     }
   };
 
-  const addNotification = (
+  const addNotification = async (
     title: string,
     message: string,
     type: Notification["type"],
     isAdmin: boolean
   ) => {
-    const notif: Notification = {
-      id: `notif-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
-      title,
-      message,
-      type,
-      timestamp: new Date().toISOString().replace("T", " ").substring(0, 16),
-      read: false,
-      isAdmin,
-    };
-    setNotifications((prev) => [notif, ...prev]);
+    try {
+      const res = await fetch("/api/notifications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, message, type, isAdmin })
+      });
+      if (!res.ok) throw new Error("Failed to add notification in DB");
+      const createdNotif: Notification = await res.json();
+      setNotifications((prev) => [createdNotif, ...prev]);
+    } catch (err) {
+      console.error("Error adding notification:", err);
+      const fallbackNotif: Notification = {
+        id: `notif-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+        title,
+        message,
+        type,
+        timestamp: new Date().toISOString().replace("T", " ").substring(0, 16),
+        read: false,
+        isAdmin,
+      };
+      setNotifications((prev) => [fallbackNotif, ...prev]);
+    }
   };
 
-  const markNotificationsAsRead = (isAdmin: boolean) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.isAdmin === isAdmin ? { ...n, read: true } : n))
-    );
+  const markNotificationsAsRead = async (isAdmin: boolean) => {
+    try {
+      const res = await fetch("/api/notifications", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isAdmin })
+      });
+      if (!res.ok) throw new Error("Failed to mark notifications as read in DB");
+      setNotifications((prev) =>
+        prev.map((n) => (n.isAdmin === isAdmin ? { ...n, read: true } : n))
+      );
+    } catch (err) {
+      console.error("Error marking notifications as read:", err);
+      setNotifications((prev) =>
+        prev.map((n) => (n.isAdmin === isAdmin ? { ...n, read: true } : n))
+      );
+    }
   };
 
-  const sendChatMessage = (text: string, sender: ChatMessage["sender"]) => {
-    const newMsg: ChatMessage = {
-      id: `msg-${Date.now()}`,
-      text,
-      sender,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
+  const sendChatMessage = async (text: string, sender: ChatMessage["sender"]) => {
+    try {
+      const res = await fetch("/api/chats", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, sender })
+      });
+      if (!res.ok) throw new Error("Failed to save chat message in DB");
+      const createdMsg: ChatMessage = await res.json();
+      setChatMessages((prev) => [...prev, createdMsg]);
 
-    setChatMessages((prev) => [...prev, newMsg]);
+      if (sender === "client") {
+        await addNotification("New Support Message", "Client sent a support message.", "info", true);
 
-    if (sender === "client") {
-      // Add notification to admin
-      addNotification("New Support Message", "Client sent a support message.", "info", true);
+        setTimeout(async () => {
+          const replyText =
+            text.toLowerCase().includes("quote") || text.toLowerCase().includes("cost")
+              ? "We offer automated estimations using our Construction Cost Calculator on the homepage. If you upload your floor plan PDF, our engineering experts will audit and return a detailed custom quotation within 24 hours."
+              : text.toLowerCase().includes("drawing") || text.toLowerCase().includes("upload")
+              ? "You can upload PDF, DWG, or DXF files directly in the 'Upload Drawings' tab on your dashboard. Once uploaded, they go through our automated analyzer, followed by expert audit review."
+              : "Thank you for reaching out to Civil At Hand. One of our structural engineers will review your request and get back to you shortly.";
 
-      // Simulate a smart assistant responding after 1.5 seconds
-      setTimeout(() => {
-        const replyText =
-          text.toLowerCase().includes("quote") || text.toLowerCase().includes("cost")
-            ? "We offer automated estimations using our Construction Cost Calculator on the homepage. If you upload your floor plan PDF, our engineering experts will audit and return a detailed custom quotation within 24 hours."
-            : text.toLowerCase().includes("drawing") || text.toLowerCase().includes("upload")
-            ? "You can upload PDF, DWG, or DXF files directly in the 'Upload Drawings' tab on your dashboard. Once uploaded, they go through our automated analyzer, followed by expert audit review."
-            : "Thank you for reaching out to Civil At Hand. One of our structural engineers will review your request and get back to you shortly.";
-
-        const systemReply: ChatMessage = {
-          id: `msg-${Date.now() + 1}`,
-          text: replyText,
-          sender: "admin",
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        };
-        setChatMessages((prev) => [...prev, systemReply]);
-        addNotification("New Message Received", "Support engineer responded to your message.", "info", false);
-      }, 1500);
+          try {
+            const replyRes = await fetch("/api/chats", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text: replyText, sender: "admin" })
+            });
+            if (replyRes.ok) {
+              const replyMsg: ChatMessage = await replyRes.json();
+              setChatMessages((prev) => [...prev, replyMsg]);
+              await addNotification("New Message Received", "Support engineer responded to your message.", "info", false);
+            }
+          } catch (replyErr) {
+            console.error("Error sending assistant reply:", replyErr);
+            const fallbackReply: ChatMessage = {
+              id: `msg-${Date.now() + 1}`,
+              text: replyText,
+              sender: "admin",
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            };
+            setChatMessages((prev) => [...prev, fallbackReply]);
+            await addNotification("New Message Received", "Support engineer responded to your message.", "info", false);
+          }
+        }, 1500);
+      }
+    } catch (err) {
+      console.error("Error sending chat message:", err);
     }
   };
 
@@ -684,7 +823,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (!res.ok) throw new Error("Failed to add blog post");
       const newBlog = await res.json();
       setBlogs((prev) => [newBlog, ...prev]);
-      addNotification(
+      await addNotification(
         "New Blog Post Created",
         `Blog post "${newBlog.title}" is now available.`,
         "success",
