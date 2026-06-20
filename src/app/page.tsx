@@ -349,7 +349,7 @@ export default function Home() {
                       href="#contact"
                       className="inline-block rounded-md bg-orange-500 hover:bg-orange-600 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm"
                     >
-                      Get Free Consultation
+                      Get Consultation
                     </a>
                   </motion.div>
                   <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
