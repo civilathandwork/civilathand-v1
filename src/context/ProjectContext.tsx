@@ -85,7 +85,7 @@ interface ProjectContextType {
   notifications: Notification[];
   chatMessages: ChatMessage[];
   blogs: BlogPost[];
-  addLead: (lead: Omit<Lead, "id" | "date" | "status">) => void;
+  addLead: (lead: Omit<Lead, "id" | "date" | "status">) => Promise<void>;
   addProject: (project: Omit<Project, "id" | "dateStarted" | "progress" | "status">) => void;
   updateProjectStatus: (id: string, status: Project["status"]) => void;
   uploadDrawing: (file: Omit<DrawingFile, "id" | "uploadDate" | "status">) => void;
@@ -97,6 +97,8 @@ interface ProjectContextType {
   addBlog: (blog: Omit<BlogPost, "id" | "date">) => Promise<void>;
   updateBlog: (id: string, blog: Partial<BlogPost>) => Promise<void>;
   deleteBlog: (id: string) => Promise<void>;
+  updateLeadStatus: (id: string, status: Lead["status"]) => Promise<void>;
+  deleteLead: (id: string) => Promise<void>;
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
@@ -327,32 +329,42 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // Load from local storage and API
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLeads = localStorage.getItem("cah_leads");
       const storedProjects = localStorage.getItem("cah_projects");
       const storedDrawings = localStorage.getItem("cah_drawings");
       const storedInvoices = localStorage.getItem("cah_invoices");
       const storedNotifs = localStorage.getItem("cah_notifications");
       const storedChats = localStorage.getItem("cah_chats");
 
-      setLeads(storedLeads ? JSON.parse(storedLeads) : initialLeads);
       setProjects(storedProjects ? JSON.parse(storedProjects) : initialProjects);
       setDrawings(storedDrawings ? JSON.parse(storedDrawings) : initialDrawings);
       setInvoices(storedInvoices ? JSON.parse(storedInvoices) : initialInvoices);
       setNotifications(storedNotifs ? JSON.parse(storedNotifs) : initialNotifications);
       setChatMessages(storedChats ? JSON.parse(storedChats) : initialChatMessages);
 
-      // Fetch blogs asynchronously from the backend API
-      fetch("/api/blogs", { cache: "no-store" })
-        .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch blogs");
-          return res.json();
-        })
-        .then((data) => {
-          setBlogs(Array.isArray(data) ? data : initialBlogs);
-        })
-        .catch((err) => {
-          console.error("Failed to load blogs from API, falling back to initial data:", err);
-          setBlogs(initialBlogs);
+      // Fetch leads and blogs asynchronously from the backend API
+      Promise.all([
+        fetch("/api/leads", { cache: "no-store" })
+          .then((res) => {
+            if (!res.ok) throw new Error("Failed to fetch leads");
+            return res.json();
+          })
+          .catch((err) => {
+            console.error("Failed to fetch leads, using fallback:", err);
+            return initialLeads;
+          }),
+        fetch("/api/blogs", { cache: "no-store" })
+          .then((res) => {
+            if (!res.ok) throw new Error("Failed to fetch blogs");
+            return res.json();
+          })
+          .catch((err) => {
+            console.error("Failed to fetch blogs, using fallback:", err);
+            return initialBlogs;
+          })
+      ])
+        .then(([leadsData, blogsData]) => {
+          setLeads(Array.isArray(leadsData) ? leadsData : initialLeads);
+          setBlogs(Array.isArray(blogsData) ? blogsData : initialBlogs);
         })
         .finally(() => {
           setIsLoaded(true);
@@ -360,33 +372,83 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   }, []);
 
-  // Save to local storage (excluding blogs, which are stored server-side)
+  // Save to local storage (excluding blogs/leads, which are stored server-side)
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem("cah_leads", JSON.stringify(leads));
       localStorage.setItem("cah_projects", JSON.stringify(projects));
       localStorage.setItem("cah_drawings", JSON.stringify(drawings));
       localStorage.setItem("cah_invoices", JSON.stringify(invoices));
       localStorage.setItem("cah_notifications", JSON.stringify(notifications));
       localStorage.setItem("cah_chats", JSON.stringify(chatMessages));
     }
-  }, [leads, projects, drawings, invoices, notifications, chatMessages, isLoaded]);
+  }, [projects, drawings, invoices, notifications, chatMessages, isLoaded]);
 
   // Methods
-  const addLead = (newLead: Omit<Lead, "id" | "date" | "status">) => {
-    const lead: Lead = {
-      ...newLead,
-      id: `lead-${Date.now()}`,
-      date: new Date().toISOString().split("T")[0],
-      status: "new",
-    };
-    setLeads((prev) => [lead, ...prev]);
-    addNotification(
-      "New Lead Received",
-      `${lead.name} requested a quote for ${lead.service}.`,
-      "success",
-      true
-    );
+  const addLead = async (newLeadData: Omit<Lead, "id" | "date" | "status">) => {
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newLeadData)
+      });
+      if (!res.ok) throw new Error("Failed to persist lead in DB");
+      const createdLead: Lead = await res.json();
+      setLeads((prev) => [createdLead, ...prev]);
+      addNotification(
+        "New Lead Received",
+        `${createdLead.name} requested a quote for ${createdLead.service}.`,
+        "success",
+        true
+      );
+    } catch (err) {
+      console.error("Error adding lead:", err);
+      // Fallback local memory lead insertion
+      const fallbackLead: Lead = {
+        ...newLeadData,
+        id: `lead-${Date.now()}`,
+        date: new Date().toISOString().split("T")[0],
+        status: "new"
+      };
+      setLeads((prev) => [fallbackLead, ...prev]);
+      addNotification(
+        "New Lead Received (Local Mode)",
+        `${fallbackLead.name} requested a quote for ${fallbackLead.service}.`,
+        "success",
+        true
+      );
+    }
+  };
+
+  const updateLeadStatus = async (id: string, status: Lead["status"]) => {
+    try {
+      const targetLead = leads.find(l => l.id === id);
+      if (!targetLead) return;
+
+      const res = await fetch(`/api/leads/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...targetLead, status })
+      });
+      if (!res.ok) throw new Error("Failed to update lead status in DB");
+      const updatedLead: Lead = await res.json();
+      setLeads((prev) => prev.map(l => l.id === id ? updatedLead : l));
+    } catch (err) {
+      console.error("Error updating lead status:", err);
+      setLeads((prev) => prev.map(l => l.id === id ? { ...l, status } : l));
+    }
+  };
+
+  const deleteLead = async (id: string) => {
+    try {
+      const res = await fetch(`/api/leads/${id}`, {
+        method: "DELETE"
+      });
+      if (!res.ok) throw new Error("Failed to delete lead in DB");
+      setLeads((prev) => prev.filter(l => l.id !== id));
+    } catch (err) {
+      console.error("Error deleting lead:", err);
+      setLeads((prev) => prev.filter(l => l.id !== id));
+    }
   };
 
   const addProject = (projData: Omit<Project, "id" | "dateStarted" | "progress" | "status">) => {
@@ -686,6 +748,8 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         addBlog,
         updateBlog,
         deleteBlog,
+        updateLeadStatus,
+        deleteLead,
       }}
     >
       {children}

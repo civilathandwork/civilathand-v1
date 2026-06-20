@@ -980,7 +980,7 @@ export default function Home() {
                 className="lg:col-span-7 bg-white border border-slate-200 rounded-md p-6 md:p-8 shadow-sm space-y-5"
               >
                 <h3 className="font-display font-extrabold text-lg text-wix-dark mb-2 uppercase tracking-wide">
-                  Schedule Free Technical Consultation
+                  Schedule Technical Consultation
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

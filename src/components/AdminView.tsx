@@ -55,7 +55,9 @@ export const AdminView: React.FC = () => {
     addProject,
     addBlog,
     updateBlog,
-    deleteBlog
+    deleteBlog,
+    updateLeadStatus,
+    deleteLead
   } = useProjects();
 
   const [activeTab, setActiveTab] = useState<"analytics" | "leads" | "projects" | "invoices" | "blogs">("analytics");
@@ -79,7 +81,7 @@ export const AdminView: React.FC = () => {
     : "35";
 
   // Handle Converting Lead to Project
-  const handleConvertLead = (lead: Lead) => {
+  const handleConvertLead = async (lead: Lead) => {
     addProject({
       title: `${lead.service} - ${lead.name}`,
       clientName: lead.name,
@@ -89,7 +91,7 @@ export const AdminView: React.FC = () => {
       drawings: [],
     });
 
-    lead.status = "converted";
+    await updateLeadStatus(lead.id, "converted");
     alert(`Lead "${lead.name}" has been converted to an active project! Check the Project tab.`);
   };
 
@@ -490,28 +492,40 @@ export const AdminView: React.FC = () => {
                       <p className="text-navy-600 mt-1 italic leading-relaxed">"{lead.details}"</p>
                     </div>
 
-                    {lead.status === "new" && (
-                      <div className="flex justify-end gap-2 border-t border-slate-100 pt-3">
-                        <button
-                          onClick={() => {
-                            lead.status = "contacted";
-                            alert("Lead status marked as Contacted.");
-                          }}
-                          className="bg-slate-100 hover:bg-slate-200 text-navy-950 font-bold px-3 py-1.5 rounded-lg text-[10px]"
-                        >
-                          Mark Contacted
-                        </button>
-                        <motion.button
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => handleConvertLead(lead)}
-                          className="bg-navy-950 hover:bg-orange-600 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] flex items-center gap-1 shadow-sm transition-all"
-                        >
-                          <UserCheck className="h-3.5 w-3.5" />
-                          Convert to Project
-                        </motion.button>
-                      </div>
-                    )}
+                    <div className="flex justify-end gap-2 border-t border-slate-100 pt-3">
+                      <button
+                        onClick={() => {
+                          if (confirm("Are you sure you want to delete this lead request?")) {
+                            deleteLead(lead.id);
+                          }
+                        }}
+                        className="mr-auto text-red-500 hover:text-red-700 font-bold px-3 py-1.5 rounded-lg text-[10px] cursor-pointer transition-colors"
+                      >
+                        Delete Request
+                      </button>
+                      {lead.status === "new" && (
+                        <>
+                          <button
+                            onClick={async () => {
+                              await updateLeadStatus(lead.id, "contacted");
+                              alert("Lead status marked as Contacted.");
+                            }}
+                            className="bg-slate-100 hover:bg-slate-200 text-navy-950 font-bold px-3 py-1.5 rounded-lg text-[10px] cursor-pointer"
+                          >
+                            Mark Contacted
+                          </button>
+                          <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => handleConvertLead(lead)}
+                            className="bg-navy-950 hover:bg-orange-600 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] flex items-center gap-1 shadow-sm transition-all cursor-pointer"
+                          >
+                            <UserCheck className="h-3.5 w-3.5" />
+                            Convert to Project
+                          </motion.button>
+                        </>
+                      )}
+                    </div>
                   </motion.div>
                 ))}
               </div>
