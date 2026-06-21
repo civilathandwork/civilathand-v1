@@ -33,7 +33,7 @@ export const DashboardView: React.FC = () => {
   
   // State for Drawing Upload
   const [file, setFile] = useState<File | null>(null);
-  const [serviceType, setServiceType] = useState("Architectural Design");
+  const [serviceType, setServiceType] = useState("Structural Design");
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
 
@@ -271,10 +271,12 @@ export const DashboardView: React.FC = () => {
                       onChange={(e) => setServiceType(e.target.value)}
                       className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-semibold focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 shadow-sm transition-all"
                     >
-                      <option value="Architectural Design">Architectural Design & Planning</option>
                       <option value="Structural Design">Structural Detailing & Analysis</option>
                       <option value="BOQ Estimation">Quantity Takeoff & BOQ Estimation</option>
+                      <option value="Quantity Surveying">Quantity Surveying</option>
+                      <option value="PDF to AutoCAD">PDF to AutoCAD conversion</option>
                       <option value="BIM Services">BIM Coordination (LOD 300/400)</option>
+                      <option value="Interior Design">Interior Design</option>
                     </select>
                   </div>
 

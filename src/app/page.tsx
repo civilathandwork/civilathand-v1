@@ -13,7 +13,6 @@ import {
   Clock, 
   ShieldCheck, 
   MapPin, 
-  DraftingCompass, 
   Warehouse, 
   Building2, 
   Factory, 
@@ -107,7 +106,7 @@ export default function Home() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [service, setService] = useState("Architectural Design");
+  const [service, setService] = useState("Structural Design");
   const [message, setMessage] = useState("");
   const [contactSuccess, setContactSuccess] = useState(false);
 
@@ -141,16 +140,13 @@ export default function Home() {
     setTimeout(() => setContactSuccess(false), 3000);
   };
 
-  const services = [
-    { title: "Architectural Design", desc: "Premium master plans, structural elevation blueprints, and space layout calculations.", icon: DraftingCompass, href: "/services/architectural-design" },
+  const services: Array<{ title: string; desc: string; icon: any; href?: string }> = [
     { title: "Structural Design", desc: "High-grade structural detailing and frame analysis using state-of-the-art computer automation.", icon: Cpu },
     { title: "BOQ Estimation", desc: "Detailed Material bills and cost projections computed automatically with IS-code standard accuracies.", icon: FileTextIcon },
     { title: "Quantity Surveying", desc: "Professional pre-construction quantity audits, concrete takeoffs, and rebar scheduling.", icon: Briefcase },
     { title: "PDF to AutoCAD", desc: "Seamless vectorization of blueprint drawings to fully editable DWG/DXF files.", icon: FileTextIcon },
     { title: "BIM Services", desc: "Virtual design coordination and 3D modeling up to LOD 400 specification standards.", icon: Compass },
     { title: "Interior Design", desc: "Ergonomic workspace designs, custom interior layouts, and wood-finish specifications.", icon: HomeIcon },
-    { title: "Industrial Planning", desc: "Heavy machinery layouts, warehouse logistics routing, and manufacturing floor design.", icon: Factory },
-    { title: "Project Management", desc: "Complete end-to-end design-build execution timeline audit, tasking, and cost tracking.", icon: ShieldCheck },
   ];
 
   const sectors = [
@@ -1031,10 +1027,12 @@ export default function Home() {
                     className="w-full bg-white border border-slate-300 rounded-md px-3 py-3 text-xs focus:outline-none focus:border-wix-dark focus:ring-0 text-slate-800 font-semibold transition-all"
                     suppressHydrationWarning
                   >
-                    <option value="Architectural Design">Architectural Design & Planning</option>
-                    <option value="Structural Design">Structural Design & detailing</option>
+                    <option value="Structural Design">Structural Design & Detailing</option>
                     <option value="BOQ Estimation">BOQ Estimation & Takeoff</option>
+                    <option value="Quantity Surveying">Quantity Surveying & Audit</option>
+                    <option value="PDF to AutoCAD">PDF to AutoCAD conversion</option>
                     <option value="BIM Services">BIM LOD Modeling</option>
+                    <option value="Interior Design">Interior Design</option>
                   </select>
                 </div>
 

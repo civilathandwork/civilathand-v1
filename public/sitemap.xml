@@ -21,16 +21,7 @@
   </url>
 
   <!-- ==================== SERVICE PAGES ==================== -->
-  <!-- Note: Only /services/architectural-design has a dedicated page currently.
-       The others below should be created as individual pages for full SEO benefit. -->
-
-  <!-- Architectural Design — LIVE PAGE -->
-  <url>
-    <loc>https://civilathand.in/services/architectural-design</loc>
-    <lastmod>2026-06-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
+  <!-- Note: The service pages below should be created as individual pages for full SEO benefit. -->
 
   <!-- Structural Design — ADD THIS PAGE -->
   <url>
@@ -80,21 +71,7 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- Industrial Planning — ADD THIS PAGE -->
-  <url>
-    <loc>https://civilathand.in/services/industrial-planning</loc>
-    <lastmod>2026-06-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
 
-  <!-- Project Management — ADD THIS PAGE -->
-  <url>
-    <loc>https://civilathand.in/services/project-management</loc>
-    <lastmod>2026-06-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
 
   <!-- ==================== TOOLS / CALCULATORS PAGES ==================== -->
   <!-- These are currently sections on the homepage (#calculators).
