@@ -51,7 +51,7 @@ const PinterestIcon = (props: any) => (
 
 const ThreadsIcon = (props: any) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M12.016 0C5.38 0 0 5.38 0 12.016c0 6.637 5.38 12.017 12.016 12.017c1.378 0 2.715-.226 3.992-.676a1.144 1.144 0 0 0 .763-1.077c0-.493-.314-.94-.783-1.083a1.144 1.144 0 0 0-1.265.342c-.85.834-1.892 1.256-3.09 1.256c-5.275 0-9.569-4.294-9.569-9.569c0-5.275 4.294-9.569 9.569-9.569c5.275 0 9.569 4.294 9.569 9.569c0 1.921-.497 3.527-1.478 4.774c-.982 1.246-2.316 1.879-3.966 1.879c-.838 0-1.569-.214-2.176-.638c-.606-.424-1.01-.986-1.201-1.672h-.056c-.25.864-.727 1.522-1.417 1.954c-.69.432-1.477.653-2.348.653c-1.583 0-2.846-.532-3.759-1.582c-.914-1.05-1.376-2.483-1.376-4.263c0-1.81.474-3.267 1.41-4.332c.937-1.066 2.228-1.609 3.84-1.609c1.025 0 1.9.274 2.595.816c.695.542 1.135 1.263 1.309 2.148h.056c.218-.84.664-1.477 1.328-1.899c.664-.421 1.455-.634 2.355-.634c2.203 0 3.992.83 5.319 2.469c1.328 1.639 2.001 3.864 2.001 6.619c0 6.636-5.38 12.016-12.016 12.016zM8.337 13.916c0 .991.226 1.761.677 2.288c.451.527 1.054.793 1.794.793c.712 0 1.272-.25 1.666-.745c.394-.495.594-1.199.594-2.094v-1.62c-.004-.799-.2-1.428-.59-1.87c-.389-.442-.94-.666-1.64-.666c-.722 0-1.282.253-1.668.752c-.386.499-.583 1.258-.583 2.25v1.212z"/>
+    <path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221z" />
   </svg>
 );
 
@@ -111,6 +111,56 @@ export const Footer: React.FC = () => {
                 </svg>
               </div>
               <span className="font-display tracking-wide text-[11px] text-slate-700">Twitter / X</span>
+            </a>
+
+            <a 
+              href="https://www.threads.com/@civilathand" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-slate-100/60 border border-slate-200/80 rounded-full px-5 py-2.5 flex items-center gap-3 text-xs font-bold text-wix-dark hover:bg-white hover:border-slate-400 hover:-translate-y-0.5 transition-all duration-300 shadow-sm"
+            >
+              <div className="h-7 w-7 rounded-lg bg-slate-200/50 flex items-center justify-center text-slate-900">
+                <ThreadsIcon className="h-4 w-4" />
+              </div>
+              <span className="font-display tracking-wide text-[11px] text-slate-700">Threads</span>
+            </a>
+
+            <a 
+              href="https://www.youtube.com/@civilathand" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-slate-100/60 border border-slate-200/80 rounded-full px-5 py-2.5 flex items-center gap-3 text-xs font-bold text-wix-dark hover:bg-white hover:border-slate-400 hover:-translate-y-0.5 transition-all duration-300 shadow-sm"
+            >
+              <div className="h-7 w-7 rounded-lg bg-slate-200/50 flex items-center justify-center text-[#ff0000]">
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.108C19.73 3.56 12 3.56 12 3.56s-7.73 0-9.388.495a3.003 3.003 0 0 0-2.11 2.108C0 7.822 0 12 0 12s0 4.178.495 5.837a3.003 3.003 0 0 0 2.11 2.108C4.27 20.44 12 20.44 12 20.44s7.73 0 9.388-.495a3.003 3.003 0 0 0 2.11-2.108C24 16.178 24 12 24 12s0-4.178-.495-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </div>
+              <span className="font-display tracking-wide text-[11px] text-slate-700">YouTube</span>
+            </a>
+
+            <a 
+              href="https://in.pinterest.com/civilathand" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-slate-100/60 border border-slate-200/80 rounded-full px-5 py-2.5 flex items-center gap-3 text-xs font-bold text-wix-dark hover:bg-white hover:border-slate-400 hover:-translate-y-0.5 transition-all duration-300 shadow-sm"
+            >
+              <div className="h-7 w-7 rounded-lg bg-slate-200/50 flex items-center justify-center text-[#bd081c]">
+                <PinterestIcon className="h-4 w-4" />
+              </div>
+              <span className="font-display tracking-wide text-[11px] text-slate-700">Pinterest</span>
+            </a>
+
+            <a 
+              href="https://t.me/civilathand" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-slate-100/60 border border-slate-200/80 rounded-full px-5 py-2.5 flex items-center gap-3 text-xs font-bold text-wix-dark hover:bg-white hover:border-slate-400 hover:-translate-y-0.5 transition-all duration-300 shadow-sm"
+            >
+              <div className="h-7 w-7 rounded-lg bg-slate-200/50 flex items-center justify-center text-[#0088cc]">
+                <TelegramIcon className="h-4 w-4" />
+              </div>
+              <span className="font-display tracking-wide text-[11px] text-slate-700">Telegram</span>
             </a>
 
             <a 
