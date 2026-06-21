@@ -13,9 +13,6 @@ import {
   Clock, 
   ShieldCheck, 
   MapPin, 
-  Warehouse, 
-  Building2, 
-  Factory, 
   Home as HomeIcon, 
   CheckCircle2, 
   Phone, 
@@ -30,11 +27,7 @@ import {
 } from "lucide-react";
 
 // Custom Bridge Icon
-const BridgeIcon = (props: any) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18M3 12a9 9 0 0 1 18 0M6 12v4M10 12v6M14 12v6M18 12v4" />
-  </svg>
-);
+
 
 // Custom Download Icon
 const DownloadIcon = (props: any) => (
@@ -147,51 +140,6 @@ export default function Home() {
     { title: "PDF to AutoCAD", desc: "Seamless vectorization of blueprint drawings to fully editable DWG/DXF files.", icon: FileTextIcon },
     { title: "BIM Services", desc: "Virtual design coordination and 3D modeling up to LOD 400 specification standards.", icon: Compass },
     { title: "Interior Design", desc: "Ergonomic workspace designs, custom interior layouts, and wood-finish specifications.", icon: HomeIcon },
-  ];
-
-  const sectors = [
-    { 
-      title: "Residential", 
-      image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=800", 
-      desc: "Luxury villas, high-rise apartments, and modular townships.", 
-      icon: HomeIcon,
-      specs: ["Design Code: IS 456", "BIM Target: LOD 300", "Load Type: Gravity & Wind", "Typical Foundation: Isolated/Raft"]
-    },
-    { 
-      title: "Commercial", 
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800", 
-      desc: "Corporate office spaces, shopping complexes, and retail centers.", 
-      icon: Building2,
-      specs: ["Design Code: IS 1893", "BIM Target: LOD 400", "Structure: RCC Frame/Composite", "Typical Foundation: Deep Pile/Raft"]
-    },
-    { 
-      title: "Industrial", 
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800", 
-      desc: "Processing units, heavy manufacturing complexes, and power installations.", 
-      icon: Factory,
-      specs: ["Design Code: IS 800", "BIM Target: LOD 400", "Structure: Heavy Steel Trusses", "Load Type: Heavy Dynamic Vibrations"]
-    },
-    { 
-      title: "Infrastructure", 
-      image: "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?auto=format&fit=crop&q=80&w=800", 
-      desc: "Bridges, flyovers, highways, and transport terminals.", 
-      icon: BridgeIcon,
-      specs: ["Design Code: IRC 112", "BIM Target: LOD 400+", "Structure: Prestressed Concrete/Steel", "Typical Foundation: Well/Pile Foundations"]
-    },
-    { 
-      title: "Warehouses", 
-      image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800", 
-      desc: "Logistic hubs, cold storages, and prefabricated steel storage sheds.", 
-      icon: Warehouse,
-      specs: ["Design Code: IS 800:2007", "BIM Target: LOD 350", "Structure: PEB Portal Frame", "Wind Speed Limit: Up to 50 m/s"]
-    },
-    { 
-      title: "Manufacturing", 
-      image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=800", 
-      desc: "Smart production floors, cleanrooms, and engineering assembly bays.", 
-      icon: SettingsIcon,
-      specs: ["Design Code: NBC 2016", "BIM Target: LOD 400", "Structure: RCC Flat Slabs/Steel", "Typical Floor: Epoxy Industrial Flooring"]
-    },
   ];
 
   const lifecycleSteps = [
@@ -479,75 +427,7 @@ export default function Home() {
         {/* SECTION 4: AUTOMATION TOOLS */}
         <Calculators />
 
-        {/* SECTION 5: MARKET SECTORS */}
-        <section id="sectors" className="py-24 bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={scrollRevealVariants}
-              className="text-center max-w-3xl mx-auto mb-16"
-            >
-              <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Industries We Serve</span>
-              <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
-                Broad Spectrum Engineering Sectors
-              </h2>
-              <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
-                From luxury domestic houses to high-tolerance heavy factories, our team delivers optimized structural planning tailored to industry specifications.
-              </p>
-            </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {sectors.map((sector, idx) => {
-                const Icon = sector.icon;
-                return (
-                  <motion.div 
-                    key={idx} 
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.5, delay: (idx % 3) * 0.1 }}
-                    className="group relative h-80 rounded-md overflow-hidden border border-slate-200 flex flex-col justify-end p-6 transition-all duration-300 hover:border-wix-dark shadow-sm hover:shadow-md"
-                  >
-                    {/* Background image */}
-                    <div className="absolute inset-0 z-0">
-                      <img 
-                        src={sector.image} 
-                        alt={sector.title} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-wix-dark/95 via-wix-dark/60 to-transparent transition-all duration-300 group-hover:from-wix-dark group-hover:via-wix-dark/85"></div>
-                    </div>
-
-                    <div className="relative z-10 text-white space-y-2.5 w-full">
-                      <div className="flex justify-between items-center">
-                        <div className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-orange-500 text-white border border-orange-600">
-                          <Icon className="h-4.5 w-4.5" />
-                        </div>
-                      </div>
-                      
-                      <h3 className="font-display font-extrabold text-lg tracking-tight uppercase">{sector.title}</h3>
-                      <p className="text-xs text-slate-300 leading-normal group-hover:opacity-0 group-hover:h-0 group-hover:overflow-hidden transition-all duration-300">{sector.desc}</p>
-                      
-                      {/* Floating specs shown on hover */}
-                      <div className="opacity-0 max-h-0 overflow-hidden group-hover:opacity-100 group-hover:max-h-40 transition-all duration-300 space-y-2">
-                        <p className="text-[10px] text-orange-400 font-bold uppercase tracking-widest">Engineering Specs:</p>
-                        <div className="grid grid-cols-2 gap-1.5">
-                          {sector.specs?.map((spec, sIdx) => (
-                            <span key={sIdx} className="bg-white/10 backdrop-blur-sm border border-white/10 text-[9px] font-bold text-slate-200 px-2 py-1 rounded-sm">
-                              {spec}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
 
         {/* SECTION 6: CONCEPT TO COMMISSIONING INTERACTIVE LIFECYCLE */}
         <section className="py-24 bg-wix-cream border-y border-slate-200">
@@ -1198,9 +1078,4 @@ const FileTextIcon = (props: any) => (
   </svg>
 );
 
-const SettingsIcon = (props: any) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.43l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-  </svg>
-);
+
