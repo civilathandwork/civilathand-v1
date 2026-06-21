@@ -37,23 +37,24 @@ export async function GET() {
     const collection = db.collection("leads");
     const settingsCollection = db.collection("settings");
 
-    // Check if seeded
-    const seedFlag = await settingsCollection.findOne({ key: "leads_seeded" });
-
     const headers = {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
 
-    if (!seedFlag) {
+    // Atomic upsert — prevents race condition on simultaneous first requests
+    const seedResult = await settingsCollection.findOneAndUpdate(
+      { key: "leads_seeded" },
+      { $setOnInsert: { key: "leads_seeded", value: true } },
+      { upsert: true, returnDocument: "before" }
+    );
+
+    if (!seedResult) {
       await collection.insertMany(initialLeads);
-      await settingsCollection.insertOne({ key: "leads_seeded", value: true });
       return NextResponse.json(initialLeads, { headers });
     }
 
     const leads = await collection.find({}).toArray();
-    // Convert _id to string or remove it
     const formattedLeads = leads.map(({ _id, ...rest }) => rest);
-
     return NextResponse.json(formattedLeads, { headers });
   } catch (error) {
     console.error("Error in GET /api/leads:", error);

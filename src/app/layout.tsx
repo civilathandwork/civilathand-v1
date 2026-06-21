@@ -1,3 +1,4 @@
+import React from "react";
 import type { Metadata } from "next";
 import { ProjectProvider } from "@/context/ProjectContext";
 import { FloatingSocials } from "@/components/FloatingSocials";

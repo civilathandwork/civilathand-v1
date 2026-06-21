@@ -99,6 +99,7 @@ interface ProjectContextType {
   deleteBlog: (id: string) => Promise<void>;
   updateLeadStatus: (id: string, status: Lead["status"]) => Promise<void>;
   deleteLead: (id: string) => Promise<void>;
+  isLoaded: boolean; // true once all API fetches have settled (success or fallback)
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
@@ -889,6 +890,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         deleteBlog,
         updateLeadStatus,
         deleteLead,
+        isLoaded,
       }}
     >
       {children}

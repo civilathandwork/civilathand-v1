@@ -33,21 +33,24 @@ export async function GET() {
     const collection = db.collection("invoices");
     const settingsCollection = db.collection("settings");
 
-    const seedFlag = await settingsCollection.findOne({ key: "invoices_seeded" });
-
     const headers = {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
 
-    if (!seedFlag) {
+    // Atomic upsert — prevents race condition on simultaneous first requests
+    const seedResult = await settingsCollection.findOneAndUpdate(
+      { key: "invoices_seeded" },
+      { $setOnInsert: { key: "invoices_seeded", value: true } },
+      { upsert: true, returnDocument: "before" }
+    );
+
+    if (!seedResult) {
       await collection.insertMany(initialInvoices);
-      await settingsCollection.insertOne({ key: "invoices_seeded", value: true });
       return NextResponse.json(initialInvoices, { headers });
     }
 
     const invoices = await collection.find({}).toArray();
     const formattedInvoices = invoices.map(({ _id, ...rest }) => rest);
-
     return NextResponse.json(formattedInvoices, { headers });
   } catch (error) {
     console.error("Error in GET /api/invoices:", error);
@@ -69,7 +72,8 @@ export async function POST(request: Request) {
     const collection = db.collection("invoices");
 
     const newInvoice = {
-      id: `inv-${Date.now().toString().slice(-4)}`,
+      // Use full timestamp to prevent ID collision (last-4-digits would repeat every ~10s)
+      id: `inv-${Date.now()}`,
       projectId,
       projectTitle: projectTitle || "General Engineering Service",
       amount: Number(amount),

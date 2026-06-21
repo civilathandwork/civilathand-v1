@@ -6,12 +6,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Briefcase, 
   UploadCloud, 
-  FileCheck, 
   CreditCard, 
   MessageSquare, 
   Send, 
   Activity, 
-  Clock, 
   MapPin, 
   Calendar, 
   FileText, 
@@ -34,8 +32,7 @@ export const DashboardView: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"projects" | "upload" | "payments" | "chat">("projects");
   
   // State for Drawing Upload
-  const [fileName, setFileName] = useState("");
-  const [fileSize, setFileSize] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [serviceType, setServiceType] = useState("Architectural Design");
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
@@ -55,19 +52,18 @@ export const DashboardView: React.FC = () => {
   // Handle Drawing Submit
   const handleUploadSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!fileName) return;
+    if (!file) return;
 
     setUploading(true);
     setTimeout(() => {
       uploadDrawing({
-        name: fileName,
-        size: fileSize || "5.4 MB",
+        name: file.name,
+        size: (file.size / (1024 * 1024)).toFixed(1) + " MB",
         serviceType
       });
       setUploading(false);
       setUploadSuccess(true);
-      setFileName("");
-      setFileSize("");
+      setFile(null);
       setTimeout(() => setUploadSuccess(false), 3000);
     }, 2000);
   };
@@ -250,19 +246,17 @@ export const DashboardView: React.FC = () => {
                   
                   <div className="space-y-3 w-full max-w-xs">
                     <input
-                      type="text"
+                      type="file"
                       required
-                      placeholder="Enter file name (e.g. villa-layout.pdf)"
-                      value={fileName}
-                      onChange={(e) => setFileName(e.target.value)}
-                      className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm transition-all"
-                    />
-                    <input
-                      type="text"
-                      placeholder="File size (e.g. 4.8 MB) - Optional"
-                      value={fileSize}
-                      onChange={(e) => setFileSize(e.target.value)}
-                      className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 font-semibold shadow-sm transition-all"
+                      accept=".pdf,.dwg,.dxf"
+                      onChange={(e) => {
+                        if (e.target.files && e.target.files[0]) {
+                          setFile(e.target.files[0]);
+                        } else {
+                          setFile(null);
+                        }
+                      }}
+                      className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 shadow-sm transition-all"
                     />
                   </div>
                 </div>
@@ -297,7 +291,7 @@ export const DashboardView: React.FC = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
-                    disabled={uploading || !fileName}
+                    disabled={uploading || !file}
                     className="w-full bg-navy-950 hover:bg-orange-600 disabled:bg-slate-300 text-white font-bold py-3 rounded-lg text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-premium"
                   >
                     {uploading ? (

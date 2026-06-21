@@ -43,21 +43,24 @@ export async function GET() {
     const collection = db.collection("projects");
     const settingsCollection = db.collection("settings");
 
-    const seedFlag = await settingsCollection.findOne({ key: "projects_seeded" });
-
     const headers = {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
 
-    if (!seedFlag) {
+    // Atomic upsert — prevents race condition on simultaneous first requests
+    const seedResult = await settingsCollection.findOneAndUpdate(
+      { key: "projects_seeded" },
+      { $setOnInsert: { key: "projects_seeded", value: true } },
+      { upsert: true, returnDocument: "before" }
+    );
+
+    if (!seedResult) {
       await collection.insertMany(initialProjects);
-      await settingsCollection.insertOne({ key: "projects_seeded", value: true });
       return NextResponse.json(initialProjects, { headers });
     }
 
     const projects = await collection.find({}).toArray();
     const formattedProjects = projects.map(({ _id, ...rest }) => rest);
-
     return NextResponse.json(formattedProjects, { headers });
   } catch (error) {
     console.error("Error in GET /api/projects:", error);

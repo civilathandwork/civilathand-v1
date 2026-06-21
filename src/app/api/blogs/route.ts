@@ -48,26 +48,28 @@ export async function GET() {
     const collection = db.collection("blogs");
     const settingsCollection = db.collection("settings");
 
-    // Check if the database has already been seeded at least once
-    const seedFlag = await settingsCollection.findOne({ key: "seeded" });
-
     const headers = {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
 
-    if (!seedFlag) {
-      // Seed with initial blogs
+    // Atomic upsert — only inserts the seed flag if it doesn't already exist.
+    // This prevents a race condition where two simultaneous requests could both
+    // pass the findOne check and seed duplicate data.
+    const seedResult = await settingsCollection.findOneAndUpdate(
+      { key: "seeded" },
+      { $setOnInsert: { key: "seeded", value: true } },
+      { upsert: true, returnDocument: "before" }
+    );
+
+    if (!seedResult) {
+      // seedResult is null → the document didn't exist before → we just created it → seed now
       await collection.insertMany(initialBlogs);
-      await settingsCollection.insertOne({ key: "seeded", value: true });
       return NextResponse.json(initialBlogs, { headers });
     }
 
     // Fetch all blogs
     const blogs = await collection.find({}).toArray();
-
-    // Convert _id to string or remove it to match client expectations
     const formattedBlogs = blogs.map(({ _id, ...rest }) => rest);
-
     return NextResponse.json(formattedBlogs, { headers });
   } catch (error) {
     console.error("Error in GET /api/blogs:", error);

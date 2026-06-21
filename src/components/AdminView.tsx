@@ -30,7 +30,7 @@ import {
   Eraser,
   Sparkles,
   X,
-  Upload,
+
   Underline,
   Strikethrough,
   AlignLeft,
@@ -180,10 +180,18 @@ export const AdminView: React.FC = () => {
   };
 
   const runCommand = (command: string, value: string = "") => {
-    document.execCommand(command, false, value);
-    if (editorRef.current) {
-      setBlogContent(editorRef.current.innerHTML);
+    if (!editorRef.current) return;
+    // Ensure the contenteditable div has focus before running a command
+    editorRef.current.focus();
+    // execCommand is deprecated but remains the most reliable cross-browser
+    // approach for contenteditable formatting. Wrapped in try/catch so the
+    // editor degrades gracefully if a browser eventually removes support.
+    try {
+      document.execCommand(command, false, value || undefined);
+    } catch (err) {
+      console.warn(`[RichEditor] Command "${command}" is not supported:`, err);
     }
+    setBlogContent(editorRef.current.innerHTML);
   };
 
   const insertTemplateHtml = (templateType: "spec" | "takeoff") => {
@@ -193,7 +201,27 @@ export const AdminView: React.FC = () => {
     
     if (editorRef.current) {
       editorRef.current.focus();
-      document.execCommand("insertHTML", false, templateHtml);
+      // Use the modern Selection + Range API instead of the deprecated
+      // execCommand("insertHTML") to insert template HTML at cursor position.
+      const selection = window.getSelection();
+      if (selection && selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        range.deleteContents();
+        const fragment = document.createRange().createContextualFragment(templateHtml);
+        const lastInserted = fragment.lastChild;
+        range.insertNode(fragment);
+        // Move cursor to end of inserted content
+        if (lastInserted) {
+          const newRange = document.createRange();
+          newRange.setStartAfter(lastInserted);
+          newRange.collapse(true);
+          selection.removeAllRanges();
+          selection.addRange(newRange);
+        }
+      } else {
+        // Fallback: append to end of editor if no cursor position
+        editorRef.current.insertAdjacentHTML("beforeend", templateHtml);
+      }
       setBlogContent(editorRef.current.innerHTML);
     }
     setShowTemplates(false);
@@ -878,56 +906,33 @@ export const AdminView: React.FC = () => {
                                   className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:bg-white text-slate-800 font-semibold shadow-sm transition-all"
                                 />
                               </div>
-                              <div>
-                                <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1.5">Banner Image</label>
-                                <div className="flex items-center gap-3">
-                                  {blogImage && (
-                                    <div className="relative h-11 w-16 rounded-lg overflow-hidden border border-slate-300 bg-slate-50 group flex-shrink-0">
-                                      <img src={blogImage} alt="Banner Preview" className="h-full w-full object-cover" />
-                                      <button
-                                        type="button"
-                                        onClick={() => setBlogImage("")}
-                                        className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[8px] font-bold transition-all uppercase tracking-wide cursor-pointer"
-                                      >
-                                        Remove
-                                      </button>
-                                    </div>
-                                  )}
-                                  <div className="relative flex-grow">
-                                    <input
-                                      type="file"
-                                      accept="image/*"
-                                      onChange={(e) => {
-                                        const file = e.target.files?.[0];
-                                        if (!file) return;
-                                        
-                                        // Max 5MB limit
-                                        if (file.size > 5 * 1024 * 1024) {
-                                          alert("File size exceeds 5MB limit. Please upload a smaller image.");
-                                          return;
-                                        }
+                            </div>
 
-                                        const reader = new FileReader();
-                                        reader.onloadend = () => {
-                                          if (typeof reader.result === "string") {
-                                            setBlogImage(reader.result);
-                                          }
-                                        };
-                                        reader.readAsDataURL(file);
-                                      }}
-                                      className="hidden"
-                                      id="blogImageUploadInput"
-                                    />
-                                    <label
-                                      htmlFor="blogImageUploadInput"
-                                      className="flex items-center justify-center gap-1.5 w-full bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm cursor-pointer transition-all border-dashed"
+                            {/* Banner Image URL — stores only a URL, never base64, to avoid MongoDB document-size limits */}
+                            <div>
+                              <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1.5">Banner Image URL</label>
+                              <div className="flex items-center gap-3">
+                                {blogImage && (
+                                  <div className="relative h-11 w-16 rounded-lg overflow-hidden border border-slate-300 bg-slate-50 group flex-shrink-0">
+                                    <img src={blogImage} alt="Banner Preview" className="h-full w-full object-cover" />
+                                    <button
+                                      type="button"
+                                      onClick={() => setBlogImage("")}
+                                      className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[8px] font-bold transition-all uppercase tracking-wide cursor-pointer"
                                     >
-                                      <Upload className="h-3.5 w-3.5 text-slate-500" />
-                                      {blogImage ? "Change Image" : "Upload Banner Image"}
-                                    </label>
+                                      Remove
+                                    </button>
                                   </div>
-                                </div>
+                                )}
+                                <input
+                                  type="url"
+                                  value={blogImage}
+                                  onChange={(e) => setBlogImage(e.target.value)}
+                                  placeholder="https://images.unsplash.com/photo-..."
+                                  className="flex-grow bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:bg-white text-slate-800 font-semibold shadow-sm transition-all"
+                                />
                               </div>
+                              <p className="text-[9px] text-slate-400 mt-1">Paste any public image URL (Unsplash, CDN, etc.). Only the URL is stored — not the file.</p>
                             </div>
 
                             <div>

@@ -4,6 +4,15 @@ import clientPromise from "@/lib/mongodb";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  // Security guard: this endpoint must NEVER be accessible in production.
+  // It leaks database connection details and collection names.
+  if (process.env.NODE_ENV !== "development") {
+    return NextResponse.json(
+      { error: "Not available in production." },
+      { status: 403 }
+    );
+  }
+
   const uri = process.env.MONGODB_URI;
   const dbName = process.env.MONGODB_DB || "civil-at-hand";
   

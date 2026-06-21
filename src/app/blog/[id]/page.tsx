@@ -10,7 +10,7 @@ import { ArrowLeft, Calendar, User, BookOpen, Clock, ChevronRight, Share2 } from
 
 export default function BlogDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const { blogs } = useProjects();
+  const { blogs, isLoaded } = useProjects();
 
   const post = blogs.find((b) => b.id === id);
 
@@ -130,6 +130,39 @@ export default function BlogDetailPage({ params }: { params: Promise<{ id: strin
     });
   };
 
+  // Show skeleton while the initial API fetch hasn't settled yet.
+  // This prevents flashing "Article Not Found" before data arrives.
+  if (!isLoaded) {
+    return (
+      <div className="flex flex-col min-h-screen bg-wix-cream">
+        <Header />
+        <main className="flex-grow py-12">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="h-4 w-32 bg-slate-200 rounded animate-pulse mb-8" />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+              <div className="lg:col-span-8 bg-white border border-slate-200 rounded-2xl p-10 space-y-6">
+                <div className="h-4 w-20 bg-orange-200 rounded animate-pulse" />
+                <div className="h-8 w-3/4 bg-slate-200 rounded animate-pulse" />
+                <div className="h-4 w-full bg-slate-100 rounded animate-pulse" />
+                <div className="aspect-video w-full bg-slate-100 rounded-xl animate-pulse" />
+                <div className="space-y-3">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="h-3 bg-slate-100 rounded animate-pulse" style={{ width: `${90 - i * 5}%` }} />
+                  ))}
+                </div>
+              </div>
+              <div className="lg:col-span-4 space-y-6">
+                <div className="bg-white border border-slate-200 rounded-2xl p-6 h-32 animate-pulse" />
+                <div className="bg-white border border-slate-200 rounded-2xl p-6 h-24 animate-pulse" />
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   if (!post || post.status !== "published") {
     return (
       <div className="flex flex-col min-h-screen bg-wix-cream">
@@ -153,6 +186,11 @@ export default function BlogDetailPage({ params }: { params: Promise<{ id: strin
       </div>
     );
   }
+
+  // Calculate dynamic read time based on 200 WPM
+  const plainText = post.content.replace(/<[^>]*>?/gm, ''); // strip HTML tags
+  const wordCount = plainText.split(/\s+/).filter(w => w.length > 0).length;
+  const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
   return (
     <div className="flex flex-col min-h-screen bg-wix-cream">
@@ -197,7 +235,7 @@ export default function BlogDetailPage({ params }: { params: Promise<{ id: strin
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Clock className="h-4 w-4 text-orange-500" />
-                    Read Time: 5 Mins
+                    Read Time: {readTime} Min{readTime !== 1 ? 's' : ''}
                   </span>
                 </div>
               </div>

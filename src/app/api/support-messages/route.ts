@@ -33,23 +33,33 @@ export async function GET() {
     const collection = db.collection("chats");
     const settingsCollection = db.collection("settings");
 
-    const seedFlag = await settingsCollection.findOne({ key: "chats_seeded" });
-
     const headers = {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
 
-    if (!seedFlag) {
+    // Atomic upsert — prevents race condition on simultaneous first requests
+    const seedResult = await settingsCollection.findOneAndUpdate(
+      { key: "chats_seeded" },
+      { $setOnInsert: { key: "chats_seeded", value: true } },
+      { upsert: true, returnDocument: "before" }
+    );
+
+    if (!seedResult) {
       await collection.insertMany(initialChatMessages);
-      await settingsCollection.insertOne({ key: "chats_seeded", value: true });
       return NextResponse.json(initialChatMessages, { headers });
     }
 
     const chats = await collection.find({}).toArray();
     const formattedChats = chats.map(({ _id, ...rest }) => rest);
 
-    // Sort by chronological order safely
-    formattedChats.sort((a, b) => (a.id || "").localeCompare(b.id || ""));
+    // Sort chronologically by createdAt (ISO date) ascending — oldest message first
+    // Falls back to string ID for legacy records without createdAt
+    formattedChats.sort((a, b) => {
+      if (a.createdAt && b.createdAt) {
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      }
+      return (a.id || "").localeCompare(b.id || "");
+    });
 
     return NextResponse.json(formattedChats, { headers });
   } catch (error) {
@@ -75,7 +85,9 @@ export async function POST(request: Request) {
       id: `msg-${Date.now()}`,
       text,
       sender,
-      timestamp: timestamp || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      timestamp: timestamp || new Date().toISOString().replace("T", " ").substring(0, 16),
+      // createdAt as ISO string for reliable chronological sorting
+      createdAt: new Date().toISOString(),
     };
 
     await collection.insertOne(newMsg);

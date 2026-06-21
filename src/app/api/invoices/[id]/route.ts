@@ -39,3 +39,26 @@ export async function PUT(
     return NextResponse.json({ error: "Failed to update invoice" }, { status: 500 });
   }
 }
+
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+
+    const client = await clientPromise;
+    const db = client.db(dbName);
+    const collection = db.collection("invoices");
+
+    const result = await collection.deleteOne({ id });
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: "Invoice not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, id });
+  } catch (error) {
+    console.error("Error deleting invoice:", error);
+    return NextResponse.json({ error: "Failed to delete invoice" }, { status: 500 });
+  }
+}

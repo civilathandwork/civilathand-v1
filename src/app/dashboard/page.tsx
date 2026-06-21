@@ -28,7 +28,7 @@ export default function DashboardPage() {
             
             <div className="relative z-10">
               <h1 className="font-display font-extrabold text-2xl md:text-3xl tracking-tight">
-                Welcome Back, <span className="text-orange-500">Rahul Verma</span>
+                Welcome Back, <span className="text-orange-500">Guest</span>
               </h1>
               <p className="text-xs text-slate-300 mt-1">
                 Access your blueprints, monitor active engineering pipelines, and complete milestone billing.

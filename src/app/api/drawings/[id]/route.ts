@@ -39,3 +39,26 @@ export async function PUT(
     return NextResponse.json({ error: "Failed to update drawing" }, { status: 500 });
   }
 }
+
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+
+    const client = await clientPromise;
+    const db = client.db(dbName);
+    const collection = db.collection("drawings");
+
+    const result = await collection.deleteOne({ id });
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: "Drawing not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, id });
+  } catch (error) {
+    console.error("Error deleting drawing:", error);
+    return NextResponse.json({ error: "Failed to delete drawing" }, { status: 500 });
+  }
+}

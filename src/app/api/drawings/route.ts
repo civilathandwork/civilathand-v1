@@ -39,21 +39,24 @@ export async function GET() {
     const collection = db.collection("drawings");
     const settingsCollection = db.collection("settings");
 
-    const seedFlag = await settingsCollection.findOne({ key: "drawings_seeded" });
-
     const headers = {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
 
-    if (!seedFlag) {
+    // Atomic upsert — prevents race condition on simultaneous first requests
+    const seedResult = await settingsCollection.findOneAndUpdate(
+      { key: "drawings_seeded" },
+      { $setOnInsert: { key: "drawings_seeded", value: true } },
+      { upsert: true, returnDocument: "before" }
+    );
+
+    if (!seedResult) {
       await collection.insertMany(initialDrawings);
-      await settingsCollection.insertOne({ key: "drawings_seeded", value: true });
       return NextResponse.json(initialDrawings, { headers });
     }
 
     const drawings = await collection.find({}).toArray();
     const formattedDrawings = drawings.map(({ _id, ...rest }) => rest);
-
     return NextResponse.json(formattedDrawings, { headers });
   } catch (error) {
     console.error("Error in GET /api/drawings:", error);

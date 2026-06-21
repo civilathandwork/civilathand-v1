@@ -33,23 +33,33 @@ export async function GET() {
     const collection = db.collection("notifications");
     const settingsCollection = db.collection("settings");
 
-    const seedFlag = await settingsCollection.findOne({ key: "notifications_seeded" });
-
     const headers = {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
 
-    if (!seedFlag) {
+    // Atomic upsert — prevents race condition on simultaneous first requests
+    const seedResult = await settingsCollection.findOneAndUpdate(
+      { key: "notifications_seeded" },
+      { $setOnInsert: { key: "notifications_seeded", value: true } },
+      { upsert: true, returnDocument: "before" }
+    );
+
+    if (!seedResult) {
       await collection.insertMany(initialNotifications);
-      await settingsCollection.insertOne({ key: "notifications_seeded", value: true });
       return NextResponse.json(initialNotifications, { headers });
     }
 
     const notifications = await collection.find({}).toArray();
     const formattedNotifications = notifications.map(({ _id, ...rest }) => rest);
 
-    // Sort by timestamp/id desc to show latest first
-    formattedNotifications.sort((a, b) => b.id.localeCompare(a.id));
+    // Sort by createdAt (ISO date string) descending — most recent first
+    // Falls back to string ID comparison for legacy records without createdAt
+    formattedNotifications.sort((a, b) => {
+      if (a.createdAt && b.createdAt) {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      }
+      return b.id.localeCompare(a.id);
+    });
 
     return NextResponse.json(formattedNotifications, { headers });
   } catch (error) {
@@ -77,6 +87,8 @@ export async function POST(request: Request) {
       message,
       type: type || "info",
       timestamp: new Date().toISOString().replace("T", " ").substring(0, 16),
+      // createdAt as ISO string for reliable chronological sorting
+      createdAt: new Date().toISOString(),
       read: false,
       isAdmin: !!isAdmin,
     };
