@@ -48,13 +48,13 @@ export async function GET() {
     const chats = await collection.find({}).toArray();
     const formattedChats = chats.map(({ _id, ...rest }) => rest);
 
-    // Sort by chronological order
-    formattedChats.sort((a, b) => a.id.localeCompare(b.id));
+    // Sort by chronological order safely
+    formattedChats.sort((a, b) => (a.id || "").localeCompare(b.id || ""));
 
     return NextResponse.json(formattedChats, { headers });
   } catch (error) {
-    console.error("Error in GET /api/chats:", error);
-    return NextResponse.json({ error: "Failed to fetch chats" }, { status: 500 });
+    console.error("Error in GET /api/support-messages:", error);
+    return NextResponse.json({ error: "Failed to fetch support messages" }, { status: 500 });
   }
 }
 
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
     const { _id, ...responseChat } = newMsg as any;
     return NextResponse.json(responseChat, { status: 201 });
   } catch (error) {
-    console.error("Error creating chat message:", error);
-    return NextResponse.json({ error: "Failed to create chat message" }, { status: 500 });
+    console.error("Error creating support message:", error);
+    return NextResponse.json({ error: "Failed to create support message" }, { status: 500 });
   }
 }

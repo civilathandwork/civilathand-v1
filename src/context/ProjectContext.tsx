@@ -384,7 +384,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
             console.error("Failed to fetch notifications, using fallback:", err);
             return initialNotifications;
           }),
-        fetch("/api/chats", { cache: "no-store" })
+        fetch("/api/support-messages", { cache: "no-store" })
           .then((res) => {
             if (!res.ok) throw new Error("Failed to fetch chats");
             return res.json();
@@ -762,7 +762,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const sendChatMessage = async (text: string, sender: ChatMessage["sender"]) => {
     try {
-      const res = await fetch("/api/chats", {
+      const res = await fetch("/api/support-messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text, sender })
@@ -783,7 +783,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
               : "Thank you for reaching out to Civil At Hand. One of our structural engineers will review your request and get back to you shortly.";
 
           try {
-            const replyRes = await fetch("/api/chats", {
+            const replyRes = await fetch("/api/support-messages", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ text: replyText, sender: "admin" })
