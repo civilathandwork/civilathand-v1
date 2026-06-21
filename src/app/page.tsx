@@ -907,11 +907,11 @@ export default function Home() {
                     className="w-full bg-white border border-slate-300 rounded-md px-3 py-3 text-xs focus:outline-none focus:border-wix-dark focus:ring-0 text-slate-800 font-semibold transition-all"
                     suppressHydrationWarning
                   >
-                    <option value="Structural Design">Structural Design & Detailing</option>
-                    <option value="BOQ Estimation">BOQ Estimation & Takeoff</option>
-                    <option value="Quantity Surveying">Quantity Surveying & Audit</option>
-                    <option value="PDF to AutoCAD">PDF to AutoCAD conversion</option>
-                    <option value="BIM Services">BIM LOD Modeling</option>
+                    <option value="Structural Design">Structural Design</option>
+                    <option value="BOQ Estimation">BOQ Estimation</option>
+                    <option value="Quantity Surveying">Quantity Surveying</option>
+                    <option value="PDF to AutoCAD">PDF to AutoCAD</option>
+                    <option value="BIM Services">BIM Services</option>
                     <option value="Interior Design">Interior Design</option>
                   </select>
                 </div>

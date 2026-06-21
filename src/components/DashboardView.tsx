@@ -271,11 +271,11 @@ export const DashboardView: React.FC = () => {
                       onChange={(e) => setServiceType(e.target.value)}
                       className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-semibold focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 shadow-sm transition-all"
                     >
-                      <option value="Structural Design">Structural Detailing & Analysis</option>
-                      <option value="BOQ Estimation">Quantity Takeoff & BOQ Estimation</option>
+                      <option value="Structural Design">Structural Design</option>
+                      <option value="BOQ Estimation">BOQ Estimation</option>
                       <option value="Quantity Surveying">Quantity Surveying</option>
-                      <option value="PDF to AutoCAD">PDF to AutoCAD conversion</option>
-                      <option value="BIM Services">BIM Coordination (LOD 300/400)</option>
+                      <option value="PDF to AutoCAD">PDF to AutoCAD</option>
+                      <option value="BIM Services">BIM Services</option>
                       <option value="Interior Design">Interior Design</option>
                     </select>
                   </div>
