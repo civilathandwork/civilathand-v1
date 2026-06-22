@@ -117,6 +117,48 @@
     <priority>0.85</priority>
   </url>
 
+  <!-- ==================== PORTFOLIO PAGES ==================== -->
+
+  <!-- Portfolio Index -->
+  <url>
+    <loc>https://civilathand.in/portfolio</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Portfolio Case Study: Tata Projects Industrial Shed -->
+  <url>
+    <loc>https://civilathand.in/portfolio/tata-projects-industrial-shed</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Portfolio Case Study: G+3 Smart Commercial Hub -->
+  <url>
+    <loc>https://civilathand.in/portfolio/g3-smart-commercial-hub</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Portfolio Case Study: Residential Villa Complex -->
+  <url>
+    <loc>https://civilathand.in/portfolio/residential-villa-complex</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Portfolio Case Study: Steel Portal Frame Warehouse -->
+  <url>
+    <loc>https://civilathand.in/portfolio/steel-portal-frame-warehouse</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- ==================== BLOG PAGES ==================== -->
 
   <!-- Blog Index -->

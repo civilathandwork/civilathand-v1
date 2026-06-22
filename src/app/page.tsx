@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { Calculators } from "@/components/Calculators";
 import { useProjects } from "@/context/ProjectContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { portfolioItems } from "@/data/portfolio";
 import { 
   Briefcase, 
   Cpu, 
@@ -555,14 +556,9 @@ export default function Home() {
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {[
-                { title: "Tata Projects Industrial Shed", category: "Industrial Plan / BIM Model", area: "45,000 sq.ft", loc: "Taloja MIDC, Mumbai", img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800", status: "Completed" },
-                { title: "G+3 Smart Commercial Hub", category: "Architectural & Structural Detailing", area: "12,400 sq.ft", loc: "Viman Nagar, Pune", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800", status: "Completed" },
-                { title: "Residential Villa complex", category: "Architectural Planning & Interior", area: "18,500 sq.ft (5 units)", loc: "Whitefield, Bengaluru", img: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=800", status: "Ongoing" },
-                { title: "Steel Portal Frame Warehouse", category: "PEB Steel Structural Design", area: "60,000 sq.ft", loc: "Sanand GIDC, Gujarat", img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800", status: "Completed" },
-              ].map((proj, idx) => (
+              {portfolioItems.map((proj, idx) => (
                 <motion.div 
-                  key={idx} 
+                  key={proj.id} 
                   initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
@@ -588,12 +584,22 @@ export default function Home() {
                         <p className="flex items-center gap-1.5"><Briefcase className="h-3.5 w-3.5 text-slate-400" /> Built Area: {proj.area}</p>
                       </div>
                     </div>
-                    <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-wix-dark hover:text-orange-500 uppercase tracking-widest transition-colors">
+                    <Link href={`/portfolio/${proj.id}`} className="inline-flex items-center gap-1.5 text-xs font-bold text-wix-dark hover:text-orange-500 uppercase tracking-widest transition-colors">
                       View Project Case study <ArrowRight className="h-3.5 w-3.5" />
-                    </a>
+                    </Link>
                   </div>
                 </motion.div>
               ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <Link
+                href="/portfolio"
+                className="inline-flex items-center gap-2 rounded-md bg-wix-dark hover:bg-orange-500 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm"
+              >
+                View All Masterpieces
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         </section>

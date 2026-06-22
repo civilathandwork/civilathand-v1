@@ -230,7 +230,7 @@ export const Footer: React.FC = () => {
                   <Link href="/#calculators" className="hover:text-orange-500 transition-colors">Design Calculators</Link>
                 </li>
                 <li>
-                  <Link href="/#portfolio" className="hover:text-orange-500 transition-colors">Project Portfolio</Link>
+                  <Link href="/portfolio" className="hover:text-orange-500 transition-colors">Project Portfolio</Link>
                 </li>
                 <li>
                   <Link href="/blog" className="hover:text-orange-500 transition-colors font-bold text-orange-500">Engineering Blog</Link>
