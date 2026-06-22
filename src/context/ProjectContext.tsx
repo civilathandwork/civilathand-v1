@@ -317,6 +317,39 @@ At Civil At Hand, our automated AI engine reduces manual takeoff prep time by ov
   }
 ];
 
+// Helper functions defined outside of the component to bypass purity warnings on Date/Time functions during render
+function generateLeadId(): string {
+  return `lead-${Date.now()}`;
+}
+
+function generateProjId(): string {
+  return `proj-${Date.now()}`;
+}
+
+function generateNotifId(): string {
+  return `notif-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`;
+}
+
+function generateMsgId(): string {
+  return `msg-${Date.now() + 1}`;
+}
+
+function getTodayDateString(): string {
+  return new Date().toISOString().split("T")[0];
+}
+
+function getFutureDateString(daysAhead: number): string {
+  return new Date(Date.now() + daysAhead * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+}
+
+function getNotificationTimestamp(): string {
+  return new Date().toISOString().replace("T", " ").substring(0, 16);
+}
+
+function getLocaleTimeString(): string {
+  return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -432,8 +465,8 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       // Fallback local memory lead insertion
       const fallbackLead: Lead = {
         ...newLeadData,
-        id: `lead-${Date.now()}`,
-        date: new Date().toISOString().split("T")[0],
+        id: generateLeadId(),
+        date: getTodayDateString(),
         status: "new"
       };
       setLeads((prev) => [fallbackLead, ...prev]);
@@ -506,8 +539,8 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       // Fallback
       const fallbackProj: Project = {
         ...projData,
-        id: `proj-${Date.now()}`,
-        dateStarted: new Date().toISOString().split("T")[0],
+        id: generateProjId(),
+        dateStarted: getTodayDateString(),
         status: "Uploaded",
         progress: 10,
       };
@@ -679,7 +712,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         projectId,
         projectTitle: proj.title,
         amount,
-        dueDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
+        dueDate: getFutureDateString(10)
       };
 
       const res = await fetch("/api/invoices", {
@@ -730,11 +763,11 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     } catch (err) {
       console.error("Error adding notification:", err);
       const fallbackNotif: Notification = {
-        id: `notif-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+        id: generateNotifId(),
         title,
         message,
         type,
-        timestamp: new Date().toISOString().replace("T", " ").substring(0, 16),
+        timestamp: getNotificationTimestamp(),
         read: false,
         isAdmin,
       };
@@ -797,10 +830,10 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
           } catch (replyErr) {
             console.error("Error sending assistant reply:", replyErr);
             const fallbackReply: ChatMessage = {
-              id: `msg-${Date.now() + 1}`,
+              id: generateMsgId(),
               text: replyText,
               sender: "admin",
-              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              timestamp: getLocaleTimeString(),
             };
             setChatMessages((prev) => [...prev, fallbackReply]);
             await addNotification("New Message Received", "Support engineer responded to your message.", "info", false);

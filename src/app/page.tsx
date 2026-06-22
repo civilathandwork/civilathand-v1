@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Calculators } from "@/components/Calculators";
 import { useProjects } from "@/context/ProjectContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { portfolioItems } from "@/data/portfolio";
@@ -24,7 +23,12 @@ import {
   Leaf, 
   Compass, 
   ArrowRight,
-  Star
+  Star,
+  Calculator,
+  FlaskConical,
+  Weight,
+  BrickWall,
+  Sparkles
 } from "lucide-react";
 
 // Custom Bridge Icon
@@ -77,6 +81,70 @@ const testimonials = [
   { name: "Suresh Pillai", role: "VP Projects, InfraCorp Ltd.", review: "Their BIM LOD 400 modeling saved us lakhs in onsite clash resolution. The site supervision audits and digital checklists kept our steel fabrication perfectly aligned with drawings.", rating: 5, image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150" },
   { name: "Rahul Mehta", role: "Project Director, Mehta Infrastructure Pvt. Ltd.", review: "We were struggling with delays in estimation and BOQ preparation. Civil At Hand provided a smart and reliable solution that improved both speed and accuracy. Their services have added real value to our workflow.", rating: 5, image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=150" },
   { name: "Priya Sharma", role: "Senior Civil Engineer, UrbanEdge Consultants", review: "Civil At Hand has become a trusted partner for our estimation and drafting requirements. Their technical expertise, quick delivery, and attention to detail are truly impressive. Highly recommended for civil engineering professionals and firms.", rating: 5, image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" }
+];
+
+interface CalcHubCard {
+  id: string;
+  href: string;
+  title: string;
+  description: string;
+  badge: string;
+  standard: string;
+  icon: React.ComponentType<{ className?: string }>;
+  accentColor: string;
+}
+
+const hubCards: CalcHubCard[] = [
+  {
+    id: "cost",
+    href: "/calculators/cost",
+    title: "Construction Cost Estimator",
+    description: "Prepare accurate budgets and detailed materials breakdown for 2026 Indian residential structures.",
+    badge: "Cost Breakdown",
+    standard: "2026 Market Rates",
+    icon: Calculator,
+    accentColor: "from-orange-500 to-amber-500",
+  },
+  {
+    id: "concrete",
+    href: "/calculators/concrete",
+    title: "Concrete Volumetrics",
+    description: "Calculate dry volume, cement bags, sand, and aggregate requirements using standard mix ratios.",
+    badge: "IS 456:2000",
+    standard: "Dry factor 1.54 | 5% wastage",
+    icon: FlaskConical,
+    accentColor: "from-blue-500 to-indigo-500",
+  },
+  {
+    id: "steel",
+    href: "/calculators/steel",
+    title: "Steel Rebar Weight",
+    description: "Derive unit weights and total reinforcing steel weight in KG and Metric Tons for standard bar sizes.",
+    badge: "IS 1786:2008",
+    standard: "W = D² / 162.2 | 7% wastage",
+    icon: Weight,
+    accentColor: "from-slate-700 to-slate-900",
+  },
+  {
+    id: "brick",
+    href: "/calculators/brick",
+    title: "Brick & Masonry Wall",
+    description: "Estimate bricks, mortar volume, cement bags, and sand count for load-bearing and partition walls.",
+    badge: "IS 1077:1992",
+    standard: "500 bricks/m³ | 7% wastage",
+    icon: BrickWall,
+    accentColor: "from-red-500 to-orange-600",
+  },
+  {
+    id: "boq",
+    href: "/calculators/boq",
+    title: "AI BOQ Takeoff",
+    description: "Audit layouts, drawings, and prepare a 16-line Bill of Quantities using standard CPWD DSR 2023 rates.",
+    badge: "CPWD DSR 2023",
+    standard: "Auto CAD & PDF Audit",
+    icon: Sparkles,
+    accentColor: "from-purple-600 to-pink-600",
+  },
 ];
 
 export default function Home() {
@@ -426,7 +494,63 @@ export default function Home() {
         </section>
 
         {/* SECTION 4: AUTOMATION TOOLS */}
-        <Calculators />
+        <section id="calculators" className="py-24 bg-slate-50 border-t border-slate-200">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={scrollRevealVariants}
+              className="text-center max-w-3xl mx-auto mb-16"
+            >
+              <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Automation & Takeoffs</span>
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
+                IS-Code Civil Engineering Calculators
+              </h2>
+              <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
+                Calibrated to Indian Standard (IS) codes and CPWD Delhi Schedule of Rates (DSR) 2023. Select a tool to estimate materials, concrete volume, steel weights, brickwork, or run automated BOQ takeoff audits.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {hubCards.map((card, idx) => {
+                const Icon = card.icon;
+                return (
+                  <motion.div
+                    key={card.id}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.4, delay: (idx % 3) * 0.05 }}
+                    className="group border border-slate-200 hover:border-wix-dark rounded-md p-6 bg-white hover:bg-slate-50/50 transition-all duration-300 flex flex-col justify-between shadow-sm"
+                  >
+                    <div>
+                      <div className="h-10 w-10 rounded-md bg-slate-50 text-wix-dark group-hover:bg-wix-dark group-hover:text-white flex items-center justify-center mb-4 border border-slate-200 transition-colors">
+                        <Icon className="h-5.5 w-5.5 text-orange-500" />
+                      </div>
+                      <h3 className="font-display font-bold text-sm text-wix-dark mb-2 leading-tight uppercase tracking-wider">
+                        {card.title}
+                      </h3>
+                      <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
+                        {card.description}
+                      </p>
+                    </div>
+                    <div className="pt-5 mt-auto flex items-center justify-between border-t border-slate-100/60">
+                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">{card.badge}</span>
+                      <Link
+                        href={card.href}
+                        className="text-[10px] font-extrabold text-orange-500 hover:text-wix-dark uppercase tracking-widest flex items-center gap-1 group/link"
+                      >
+                        Open Calculator
+                        <ArrowRight className="h-3 w-3 transform group-hover/link:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
 
 
 
