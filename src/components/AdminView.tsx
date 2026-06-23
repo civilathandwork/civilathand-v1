@@ -131,7 +131,7 @@ export const AdminView: React.FC = () => {
         editorRef.current.innerHTML = blogContent;
       }
     }
-  }, [isBlogModalOpen, editorMode]);
+  }, [isBlogModalOpen, editorMode, blogContent]);
 
   const convertMarkdownToHtml = (markdown: string): string => {
     if (!markdown) return "";
@@ -187,7 +187,7 @@ export const AdminView: React.FC = () => {
     // approach for contenteditable formatting. Wrapped in try/catch so the
     // editor degrades gracefully if a browser eventually removes support.
     try {
-      document.execCommand(command, false, value || undefined);
+      document.execCommand(command, false, value || null);
     } catch (err) {
       console.warn(`[RichEditor] Command "${command}" is not supported:`, err);
     }
@@ -979,9 +979,9 @@ export const AdminView: React.FC = () => {
                               </div>
 
                               {editorMode === "write" ? (
-                                <div className="border border-slate-300 rounded-lg overflow-hidden bg-white shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600 transition-all">
+                                <div className="border border-slate-300 rounded-lg bg-white shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600 transition-all">
                                   {/* Rich Formatting Toolbar */}
-                                  <div className="flex flex-wrap items-center gap-1 bg-slate-50 border-b border-slate-200 px-2 py-1.5 text-slate-600 select-none">
+                                  <div className="flex flex-wrap items-center gap-1 bg-slate-50 border-b border-slate-200 px-2 py-1.5 text-slate-600 select-none rounded-t-lg">
                                     {/* Group 1: Text Styles */}
                                     <button
                                       type="button"
@@ -1164,13 +1164,19 @@ export const AdminView: React.FC = () => {
                                         <Paintbrush className="h-3.5 w-3.5" />
                                       </button>
                                       {showColors && (
-                                        <div className="absolute left-0 mt-1.5 p-1.5 bg-white border border-slate-200 rounded-lg shadow-premium-lg z-25 flex gap-1 animate-fadeIn select-none">
+                                        <div className="absolute right-0 mt-1.5 p-2 bg-white border border-slate-200 rounded-xl shadow-premium-lg z-25 grid grid-cols-6 gap-1.5 animate-fadeIn select-none w-44">
                                           {[
-                                            { name: "Orange", hex: "#ff6b00" },
-                                            { name: "Navy", hex: "#0a192f" },
-                                            { name: "Slate", hex: "#475569" },
-                                            { name: "Green", hex: "#10b981" },
-                                            { name: "Red", hex: "#ef4444" },
+                                            { name: "Red", hex: "#e11d48" },
+                                            { name: "Pink", hex: "#db2777" },
+                                            { name: "Purple", hex: "#9333ea" },
+                                            { name: "Blue", hex: "#2563eb" },
+                                            { name: "Sky Blue", hex: "#0284c7" },
+                                            { name: "Teal", hex: "#0d9488" },
+                                            { name: "Green", hex: "#16a34a" },
+                                            { name: "Yellow", hex: "#ca8a04" },
+                                            { name: "Orange", hex: "#ea580c" },
+                                            { name: "Gray", hex: "#4b5563" },
+                                            { name: "Navy", hex: "#1e3a8a" },
                                             { name: "Black", hex: "#000000" }
                                           ].map((color) => (
                                             <button
@@ -1181,7 +1187,7 @@ export const AdminView: React.FC = () => {
                                                 runCommand("foreColor", color.hex);
                                                 setShowColors(false);
                                               }}
-                                              className="w-5 h-5 rounded-full border border-slate-350 cursor-pointer shadow-sm hover:scale-110 transition-transform"
+                                              className="w-5 h-5 rounded-full border border-slate-300 cursor-pointer shadow-sm hover:scale-110 transition-transform"
                                               style={{ backgroundColor: color.hex }}
                                               title={color.name}
                                             />
@@ -1214,7 +1220,7 @@ export const AdminView: React.FC = () => {
                                         Templates
                                       </button>
                                       {showTemplates && (
-                                        <div className="absolute left-0 mt-1.5 w-48 bg-white border border-slate-200 rounded-lg shadow-premium-lg z-20 py-1 text-slate-800 text-[10px] font-semibold divide-y divide-slate-100">
+                                        <div className="absolute right-0 mt-1.5 w-48 bg-white border border-slate-200 rounded-lg shadow-premium-lg z-20 py-1 text-slate-800 text-[10px] font-semibold divide-y divide-slate-100">
                                           <button
                                             type="button"
                                             onMouseDown={(e) => e.preventDefault()}
@@ -1302,7 +1308,7 @@ export const AdminView: React.FC = () => {
                                   </div>
 
                                   {/* Stats footer */}
-                                  <div className="bg-slate-50 border-t border-slate-100 px-3 py-1 flex justify-between text-[9px] font-bold text-slate-500 uppercase tracking-wider select-none">
+                                  <div className="bg-slate-50 border-t border-slate-100 px-3 py-1 flex justify-between text-[9px] font-bold text-slate-500 uppercase tracking-wider select-none rounded-b-lg">
                                     <span>Words: {blogContent.trim() === "" ? 0 : blogContent.trim().split(/\s+/).length}</span>
                                     <span>Chars: {blogContent.length}</span>
                                   </div>
