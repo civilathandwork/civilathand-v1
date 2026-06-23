@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useProjects, BlogPost } from "@/context/ProjectContext";
+import { generateSlug } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Calendar, User, ArrowRight, BookOpen } from "lucide-react";
 
@@ -156,7 +157,7 @@ export default function BlogListingPage() {
                       {/* Read Action */}
                       <div className="pt-2">
                         <Link 
-                          href={`/blog/${post.id}`}
+                          href={`/blog/${post.slug || generateSlug(post.title)}`}
                           className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-500 hover:text-slate-900 uppercase tracking-wider group-hover:gap-2.5 transition-all duration-200"
                         >
                           Read Full Article

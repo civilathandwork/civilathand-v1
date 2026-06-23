@@ -75,7 +75,9 @@ export interface BlogPost {
   author: string;
   image: string;
   status: "draft" | "published";
+  slug?: string;
 }
+
 
 interface ProjectContextType {
   leads: Lead[];
@@ -277,6 +279,7 @@ Higher N-values correspond to denser sandy soils or stiffer cohesive clays, indi
     author: "Er. Amit Wagh",
     image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80",
     status: "published",
+    slug: "understanding-soil-bearing-capacity-in-foundation-design",
   },
   {
     id: "blog-2",
@@ -296,6 +299,7 @@ To achieve a premium glassmorphic facade, engineers must account for environment
     author: "Ar. Sneha Patel",
     image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80",
     status: "published",
+    slug: "a-complete-guide-to-modern-glassmorphism-in-architecture",
   },
   {
     id: "blog-3",
@@ -314,6 +318,7 @@ At Civil At Hand, our automated AI engine reduces manual takeoff prep time by ov
     author: "Er. Nitin Shinde",
     image: "https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?auto=format&fit=crop&w=800&q=80",
     status: "published",
+    slug: "ai-takeoffs-the-future-of-quantity-surveying-boq",
   }
 ];
 

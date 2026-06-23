@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useProjects } from "@/context/ProjectContext";
+import { generateSlug } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { portfolioItems } from "@/data/portfolio";
 import { 
@@ -1140,7 +1141,7 @@ export default function Home() {
 
                       <div className="pt-2">
                         <Link
-                          href={`/blog/${post.id}`}
+                          href={`/blog/${post.slug || generateSlug(post.title)}`}
                           className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-400 hover:text-white uppercase tracking-widest transition-colors"
                         >
                           Read Post <ArrowRight className="h-3.5 w-3.5" />

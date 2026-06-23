@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
+import { generateSlug } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,8 @@ const initialBlogs = [
     date: "2026-06-05",
     author: "Er. Amit Wagh",
     image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80",
-    status: "published"
+    status: "published",
+    slug: "understanding-soil-bearing-capacity-in-foundation-design"
   },
   {
     id: "blog-2",
@@ -26,7 +28,8 @@ const initialBlogs = [
     date: "2026-06-03",
     author: "Ar. Sneha Patel",
     image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80",
-    status: "published"
+    status: "published",
+    slug: "a-complete-guide-to-modern-glassmorphism-in-architecture"
   },
   {
     id: "blog-3",
@@ -37,7 +40,8 @@ const initialBlogs = [
     date: "2026-06-01",
     author: "Er. Nitin Shinde",
     image: "https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?auto=format&fit=crop&w=800&q=80",
-    status: "published"
+    status: "published",
+    slug: "ai-takeoffs-the-future-of-quantity-surveying-boq"
   }
 ];
 
@@ -100,6 +104,7 @@ export async function POST(request: Request) {
       author: author || "Admin",
       image: image || "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80",
       status: status || "draft",
+      slug: generateSlug(title),
     };
 
     await collection.insertOne(newBlog);

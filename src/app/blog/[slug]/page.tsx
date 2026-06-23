@@ -5,14 +5,15 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useProjects, BlogPost } from "@/context/ProjectContext";
+import { generateSlug } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, User, BookOpen, Clock, ChevronRight, Share2 } from "lucide-react";
 
-export default function BlogDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+export default function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
   const { blogs, isLoaded } = useProjects();
 
-  const post = blogs.find((b) => b.id === id);
+  const post = blogs.find((b) => (b.slug || generateSlug(b.title)) === slug || b.id === slug);
 
   const [shareUrl, setShareUrl] = React.useState("");
   const [copied, setCopied] = React.useState(false);
@@ -91,9 +92,9 @@ export default function BlogDetailPage({ params }: { params: Promise<{ id: strin
   ] : [];
 
   // Get related posts (published, same category or other, excluding current post)
-  const relatedPosts = blogs
-    .filter((b) => b.status === "published" && b.id !== id)
-    .slice(0, 3);
+  const relatedPosts = post
+    ? blogs.filter((b) => b.status === "published" && b.id !== post.id).slice(0, 3)
+    : [];
 
   // Markdown-like parser for light theme
   const renderContent = (content: string) => {
@@ -380,7 +381,7 @@ export default function BlogDetailPage({ params }: { params: Promise<{ id: strin
                     {relatedPosts.map((rPost) => (
                       <Link 
                         key={rPost.id}
-                        href={`/blog/${rPost.id}`}
+                        href={`/blog/${rPost.slug || generateSlug(rPost.title)}`}
                         className="py-3 flex gap-3 items-center group block first:pt-0 last:pb-0"
                       >
                         <div className="h-12 w-16 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0 border border-slate-200/60">

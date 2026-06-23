@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useProjects, Lead, Project, BlogPost } from "@/context/ProjectContext";
+import { generateSlug } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Users,
@@ -337,7 +338,8 @@ export const AdminView: React.FC = () => {
       category: blogCategory,
       author: blogAuthor || "CivAtHand Admin",
       image: fallbackImage,
-      status: blogStatus
+      status: blogStatus,
+      slug: generateSlug(blogTitle)
     };
 
     if (editingBlogId) {
