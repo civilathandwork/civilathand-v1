@@ -251,7 +251,15 @@ export default function BlogDetailPage({ params }: { params: Promise<{ id: strin
 
               {/* Post Content Body */}
               <div className="prose prose-wix max-w-none text-justify text-base">
-                {post.content.includes("<p>") || post.content.includes("<h3>") || post.content.includes("<ul>") ? (
+                {post.content.includes("<p>") || 
+                 post.content.includes("<h3>") || 
+                 post.content.includes("<ul>") || 
+                 post.content.includes("<img") || 
+                 post.content.includes("<ol") || 
+                 post.content.includes("<blockquote") || 
+                 post.content.includes("<pre") ||
+                 post.content.includes("<div>") ||
+                 post.content.includes("<span>") ? (
                   <div dangerouslySetInnerHTML={{ __html: post.content }} />
                 ) : (
                   renderContent(post.content)
