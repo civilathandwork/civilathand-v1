@@ -1037,6 +1037,40 @@ export const AdminView: React.FC = () => {
                                     >
                                       <Superscript className="h-3.5 w-3.5" />
                                     </button>
+                                    <button
+                                      type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
+                                      onClick={() => {
+                                        try {
+                                          const current = document.queryCommandValue("fontSize") || "3";
+                                          const next = Math.min(7, parseInt(current) + 1);
+                                          runCommand("fontSize", next.toString());
+                                        } catch (err) {
+                                          console.warn(err);
+                                        }
+                                      }}
+                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors flex items-center justify-center font-display font-extrabold text-[10px] w-6 h-6 select-none"
+                                      title="Increase Font Size"
+                                    >
+                                      A+
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
+                                      onClick={() => {
+                                        try {
+                                          const current = document.queryCommandValue("fontSize") || "3";
+                                          const next = Math.max(1, parseInt(current) - 1);
+                                          runCommand("fontSize", next.toString());
+                                        } catch (err) {
+                                          console.warn(err);
+                                        }
+                                      }}
+                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors flex items-center justify-center font-display font-extrabold text-[10px] w-6 h-6 select-none"
+                                      title="Decrease Font Size"
+                                    >
+                                      A-
+                                    </button>
                                     <div className="h-4 w-[1px] bg-slate-300 mx-1 flex-shrink-0" />
 
                                     {/* Group 2: Headings & Block Formats */}
