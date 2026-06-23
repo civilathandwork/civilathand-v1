@@ -187,7 +187,7 @@ export const AdminView: React.FC = () => {
     // approach for contenteditable formatting. Wrapped in try/catch so the
     // editor degrades gracefully if a browser eventually removes support.
     try {
-      document.execCommand(command, false, value || null);
+      document.execCommand(command, false, value || undefined);
     } catch (err) {
       console.warn(`[RichEditor] Command "${command}" is not supported:`, err);
     }
