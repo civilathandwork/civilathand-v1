@@ -30,7 +30,7 @@ interface CalcHubCard {
 const hubCards: CalcHubCard[] = [
   {
     id: "cost",
-    href: "/calculators/cost",
+    href: "/calculator/construction-cost-estimator",
     title: "Construction Cost Estimator",
     description: "Prepare accurate budgets and detailed materials breakdown for 2026 Indian residential structures.",
     badge: "Cost Breakdown",
@@ -40,7 +40,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "concrete",
-    href: "/calculators/concrete",
+    href: "/calculator/concrete-volumetrics",
     title: "Concrete Volumetrics",
     description: "Calculate dry volume, cement bags, sand, and aggregate requirements using standard mix ratios.",
     badge: "IS 456:2000",
@@ -50,7 +50,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "steel",
-    href: "/calculators/steel",
+    href: "/calculator/steel-rebar-weight",
     title: "Steel Rebar Weight",
     description: "Derive unit weights and total reinforcing steel weight in KG and Metric Tons for standard bar sizes.",
     badge: "IS 1786:2008",
@@ -60,7 +60,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "brick",
-    href: "/calculators/brick",
+    href: "/calculator/brick-masonry-wall",
     title: "Brick & Masonry Wall",
     description: "Estimate bricks, mortar volume, cement bags, and sand count for load-bearing and partition walls.",
     badge: "IS 1077:1992",
@@ -70,7 +70,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "boq",
-    href: "/calculators/boq",
+    href: "/calculator/ai-boq-takeoff",
     title: "AI BOQ Takeoff",
     description: "Audit layouts, drawings, and prepare a 16-line Bill of Quantities using standard CPWD DSR 2023 rates.",
     badge: "CPWD DSR 2023",
@@ -114,7 +114,7 @@ export default function CalculatorsHubPage() {
         {/* Cards Section */}
         <section className="py-16 bg-slate-50">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {hubCards.map((card, idx) => {
                 const Icon = card.icon;
                 return (
@@ -123,42 +123,28 @@ export default function CalculatorsHubPage() {
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: idx * 0.05 }}
-                    whileHover={{ y: -5 }}
-                    className="flex flex-col h-full bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group"
+                    className="group border border-slate-200 hover:border-wix-dark rounded-md p-6 bg-white hover:bg-slate-50/50 transition-all duration-300 flex flex-col justify-between shadow-sm"
                   >
-                    {/* Color Accent Bar */}
-                    <div className={`h-2 bg-gradient-to-r ${card.accentColor}`} />
-                    
-                    <div className="flex flex-col flex-grow p-6 md:p-8">
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-extrabold bg-orange-50 text-orange-700 border border-orange-200/60 uppercase tracking-wider">
-                          {card.badge}
-                        </span>
-                        <div className="p-2.5 bg-slate-50 rounded-xl group-hover:bg-orange-50 group-hover:text-orange-500 text-slate-600 transition-colors">
-                          <Icon className="h-5 w-5" />
-                        </div>
+                    <div>
+                      <div className="h-10 w-10 rounded-md bg-slate-50 text-wix-dark group-hover:bg-wix-dark group-hover:text-white flex items-center justify-center mb-4 border border-slate-200 transition-colors">
+                        <Icon className="h-5.5 w-5.5 text-orange-500" />
                       </div>
-
-                      <h3 className="font-display text-lg font-bold text-wix-dark group-hover:text-orange-500 transition-colors mb-2">
+                      <h3 className="font-display font-bold text-sm text-wix-dark mb-2 leading-tight uppercase tracking-wider group-hover:text-orange-500 transition-colors">
                         {card.title}
                       </h3>
-                      
-                      <p className="text-xs text-slate-500 leading-relaxed mb-6 flex-grow">
+                      <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
                         {card.description}
                       </p>
-
-                      <div className="border-t border-slate-100 pt-4 mt-auto flex items-center justify-between">
-                        <span className="text-[10px] text-slate-400 font-medium">
-                          {card.standard}
-                        </span>
-                        <Link
-                          href={card.href}
-                          className="inline-flex items-center gap-1 text-xs font-bold text-orange-500 hover:text-orange-600 transition-colors group/link"
-                        >
-                          Open Calculator
-                          <ArrowRight className="h-3 w-3 transform group-hover/link:translate-x-1 transition-transform" />
-                        </Link>
-                      </div>
+                    </div>
+                    <div className="pt-5 mt-auto flex items-center justify-between border-t border-slate-100/60">
+                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">{card.badge}</span>
+                      <Link
+                        href={card.href}
+                        className="text-[10px] font-extrabold text-orange-500 hover:text-wix-dark uppercase tracking-widest flex items-center gap-1 group/link"
+                      >
+                        Open Calculator
+                        <ArrowRight className="h-3 w-3 transform group-hover/link:translate-x-1 transition-transform" />
+                      </Link>
                     </div>
                   </motion.div>
                 );

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useProjects } from "@/context/ProjectContext";
@@ -98,7 +99,7 @@ interface CalcHubCard {
 const hubCards: CalcHubCard[] = [
   {
     id: "cost",
-    href: "/calculators/cost",
+    href: "/calculator/construction-cost-estimator",
     title: "Construction Cost Estimator",
     description: "Prepare accurate budgets and detailed materials breakdown for 2026 Indian residential structures.",
     badge: "Cost Breakdown",
@@ -108,7 +109,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "concrete",
-    href: "/calculators/concrete",
+    href: "/calculator/concrete-volumetrics",
     title: "Concrete Volumetrics",
     description: "Calculate dry volume, cement bags, sand, and aggregate requirements using standard mix ratios.",
     badge: "IS 456:2000",
@@ -118,7 +119,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "steel",
-    href: "/calculators/steel",
+    href: "/calculator/steel-rebar-weight",
     title: "Steel Rebar Weight",
     description: "Derive unit weights and total reinforcing steel weight in KG and Metric Tons for standard bar sizes.",
     badge: "IS 1786:2008",
@@ -128,7 +129,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "brick",
-    href: "/calculators/brick",
+    href: "/calculator/brick-masonry-wall",
     title: "Brick & Masonry Wall",
     description: "Estimate bricks, mortar volume, cement bags, and sand count for load-bearing and partition walls.",
     badge: "IS 1077:1992",
@@ -138,7 +139,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "boq",
-    href: "/calculators/boq",
+    href: "/calculator/ai-boq-takeoff",
     title: "AI BOQ Takeoff",
     description: "Audit layouts, drawings, and prepare a 16-line Bill of Quantities using standard CPWD DSR 2023 rates.",
     badge: "CPWD DSR 2023",
@@ -150,6 +151,25 @@ const hubCards: CalcHubCard[] = [
 
 export default function Home() {
   const { addLead, blogs } = useProjects();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname === "/services") {
+      const el = document.getElementById("services");
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth" });
+        }, 150);
+      }
+    } else if (pathname === "/calculator" || pathname === "/calculators") {
+      const el = document.getElementById("calculators");
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth" });
+        }, 150);
+      }
+    }
+  }, [pathname]);
   
   // Interactive Lifecycle Step State
   const [activeLifecycleStep, setActiveLifecycleStep] = useState(0);

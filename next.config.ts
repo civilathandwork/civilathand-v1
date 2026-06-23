@@ -16,6 +16,43 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  async rewrites() {
+    return [
+      {
+        source: "/services",
+        destination: "/",
+      },
+      {
+        source: "/calculator",
+        destination: "/",
+      },
+      {
+        source: "/calculator/construction-cost-estimator",
+        destination: "/calculators/cost",
+      },
+      {
+        source: "/calculator/concrete-volumetrics",
+        destination: "/calculators/concrete",
+      },
+      {
+        source: "/calculator/steel-rebar-weight",
+        destination: "/calculators/steel",
+      },
+      {
+        source: "/calculator/brick-masonry-wall",
+        destination: "/calculators/brick",
+      },
+      {
+        source: "/calculator/ai-boq-takeoff",
+        destination: "/calculators/boq",
+      },
+      {
+        source: "/calculator/:path*",
+        destination: "/calculators/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

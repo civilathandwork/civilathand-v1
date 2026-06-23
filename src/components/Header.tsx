@@ -113,7 +113,7 @@ export const Header: React.FC = () => {
 
   const navLinks = [
     { name: "Services", href: "/services" },
-    { name: "Calculators", href: "/calculators" },
+    { name: "Calculators", href: "/calculator" },
     { name: "Portfolio", href: "/portfolio" },
     { name: "Blog", href: "/blog" },
   ];
