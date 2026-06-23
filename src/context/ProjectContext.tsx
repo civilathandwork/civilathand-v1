@@ -102,6 +102,7 @@ interface ProjectContextType {
   updateLeadStatus: (id: string, status: Lead["status"]) => Promise<void>;
   deleteLead: (id: string) => Promise<void>;
   isLoaded: boolean; // true once all API fetches have settled (success or fallback)
+  blogsLoaded: boolean;
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
@@ -364,87 +365,116 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [blogsLoaded, setBlogsLoaded] = useState(false);
 
   // Load from database API
   useEffect(() => {
     if (typeof window !== "undefined") {
-      Promise.all([
-        fetch("/api/leads", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch leads");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch leads, using fallback:", err);
-            return initialLeads;
-          }),
-        fetch("/api/blogs", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch blogs");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch blogs, using fallback:", err);
-            return initialBlogs;
-          }),
-        fetch("/api/projects", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch projects");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch projects, using fallback:", err);
-            return initialProjects;
-          }),
-        fetch("/api/drawings", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch drawings");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch drawings, using fallback:", err);
-            return initialDrawings;
-          }),
-        fetch("/api/invoices", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch invoices");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch invoices, using fallback:", err);
-            return initialInvoices;
-          }),
-        fetch("/api/notifications", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch notifications");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch notifications, using fallback:", err);
-            return initialNotifications;
-          }),
-        fetch("/api/support-messages", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch chats");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch chats, using fallback:", err);
-            return initialChatMessages;
-          })
-      ])
-        .then(([leadsData, blogsData, projectsData, drawingsData, invoicesData, notificationsData, chatsData]) => {
-          setLeads(Array.isArray(leadsData) ? leadsData : initialLeads);
-          setBlogs(Array.isArray(blogsData) ? blogsData : initialBlogs);
-          setProjects(Array.isArray(projectsData) ? projectsData : initialProjects);
-          setDrawings(Array.isArray(drawingsData) ? drawingsData : initialDrawings);
-          setInvoices(Array.isArray(invoicesData) ? invoicesData : initialInvoices);
-          setNotifications(Array.isArray(notificationsData) ? notificationsData : initialNotifications);
-          setChatMessages(Array.isArray(chatsData) ? chatsData : initialChatMessages);
+      const fetchLeads = fetch("/api/leads", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch leads");
+          return res.json();
+        })
+        .then((data) => {
+          setLeads(Array.isArray(data) ? data : initialLeads);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch leads, using fallback:", err);
+          setLeads(initialLeads);
+        });
+
+      const fetchBlogs = fetch("/api/blogs", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch blogs");
+          return res.json();
+        })
+        .then((data) => {
+          setBlogs(Array.isArray(data) ? data : initialBlogs);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch blogs, using fallback:", err);
+          setBlogs(initialBlogs);
         })
         .finally(() => {
-          setIsLoaded(true);
+          setBlogsLoaded(true);
         });
+
+      const fetchProjects = fetch("/api/projects", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch projects");
+          return res.json();
+        })
+        .then((data) => {
+          setProjects(Array.isArray(data) ? data : initialProjects);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch projects, using fallback:", err);
+          setProjects(initialProjects);
+        });
+
+      const fetchDrawings = fetch("/api/drawings", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch drawings");
+          return res.json();
+        })
+        .then((data) => {
+          setDrawings(Array.isArray(data) ? data : initialDrawings);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch drawings, using fallback:", err);
+          setDrawings(initialDrawings);
+        });
+
+      const fetchInvoices = fetch("/api/invoices", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch invoices");
+          return res.json();
+        })
+        .then((data) => {
+          setInvoices(Array.isArray(data) ? data : initialInvoices);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch invoices, using fallback:", err);
+          setInvoices(initialInvoices);
+        });
+
+      const fetchNotifications = fetch("/api/notifications", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch notifications");
+          return res.json();
+        })
+        .then((data) => {
+          setNotifications(Array.isArray(data) ? data : initialNotifications);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch notifications, using fallback:", err);
+          setNotifications(initialNotifications);
+        });
+
+      const fetchChats = fetch("/api/support-messages", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch chats");
+          return res.json();
+        })
+        .then((data) => {
+          setChatMessages(Array.isArray(data) ? data : initialChatMessages);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch chats, using fallback:", err);
+          setChatMessages(initialChatMessages);
+        });
+
+      Promise.all([
+        fetchLeads,
+        fetchBlogs,
+        fetchProjects,
+        fetchDrawings,
+        fetchInvoices,
+        fetchNotifications,
+        fetchChats,
+      ]).finally(() => {
+        setIsLoaded(true);
+      });
     }
   }, []);
 
@@ -929,6 +959,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         updateLeadStatus,
         deleteLead,
         isLoaded,
+        blogsLoaded,
       }}
     >
       {children}

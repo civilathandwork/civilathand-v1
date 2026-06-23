@@ -11,7 +11,7 @@ import { ArrowLeft, Calendar, User, BookOpen, Clock, ChevronRight, Share2 } from
 
 export default function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
-  const { blogs, isLoaded } = useProjects();
+  const { blogs, blogsLoaded } = useProjects();
 
   const post = blogs.find((b) => (b.slug || generateSlug(b.title)) === slug || b.id === slug);
 
@@ -133,7 +133,7 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
 
   // Show skeleton while the initial API fetch hasn't settled yet.
   // This prevents flashing "Article Not Found" before data arrives.
-  if (!isLoaded) {
+  if (!blogsLoaded) {
     return (
       <div className="flex flex-col min-h-screen bg-wix-cream">
         <Header />
