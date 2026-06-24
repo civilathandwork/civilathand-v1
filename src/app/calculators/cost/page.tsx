@@ -108,7 +108,7 @@ export default function ConstructionCostCalculator() {
           {/* Breadcrumb */}
           <nav className="mb-6">
             <Link
-              href="/calculator"
+              href="/calculator/all-calculators"
               className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-orange-500 transition-colors uppercase tracking-wider"
             >
               <ArrowLeft className="h-3.5 w-3.5" />

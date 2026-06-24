@@ -30,7 +30,7 @@ interface CalcHubCard {
 const hubCards: CalcHubCard[] = [
   {
     id: "cost",
-    href: "/calculator/construction-cost-estimator",
+    href: "/calculator/all-calculators/construction-cost-estimator",
     title: "Construction Cost Estimator",
     description: "Prepare accurate budgets and detailed materials breakdown for 2026 Indian residential structures.",
     badge: "Cost Breakdown",
@@ -40,7 +40,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "concrete",
-    href: "/calculator/concrete-volumetrics",
+    href: "/calculator/all-calculators/concrete-volumetrics",
     title: "Concrete Volumetrics",
     description: "Calculate dry volume, cement bags, sand, and aggregate requirements using standard mix ratios.",
     badge: "IS 456:2000",
@@ -50,7 +50,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "steel",
-    href: "/calculator/steel-rebar-weight",
+    href: "/calculator/all-calculators/steel-rebar-weight",
     title: "Steel Rebar Weight",
     description: "Derive unit weights and total reinforcing steel weight in KG and Metric Tons for standard bar sizes.",
     badge: "IS 1786:2008",
@@ -60,7 +60,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "brick",
-    href: "/calculator/brick-masonry-wall",
+    href: "/calculator/all-calculators/brick-masonry-wall",
     title: "Brick & Masonry Wall",
     description: "Estimate bricks, mortar volume, cement bags, and sand count for load-bearing and partition walls.",
     badge: "IS 1077:1992",
@@ -70,7 +70,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "boq",
-    href: "/calculator/ai-boq-takeoff",
+    href: "/calculator/all-calculators/ai-boq-takeoff",
     title: "AI BOQ Takeoff",
     description: "Audit layouts, drawings, and prepare a 16-line Bill of Quantities using standard CPWD DSR 2023 rates.",
     badge: "CPWD DSR 2023",

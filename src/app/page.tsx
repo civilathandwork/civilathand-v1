@@ -9,6 +9,7 @@ import { useProjects } from "@/context/ProjectContext";
 import { generateSlug } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { portfolioItems } from "@/data/portfolio";
+import { servicesData } from "@/data/services";
 import { 
   Briefcase, 
   Cpu, 
@@ -99,7 +100,7 @@ interface CalcHubCard {
 const hubCards: CalcHubCard[] = [
   {
     id: "cost",
-    href: "/calculator/construction-cost-estimator",
+    href: "/calculator/all-calculators/construction-cost-estimator",
     title: "Construction Cost Estimator",
     description: "Prepare accurate budgets and detailed materials breakdown for 2026 Indian residential structures.",
     badge: "Cost Breakdown",
@@ -109,7 +110,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "concrete",
-    href: "/calculator/concrete-volumetrics",
+    href: "/calculator/all-calculators/concrete-volumetrics",
     title: "Concrete Volumetrics",
     description: "Calculate dry volume, cement bags, sand, and aggregate requirements using standard mix ratios.",
     badge: "IS 456:2000",
@@ -119,7 +120,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "steel",
-    href: "/calculator/steel-rebar-weight",
+    href: "/calculator/all-calculators/steel-rebar-weight",
     title: "Steel Rebar Weight",
     description: "Derive unit weights and total reinforcing steel weight in KG and Metric Tons for standard bar sizes.",
     badge: "IS 1786:2008",
@@ -129,7 +130,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "brick",
-    href: "/calculator/brick-masonry-wall",
+    href: "/calculator/all-calculators/brick-masonry-wall",
     title: "Brick & Masonry Wall",
     description: "Estimate bricks, mortar volume, cement bags, and sand count for load-bearing and partition walls.",
     badge: "IS 1077:1992",
@@ -139,7 +140,7 @@ const hubCards: CalcHubCard[] = [
   },
   {
     id: "boq",
-    href: "/calculator/ai-boq-takeoff",
+    href: "/calculator/all-calculators/ai-boq-takeoff",
     title: "AI BOQ Takeoff",
     description: "Audit layouts, drawings, and prepare a 16-line Bill of Quantities using standard CPWD DSR 2023 rates.",
     badge: "CPWD DSR 2023",
@@ -223,14 +224,21 @@ export default function Home() {
     setTimeout(() => setContactSuccess(false), 3000);
   };
 
-  const services: Array<{ title: string; desc: string; icon: any; href?: string }> = [
-    { title: "Structural Design", desc: "High-grade structural detailing and frame analysis using state-of-the-art computer automation.", icon: Cpu },
-    { title: "BOQ Estimation", desc: "Detailed Material bills and cost projections computed automatically with IS-code standard accuracies.", icon: FileTextIcon },
-    { title: "Quantity Surveying", desc: "Professional pre-construction quantity audits, concrete takeoffs, and rebar scheduling.", icon: Briefcase },
-    { title: "PDF to AutoCAD", desc: "Seamless vectorization of blueprint drawings to fully editable DWG/DXF files.", icon: FileTextIcon },
-    { title: "BIM Services", desc: "Virtual design coordination and 3D modeling up to LOD 400 specification standards.", icon: Compass },
-    { title: "Interior Design", desc: "Ergonomic workspace designs, custom interior layouts, and wood-finish specifications.", icon: HomeIcon },
-  ];
+  const services = servicesData.map(s => {
+    let IconComponent;
+    if (s.iconName === "Cpu") IconComponent = Cpu;
+    else if (s.iconName === "FileText") IconComponent = FileTextIcon;
+    else if (s.iconName === "Briefcase") IconComponent = Briefcase;
+    else if (s.iconName === "Compass") IconComponent = Compass;
+    else IconComponent = HomeIcon;
+
+    return {
+      title: s.title,
+      desc: s.desc,
+      icon: IconComponent,
+      href: `/services/all-services/${s.id}`
+    };
+  });
 
   const lifecycleSteps = [
     {
@@ -479,8 +487,8 @@ export default function Home() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {services.map((service, idx) => {
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {services.slice(0, 2).map((service, idx) => {
                 const Icon = service.icon;
                 return (
                   <motion.div 
@@ -488,7 +496,7 @@ export default function Home() {
                     initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: (idx % 3) * 0.05 }}
+                    transition={{ duration: 0.4, delay: (idx % 2) * 0.05 }}
                     className="group border border-slate-200 hover:border-wix-dark rounded-md p-6 bg-white hover:bg-slate-50/50 transition-all duration-300 flex flex-col justify-between shadow-sm"
                   >
                     <div>
@@ -510,6 +518,16 @@ export default function Home() {
                   </motion.div>
                 );
               })}
+            </div>
+
+            <div className="text-center mt-12">
+              <Link
+                href="/services/all-services"
+                className="inline-flex items-center gap-2 rounded-md bg-wix-dark hover:bg-orange-500 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm"
+              >
+                View All Services
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         </section>
@@ -533,8 +551,8 @@ export default function Home() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {hubCards.map((card, idx) => {
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {hubCards.slice(0, 2).map((card, idx) => {
                 const Icon = card.icon;
                 return (
                   <motion.div
@@ -542,7 +560,7 @@ export default function Home() {
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: (idx % 3) * 0.05 }}
+                    transition={{ duration: 0.4, delay: (idx % 2) * 0.05 }}
                     className="group border border-slate-200 hover:border-wix-dark rounded-md p-6 bg-white hover:bg-slate-50/50 transition-all duration-300 flex flex-col justify-between shadow-sm"
                   >
                     <div>
@@ -569,6 +587,16 @@ export default function Home() {
                   </motion.div>
                 );
               })}
+            </div>
+
+            <div className="text-center mt-12">
+              <Link
+                href="/calculator/all-calculators"
+                className="inline-flex items-center gap-2 rounded-md bg-wix-dark hover:bg-orange-500 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm"
+              >
+                View All Calculators
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         </section>

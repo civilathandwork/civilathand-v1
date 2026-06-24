@@ -17,6 +17,36 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  async redirects() {
+    return [
+      {
+        source: "/calculator/construction-cost-estimator",
+        destination: "/calculator/all-calculators/construction-cost-estimator",
+        permanent: true,
+      },
+      {
+        source: "/calculator/concrete-volumetrics",
+        destination: "/calculator/all-calculators/concrete-volumetrics",
+        permanent: true,
+      },
+      {
+        source: "/calculator/steel-rebar-weight",
+        destination: "/calculator/all-calculators/steel-rebar-weight",
+        permanent: true,
+      },
+      {
+        source: "/calculator/brick-masonry-wall",
+        destination: "/calculator/all-calculators/brick-masonry-wall",
+        permanent: true,
+      },
+      {
+        source: "/calculator/ai-boq-takeoff",
+        destination: "/calculator/all-calculators/ai-boq-takeoff",
+        permanent: true,
+      },
+    ];
+  },
+
   async rewrites() {
     return [
       {
@@ -28,23 +58,27 @@ const nextConfig: NextConfig = {
         destination: "/",
       },
       {
-        source: "/calculator/construction-cost-estimator",
+        source: "/calculator/all-calculators",
+        destination: "/calculators",
+      },
+      {
+        source: "/calculator/all-calculators/construction-cost-estimator",
         destination: "/calculators/cost",
       },
       {
-        source: "/calculator/concrete-volumetrics",
+        source: "/calculator/all-calculators/concrete-volumetrics",
         destination: "/calculators/concrete",
       },
       {
-        source: "/calculator/steel-rebar-weight",
+        source: "/calculator/all-calculators/steel-rebar-weight",
         destination: "/calculators/steel",
       },
       {
-        source: "/calculator/brick-masonry-wall",
+        source: "/calculator/all-calculators/brick-masonry-wall",
         destination: "/calculators/brick",
       },
       {
-        source: "/calculator/ai-boq-takeoff",
+        source: "/calculator/all-calculators/ai-boq-takeoff",
         destination: "/calculators/boq",
       },
       {
