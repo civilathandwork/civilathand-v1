@@ -371,8 +371,7 @@ export default function Home() {
                   variants={heroItemVariants}
                   className="text-sm text-slate-300 max-w-xl leading-relaxed font-medium"
                 >
-                   One Platform for Architectural Design, Structural Drawings, BOQ Estimation, BIM Modelling & Quantity Surveying — Delivered Online Across India.
-                  Professional Engineering Services with AI-Powered Civil Engineering Tools & Senior Engineer Verified Accuracy.
+                   One Platform for Architectural Design, Structural Drawings, BOQ Estimation, BIM Modelling & Quantity Surveying — Delivered Online Across India, AI-Powered Tools with Code-Compliant Accuracy
                 </motion.p>
                 
                 <motion.div 
