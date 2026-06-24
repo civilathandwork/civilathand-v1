@@ -371,7 +371,7 @@ export default function Home() {
                   variants={heroItemVariants}
                   className="text-sm text-slate-300 max-w-xl leading-relaxed font-medium"
                 >
-                  Planning, Design, Quantity Estimation, Construction Automation, and Project Management in One Cohesive Platform.
+                  One Platform for Architectural Design, Structural Drawings, BOQ Estimation, BIM Modelling & Quantity Surveying — Powered by AI and Delivered Online Across India.
                 </motion.p>
                 
                 <motion.div 
