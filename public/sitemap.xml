@@ -7,211 +7,223 @@
   <!-- =============================================
        CIVIL AT HAND — XML SITEMAP
        Domain: https://civilathand.in
-       Generated: 2026-06-20
+       Updated: 2026-06-25
        ============================================= -->
 
   <!-- ==================== CORE PAGES ==================== -->
 
   <!-- Homepage -->
   <url>
-    <loc>https://civilathand.in/</loc>
-    <lastmod>2026-06-20</lastmod>
+    <loc>https://www.civilathand.in/</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
-  <!-- ==================== SERVICE PAGES ==================== -->
-  <!-- Note: The service pages below should be created as individual pages for full SEO benefit. -->
+  <!-- ==================== BLOG PAGES ==================== -->
+  <!-- ADD every new blog slug here when you publish a new blog post -->
 
-  <!-- Structural Design — ADD THIS PAGE -->
+  <!-- Blog Index (listing page) -->
   <url>
-    <loc>https://civilathand.in/services/structural-design</loc>
-    <lastmod>2026-06-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://www.civilathand.in/blog</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
-  <!-- BOQ Estimation — ADD THIS PAGE -->
+  <!-- Blog Post: GATE 2027 Complete Guide -->
   <url>
-    <loc>https://civilathand.in/services/boq-estimation</loc>
-    <lastmod>2026-06-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Quantity Surveying — ADD THIS PAGE -->
-  <url>
-    <loc>https://civilathand.in/services/quantity-surveying</loc>
-    <lastmod>2026-06-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- PDF to AutoCAD — ADD THIS PAGE -->
-  <url>
-    <loc>https://civilathand.in/services/pdf-to-autocad</loc>
-    <lastmod>2026-06-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- BIM Services — ADD THIS PAGE -->
-  <url>
-    <loc>https://civilathand.in/services/bim-services</loc>
-    <lastmod>2026-06-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Interior Design — ADD THIS PAGE -->
-  <url>
-    <loc>https://civilathand.in/services/interior-design</loc>
-    <lastmod>2026-06-20</lastmod>
+    <loc>https://www.civilathand.in/blog/gate-2027-complete-guide-for-civil-engineering-students-exam-pattern-syllabus-preparation-strategy-success-plan</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
-
-
-  <!-- ==================== TOOLS / CALCULATORS PAGES ==================== -->
-  <!-- These are currently sections on the homepage (#calculators).
-       Creating dedicated URLs for each tool will give massive SEO uplift. -->
-
-  <!-- Construction Cost Calculator — ADD THIS PAGE -->
+  <!-- Blog Post: Types of Conflict Points on Highways -->
   <url>
-    <loc>https://civilathand.in/tools/construction-cost-calculator</loc>
-    <lastmod>2026-06-20</lastmod>
+    <loc>https://www.civilathand.in/blog/types-of-conflict-points-on-highways</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Blog Post: Rapid Sand Filter in Water Treatment -->
+  <url>
+    <loc>https://www.civilathand.in/blog/rapid-sand-filter-in-water-treatment</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Blog Post: Civil Engineering IITs 2026 Surge -->
+  <url>
+    <loc>https://www.civilathand.in/blog/civil-engineering-is-back-why-iits-are-seeing-a-massive-surge-in-2026-infra-boom-vs-ai-fear</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ==================== SERVICES PAGES ==================== -->
+
+  <!-- All Services Listing -->
+  <url>
+    <loc>https://www.civilathand.in/services/all-services</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
-  <!-- Concrete Volumetrics Calculator — ADD THIS PAGE -->
+  <!-- Individual Service Pages (add slug-based URLs as you create them) -->
   <url>
-    <loc>https://civilathand.in/tools/concrete-volume-calculator</loc>
-    <lastmod>2026-06-20</lastmod>
+    <loc>https://www.civilathand.in/services/all-services/structural-design</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.civilathand.in/services/all-services/boq-estimation</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.civilathand.in/services/all-services/quantity-surveying</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.civilathand.in/services/all-services/bim-services</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.civilathand.in/services/all-services/pdf-to-autocad</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.civilathand.in/services/all-services/interior-design</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ==================== CALCULATOR / TOOLS PAGES ==================== -->
+
+  <!-- Calculators Hub -->
+  <url>
+    <loc>https://www.civilathand.in/calculators</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
-  <!-- Steel Rebar Weight Calculator — ADD THIS PAGE -->
+  <!-- Construction Cost Calculator -->
   <url>
-    <loc>https://civilathand.in/tools/steel-rebar-weight-calculator</loc>
-    <lastmod>2026-06-20</lastmod>
+    <loc>https://www.civilathand.in/calculators/cost</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
   </url>
 
-  <!-- Brick and Masonry Wall Calculator — ADD THIS PAGE -->
+  <!-- Concrete Volume Calculator -->
   <url>
-    <loc>https://civilathand.in/tools/brick-masonry-calculator</loc>
-    <lastmod>2026-06-20</lastmod>
+    <loc>https://www.civilathand.in/calculators/concrete</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
   </url>
 
-  <!-- AI BOQ Takeoff Tool — ADD THIS PAGE -->
+  <!-- Steel Rebar Weight Calculator -->
   <url>
-    <loc>https://civilathand.in/tools/ai-boq-takeoff</loc>
-    <lastmod>2026-06-20</lastmod>
+    <loc>https://www.civilathand.in/calculators/steel</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Brick & Masonry Calculator -->
+  <url>
+    <loc>https://www.civilathand.in/calculators/brick</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- BOQ / AI Takeoff Calculator -->
+  <url>
+    <loc>https://www.civilathand.in/calculators/boq</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <!-- ==================== PORTFOLIO PAGES ==================== -->
 
   <!-- Portfolio Index -->
   <url>
-    <loc>https://civilathand.in/portfolio</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <!-- Portfolio Case Study: Tata Projects Industrial Shed -->
-  <url>
-    <loc>https://civilathand.in/portfolio/tata-projects-industrial-shed</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Portfolio Case Study: G+3 Smart Commercial Hub -->
-  <url>
-    <loc>https://civilathand.in/portfolio/g3-smart-commercial-hub</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Portfolio Case Study: Residential Villa Complex -->
-  <url>
-    <loc>https://civilathand.in/portfolio/residential-villa-complex</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Portfolio Case Study: Steel Portal Frame Warehouse -->
-  <url>
-    <loc>https://civilathand.in/portfolio/steel-portal-frame-warehouse</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- ==================== BLOG PAGES ==================== -->
-
-  <!-- Blog Index -->
-  <url>
-    <loc>https://civilathand.in/blog</loc>
-    <lastmod>2026-06-20</lastmod>
+    <loc>https://www.civilathand.in/portfolio</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Blog Post: Understanding Soil Bearing Capacity in Foundation Design -->
+  <!-- Individual Portfolio Items (add new IDs as you add projects) -->
   <url>
-    <loc>https://civilathand.in/blog/blog-1</loc>
-    <lastmod>2026-06-05</lastmod>
+    <loc>https://www.civilathand.in/portfolio/tata-projects-industrial-shed</loc>
+    <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.7</priority>
   </url>
 
-  <!-- Blog Post: A Complete Guide to Modern Glassmorphism in Architecture -->
   <url>
-    <loc>https://civilathand.in/blog/blog-2</loc>
-    <lastmod>2026-06-03</lastmod>
+    <loc>https://www.civilathand.in/portfolio/g3-smart-commercial-hub</loc>
+    <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.7</priority>
   </url>
 
-  <!-- Blog Post: AI Takeoffs — The Future of Quantity Surveying & BOQ -->
   <url>
-    <loc>https://civilathand.in/blog/blog-3</loc>
-    <lastmod>2026-06-01</lastmod>
+    <loc>https://www.civilathand.in/portfolio/residential-villa-complex</loc>
+    <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.civilathand.in/portfolio/steel-portal-frame-warehouse</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 
   <!-- ==================== LEGAL & POLICY PAGES ==================== -->
 
   <url>
-    <loc>https://civilathand.in/privacy-policy</loc>
-    <lastmod>2026-06-20</lastmod>
+    <loc>https://www.civilathand.in/privacy-policy</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
 
   <url>
-    <loc>https://civilathand.in/terms-and-conditions</loc>
-    <lastmod>2026-06-20</lastmod>
+    <loc>https://www.civilathand.in/terms-and-conditions</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
 
   <url>
-    <loc>https://civilathand.in/engineering-disclaimer</loc>
-    <lastmod>2026-06-20</lastmod>
+    <loc>https://www.civilathand.in/engineering-disclaimer</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
