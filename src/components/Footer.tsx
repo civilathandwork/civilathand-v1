@@ -240,7 +240,7 @@ export const Footer: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed mb-6">
-                Engineering excellence powered by smart automation. We deliver enterprise-grade structural design, quantity surveying, and BIM modeling to builders, architects, and industrial clients worldwide.
+               One Platform for Architectural Design, Structural Drawings, BOQ Estimation, BIM Modelling & Quantity Surveying — Delivered Online Across India, AI-Powered Tools with Code-Compliant Accuracy.
               </p>
             </div>
 
