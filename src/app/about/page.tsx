@@ -9,342 +9,377 @@ import {
   MapPin,
   Mail,
   Phone,
-  Briefcase,
-  ShieldCheck,
+  Shield,
   Cpu,
   Globe,
   Users,
   Award,
   TrendingUp,
+  HardHat,
+  Ruler,
+  Building2,
+  FileText,
+  Layers,
+  Star,
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About Us | Civil At Hand – Engineering Excellence Powered by Smart Automation",
+  title: "About Us | Civil At Hand — India's Engineering & BIM Consultancy",
   description:
-    "Learn about Civil At Hand – India's precision civil engineering and BIM consultancy. Our team of licensed structural engineers, BIM specialists, and quantity surveyors deliver enterprise-grade solutions across India and globally.",
+    "Civil At Hand is India's precision civil engineering consultancy. Licensed structural engineers, BIM specialists, and quantity surveyors delivering IS-code compliant structural design, BOQ estimation, and BIM LOD 400 coordination across India and globally.",
 };
 
-const stats = [
-  { value: "500+", label: "Projects Delivered" },
-  { value: "150+", label: "Clients Served" },
-  { value: "8+", label: "Years of Expertise" },
-  { value: "15+", label: "Engineering Specialists" },
+const milestones = [
+  { year: "2016", title: "Founded", desc: "Started as a structural detailing studio serving local architects in Haryana, India." },
+  { year: "2018", title: "BOQ Division", desc: "Launched dedicated BOQ estimation and quantity surveying services using CPWD DSR rates." },
+  { year: "2020", title: "BIM Practice", desc: "Established a full BIM coordination practice delivering LOD 300–400 models using Revit and Navisworks." },
+  { year: "2022", title: "Digital Tools", desc: "Released proprietary AI-powered calculation engines — concrete, steel, brick, cost estimation, and BOQ takeoff." },
+  { year: "2024", title: "Global Delivery", desc: "Expanded to serve clients across India, Middle East, and Southeast Asia through a remote-first model." },
+  { year: "2026", title: "Education Vertical", desc: "Launched Civil At Hand Education — offering courses, test series, and mentorship for civil engineering aspirants." },
 ];
 
-const values = [
-  {
-    icon: ShieldCheck,
-    title: "Precision & Accuracy",
-    desc: "Every drawing, estimate, and BIM model is validated against IS codes, CPWD DSR standards, and client specifications before delivery.",
-  },
-  {
-    icon: Cpu,
-    title: "Smart Automation",
-    desc: "We use AI-powered tools, custom calculation engines, and digital workflows to reduce turnaround time and eliminate human error.",
-  },
-  {
-    icon: Globe,
-    title: "Global Standards, Indian Expertise",
-    desc: "Our engineers combine international best practices with a deep understanding of Indian regulatory frameworks, market rates, and site conditions.",
-  },
-  {
-    icon: Users,
-    title: "Client-First Approach",
-    desc: "From first consultation to final delivery, we maintain transparent communication, milestone-based updates, and dedicated support for every engagement.",
-  },
-  {
-    icon: Award,
-    title: "Certified Excellence",
-    desc: "Our structural design and BIM deliverables meet LOD 300–400 standards and are prepared by licensed engineers with proven industry track records.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Continuous Innovation",
-    desc: "We invest in emerging technologies — including BIM automation, PDF-to-CAD conversion, and AI quantity takeoff — to stay ahead of industry demands.",
-  },
+const services = [
+  { icon: Building2, title: "Structural Design", desc: "IS 456, IS 800, IS 1786 compliant RCC & steel structural design with drawings and calculations." },
+  { icon: FileText, title: "BOQ Estimation", desc: "CPWD DSR 2023 based detailed bill of quantities with material takeoff and cost analysis." },
+  { icon: Ruler, title: "Quantity Surveying", desc: "Accurate quantity calculation, rate analysis, and cost planning for all project types." },
+  { icon: Layers, title: "BIM Services", desc: "LOD 300–400 BIM modeling, clash detection, 4D scheduling, and coordination reports." },
+  { icon: HardHat, title: "PDF to AutoCAD", desc: "High-accuracy conversion of PDF drawings to fully dimensioned AutoCAD DWG files." },
+  { icon: Globe, title: "Interior Design", desc: "Space planning, 3D visualization, and detailed interior drawings for residential and commercial spaces." },
 ];
 
-const team = [
-  {
-    name: "Ar. Rajiv Mehta",
-    role: "Founder & Principal Engineer",
-    bio: "Structural engineer with 12+ years in high-rise design, industrial sheds, and BIM coordination across residential and infrastructure projects.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=300",
-  },
-  {
-    name: "Priya Nair",
-    role: "Head of BIM & Coordination",
-    bio: "Certified BIM specialist with expertise in LOD 400 modelling, clash detection, and multi-discipline coordination using Revit and Navisworks.",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=300",
-  },
-  {
-    name: "Suresh Kumar",
-    role: "Senior Quantity Surveyor",
-    bio: "8+ years in BOQ preparation, CPWD DSR rate analysis, and cost planning for commercial, residential, and government infrastructure projects.",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=300",
-  },
+const whyUs = [
+  { icon: Shield, label: "IS Code Compliant", desc: "Every output validated against IS 456, IS 800, IS 1786, CPWD DSR 2023 before delivery." },
+  { icon: Cpu, label: "AI-Powered Tools", desc: "Custom calculation engines reduce errors and turnaround time significantly." },
+  { icon: Award, label: "Licensed Engineers", desc: "All structural outputs signed off by licensed, experienced civil engineers." },
+  { icon: Users, label: "Client First", desc: "Milestone-based updates, transparent communication, dedicated support on every project." },
+  { icon: TrendingUp, label: "24-72 Hr Delivery", desc: "Standard projects delivered in 1-3 business days with full technical accuracy." },
+  { icon: Star, label: "500+ Projects", desc: "Trusted by 150+ clients across residential, commercial, and infrastructure sectors." },
 ];
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-wix-gray">
+    <div className="flex flex-col min-h-screen bg-white">
       <Header />
 
       <main className="flex-grow">
 
-        {/* ── Hero / Page Header ── */}
-        <section className="bg-wix-dark text-white py-20 md:py-28 border-b border-white/5 relative overflow-hidden">
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="max-w-3xl">
-              <span className="text-xs font-bold text-orange-400 uppercase tracking-widest block mb-3">
-                Who We Are
-              </span>
-              <h1 className="font-display text-4xl md:text-6xl font-extrabold tracking-tight uppercase leading-tight">
-                Engineering{" "}
-                <span className="text-orange-500 font-black">Excellence</span>
-                <br />
-                Built On Precision
-              </h1>
-              <p className="mt-6 text-base text-slate-300 font-medium leading-relaxed max-w-2xl">
-                Civil At Hand is India's dedicated civil engineering and BIM consultancy — delivering structural design, 
-                quantity estimation, BOQ takeoffs, and digital drafting services to architects, developers, and infrastructure firms.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Link
-                  href="/services/all-services"
-                  className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-3 text-xs uppercase tracking-widest rounded-md transition-all"
-                >
-                  Our Services <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 bg-transparent border border-white/30 hover:border-white text-white font-bold px-6 py-3 text-xs uppercase tracking-widest rounded-md transition-all"
-                >
-                  Contact Us <ArrowRight className="h-4 w-4" />
-                </Link>
+        {/* IDENTITY HERO */}
+        <section className="relative bg-wix-dark overflow-hidden">
+          <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:20px_20px]" />
+          <div className="absolute top-0 left-0 right-0 h-1 bg-orange-500" />
+
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 rounded-full px-4 py-1.5 mb-6">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                  <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest">
+                    Civil At Hand - Est. 2016
+                  </span>
+                </div>
+                <h1 className="font-display text-5xl md:text-6xl font-extrabold text-white uppercase leading-tight tracking-tight">
+                  India's Precision<br />
+                  <span className="text-orange-500">Engineering</span><br />
+                  Consultancy
+                </h1>
+                <p className="mt-6 text-sm text-slate-400 font-medium leading-relaxed max-w-lg">
+                  We are a team of licensed structural engineers, BIM specialists, and quantity surveyors
+                  delivering IS-code compliant engineering services to architects, developers, and infrastructure
+                  firms across India and globally.
+                </p>
+                <div className="mt-10 flex flex-wrap gap-3">
+                  <Link
+                    href="/services/all-services"
+                    className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-3 text-[11px] uppercase tracking-widest rounded-md transition-all"
+                  >
+                    Our Services <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-2 border border-white/20 hover:border-white text-white font-bold px-6 py-3 text-[11px] uppercase tracking-widest rounded-md transition-all"
+                  >
+                    Start a Project
+                  </Link>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { value: "500+", label: "Projects Delivered", sub: "Across India and globally" },
+                  { value: "150+", label: "Clients Served", sub: "Architects, developers, EPC" },
+                  { value: "8+", label: "Years of Expertise", sub: "Since 2016" },
+                  { value: "24-72h", label: "Turnaround Time", sub: "Standard projects" },
+                ].map((s) => (
+                  <div
+                    key={s.label}
+                    className="bg-white/5 border border-white/10 rounded-md p-6 hover:border-orange-500/40 transition-all"
+                  >
+                    <p className="font-display text-3xl font-extrabold text-white mb-1">{s.value}</p>
+                    <p className="text-[11px] font-bold text-orange-400 uppercase tracking-wider mb-1">{s.label}</p>
+                    <p className="text-[10px] text-slate-500 font-medium">{s.sub}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── Stats Strip ── */}
-        <section className="bg-orange-500 py-10">
+        {/* WHO WE ARE + TIMELINE */}
+        <section className="py-20 md:py-28 bg-wix-gray border-b border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-white text-center">
-              {stats.map((s) => (
-                <div key={s.label}>
-                  <p className="font-display text-4xl font-extrabold tracking-tight">{s.value}</p>
-                  <p className="text-xs font-bold uppercase tracking-widest mt-1 text-orange-100">{s.label}</p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+
+              <div>
+                <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Our Story</span>
+                <h2 className="font-display text-3xl md:text-4xl font-extrabold text-wix-dark uppercase leading-tight mb-6">
+                  From a Drafting Studio<br />to a <span className="text-orange-500">Full-Spectrum</span> Engineering Firm
+                </h2>
+                <div className="space-y-4 text-sm text-slate-600 font-medium leading-relaxed">
+                  <p>
+                    Civil At Hand was founded in 2016 in Haryana, India, with a single purpose:
+                    to deliver structurally precise, code-compliant engineering outputs at a pace
+                    that modern construction projects demand.
+                  </p>
+                  <p>
+                    What began as a two-person structural detailing studio grew into a full-spectrum
+                    engineering consultancy. Today, our team includes licensed structural engineers,
+                    BIM specialists, quantity surveyors, CAD drafters, and interior designers all
+                    operating from a digital-first, remote-capable environment.
+                  </p>
+                  <p>
+                    We have worked on high-rise residential towers, industrial sheds, government
+                    infrastructure, commercial complexes, and villa communities across India, the
+                    Middle East, and Southeast Asia. Every project receives the same standard:
+                    IS code compliance, CPWD rate alignment, and engineer-reviewed deliverables.
+                  </p>
+                </div>
+                <div className="mt-8 border-l-4 border-orange-500 pl-5 py-2">
+                  <p className="font-display text-base font-extrabold text-wix-dark uppercase leading-snug">
+                    "Precision engineering at the speed of digital innovation."
+                  </p>
+                  <p className="text-xs text-slate-400 font-medium mt-1">— Civil At Hand, Engineering Team</p>
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-6">Our Journey</span>
+                <div className="relative pl-8 space-y-0">
+                  <div className="absolute left-3 top-2 bottom-2 w-px bg-gradient-to-b from-orange-500 to-slate-200" />
+                  {milestones.map((m, i) => (
+                    <div key={m.year} className="relative pb-8 last:pb-0">
+                      <div className={`absolute -left-5 top-0.5 w-4 h-4 rounded-full border-2 flex items-center justify-center ${i === milestones.length - 1 ? "bg-orange-500 border-orange-500" : "bg-white border-orange-400"}`}>
+                        <div className={`w-1.5 h-1.5 rounded-full ${i === milestones.length - 1 ? "bg-white" : "bg-orange-500"}`} />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest">{m.year}</span>
+                          <span className="h-px flex-1 bg-slate-200" />
+                        </div>
+                        <p className="text-sm font-extrabold text-wix-dark font-display uppercase tracking-wide">{m.title}</p>
+                        <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">{m.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* WHAT WE DO */}
+        <section className="py-20 md:py-28 bg-white border-b border-slate-100">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Our Capabilities</span>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold text-wix-dark uppercase leading-tight">
+                Six Disciplines. <span className="text-orange-500">One Team.</span>
+              </h2>
+              <p className="mt-4 text-sm text-slate-500 font-medium">
+                Every service is delivered by specialists not generalists ensuring
+                the technical accuracy your project demands.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200 border border-slate-200 rounded-md overflow-hidden">
+              {services.map((s) => (
+                <div key={s.title} className="bg-white p-8 hover:bg-wix-gray transition-all group">
+                  <div className="w-10 h-10 bg-orange-500/10 rounded-md flex items-center justify-center mb-5 group-hover:bg-orange-500 transition-all">
+                    <s.icon className="h-5 w-5 text-orange-500 group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="font-display font-extrabold text-sm text-wix-dark uppercase tracking-wide mb-2">{s.title}</h3>
+                  <p className="text-xs text-slate-500 leading-relaxed font-medium">{s.desc}</p>
+                  <Link
+                    href="/services/all-services"
+                    className="inline-flex items-center gap-1 text-[10px] font-bold text-orange-500 uppercase tracking-widest mt-4 hover:gap-2 transition-all"
+                  >
+                    Learn More <ArrowRight className="h-3 w-3" />
+                  </Link>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── Mission & Story ── */}
-        <section className="py-20 md:py-28 bg-white border-b border-slate-100">
+        {/* WHY CIVIL AT HAND */}
+        <section className="py-20 md:py-28 bg-wix-dark relative overflow-hidden">
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:20px_20px]" />
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest block mb-3">Why Choose Us</span>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold text-white uppercase leading-tight">
+                The Standard We Hold <span className="text-orange-500">On Every Project</span>
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {whyUs.map((w) => (
+                <div key={w.label} className="bg-white/5 border border-white/10 rounded-md p-7 hover:border-orange-500/40 transition-all group">
+                  <div className="w-10 h-10 bg-orange-500/10 rounded-md flex items-center justify-center mb-5 group-hover:bg-orange-500 transition-all">
+                    <w.icon className="h-5 w-5 text-orange-400 group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="font-display font-extrabold text-sm text-white uppercase tracking-wide mb-2">{w.label}</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed font-medium">{w.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* OUR TEAM */}
+        <section className="py-20 md:py-28 bg-wix-gray border-b border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div>
-                <span className="text-xs font-bold text-orange-500 uppercase tracking-widest block mb-3">
-                  Our Story
-                </span>
-                <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-wix-dark uppercase leading-tight">
-                  From Blueprint to{" "}
-                  <span className="text-orange-500">Reality</span>
+                <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Our People</span>
+                <h2 className="font-display text-3xl md:text-4xl font-extrabold text-wix-dark uppercase leading-tight mb-6">
+                  Engineers Who <span className="text-orange-500">Build With You</span>
                 </h2>
-                <div className="mt-6 space-y-4 text-sm text-slate-600 leading-relaxed font-medium">
-                  <p>
-                    Civil At Hand was founded with one clear mission: to make world-class civil engineering 
-                    services accessible, affordable, and fast — without compromising on technical accuracy 
-                    or IS code compliance.
-                  </p>
-                  <p>
-                    We began as a structural detailing studio serving local architects in India. Over eight 
-                    years, we have grown into a full-spectrum engineering consultancy — serving developers, 
-                    EPC contractors, and architectural firms across India, the Middle East, and Southeast Asia.
-                  </p>
-                  <p>
-                    Today, our team of licensed structural engineers, BIM specialists, quantity surveyors, 
-                    and CAD drafters works from a digital-first environment — combining engineering knowledge 
-                    with smart automation tools to deliver precise, audit-ready outputs on every project.
-                  </p>
-                </div>
-                <div className="mt-8 space-y-3">
+                <p className="text-sm text-slate-600 font-medium leading-relaxed mb-6">
+                  Our multidisciplinary team brings together 15+ engineering specialists covering
+                  structural design, quantity surveying, BIM coordination, drafting, and project management.
+                </p>
+                <p className="text-sm text-slate-600 font-medium leading-relaxed mb-8">
+                  We work as an extension of your team not as a vendor. Every engineer assigned to
+                  your project understands your drawings, your codes, and your deadlines.
+                </p>
+                <div className="grid grid-cols-2 gap-4">
                   {[
-                    "IS Code & CPWD DSR 2023 Compliant Deliverables",
-                    "Licensed Structural Engineers on Every Project",
-                    "BIM LOD 300–400 Coordination & Clash Detection",
-                    "AI-Powered BOQ & Quantity Takeoff Tools",
-                  ].map((item) => (
-                    <div key={item} className="flex items-start gap-3">
-                      <CheckCircle2 className="h-4 w-4 text-orange-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm text-slate-700 font-semibold">{item}</span>
+                    { num: "15+", label: "Engineering Specialists" },
+                    { num: "6", label: "Core Disciplines" },
+                    { num: "IS/CPWD", label: "Code Standards" },
+                    { num: "Pan India", label: "+ Global Clients" },
+                  ].map((t) => (
+                    <div key={t.label} className="bg-white border border-slate-200 rounded-md p-5">
+                      <p className="font-display text-2xl font-extrabold text-orange-500 mb-1">{t.num}</p>
+                      <p className="text-[10px] font-bold text-wix-dark uppercase tracking-widest">{t.label}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="relative">
-                <div className="bg-wix-dark rounded-md overflow-hidden shadow-xl">
-                  <img
-                    src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=800"
-                    alt="Civil engineering blueprints and structural drawings"
-                    className="w-full h-80 object-cover opacity-80"
-                  />
-                  <div className="p-8">
-                    <p className="text-xs font-bold text-orange-400 uppercase tracking-widest mb-2">Our Mission</p>
-                    <p className="text-white font-display text-lg font-extrabold uppercase leading-snug">
-                      "To deliver engineering precision at the speed of digital innovation."
-                    </p>
-                    <p className="mt-3 text-sm text-slate-400 font-medium">
-                      — Civil At Hand, Engineering Team
-                    </p>
+              <div className="space-y-3">
+                {[
+                  { role: "Structural Engineers", skills: ["RCC Design", "Steel Structure", "Foundation Design", "IS 456 / IS 800"], color: "bg-orange-500" },
+                  { role: "BIM Specialists", skills: ["Revit Modelling", "LOD 400", "Clash Detection", "4D Scheduling"], color: "bg-slate-800" },
+                  { role: "Quantity Surveyors", skills: ["BOQ Preparation", "CPWD DSR 2023", "Rate Analysis", "Cost Planning"], color: "bg-orange-400" },
+                  { role: "CAD and Drafting Team", skills: ["AutoCAD", "PDF to DWG", "Shop Drawings", "Rebar Detailing"], color: "bg-slate-600" },
+                ].map((team) => (
+                  <div key={team.role} className="bg-white border border-slate-200 rounded-md p-5 flex items-start gap-4">
+                    <div className={`w-1 self-stretch rounded-full ${team.color} flex-shrink-0`} />
+                    <div>
+                      <p className="text-xs font-extrabold text-wix-dark font-display uppercase tracking-wide mb-2">{team.role}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {team.skills.map((sk) => (
+                          <span key={sk} className="text-[10px] font-bold text-slate-500 bg-wix-gray border border-slate-200 px-2.5 py-1 rounded-full uppercase tracking-wide">
+                            {sk}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-                {/* Accent block */}
-                <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-orange-500 rounded-md -z-10" />
+                ))}
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── Core Values ── */}
-        <section className="py-20 md:py-28 bg-wix-gray border-b border-slate-200">
+        {/* COMPLIANCE STRIP */}
+        <section className="py-10 bg-white border-b border-slate-100">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-14">
-              <span className="text-xs font-bold text-orange-500 uppercase tracking-widest block mb-3">
-                What Drives Us
-              </span>
-              <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-wix-dark uppercase">
-                Our Core <span className="text-orange-500">Values</span>
-              </h2>
-              <p className="mt-4 text-sm text-slate-500 font-medium">
-                Every project we take on is guided by these six principles — ensuring consistent quality, 
-                transparency, and results for our clients.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {values.map((v) => (
-                <div
-                  key={v.title}
-                  className="bg-white border border-slate-200 rounded-md p-7 hover:border-orange-400 hover:shadow-md transition-all group"
-                >
-                  <div className="w-10 h-10 bg-orange-500/10 rounded-md flex items-center justify-center mb-5 group-hover:bg-orange-500 transition-colors">
-                    <v.icon className="h-5 w-5 text-orange-500 group-hover:text-white transition-colors" />
-                  </div>
-                  <h3 className="font-display font-extrabold text-sm text-wix-dark uppercase tracking-wide mb-2">
-                    {v.title}
-                  </h3>
-                  <p className="text-xs text-slate-500 leading-relaxed font-medium">{v.desc}</p>
+            <div className="flex flex-wrap items-center justify-center gap-6">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Our standards:</span>
+              {["IS 456:2000", "IS 800:2007", "IS 1786:2008", "IS 1077:1992", "CPWD DSR 2023", "BIM LOD 400", "NBC 2016"].map((std) => (
+                <div key={std} className="flex items-center gap-2 text-[11px] font-bold text-wix-dark">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-orange-500" />
+                  {std}
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── Team ── */}
-        <section className="py-20 md:py-28 bg-white border-b border-slate-100">
+        {/* CONTACT CTA */}
+        <section className="py-20 md:py-24 bg-wix-gray">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-14">
-              <span className="text-xs font-bold text-orange-500 uppercase tracking-widest block mb-3">
-                The Experts
-              </span>
-              <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-wix-dark uppercase">
-                Meet Our <span className="text-orange-500">Leadership</span>
-              </h2>
-              <p className="mt-4 text-sm text-slate-500 font-medium">
-                Our senior team brings decades of combined experience in structural engineering, BIM, 
-                quantity surveying, and construction management.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {team.map((member) => (
-                <div
-                  key={member.name}
-                  className="bg-wix-gray border border-slate-200 rounded-md overflow-hidden hover:border-orange-400 hover:shadow-md transition-all group"
-                >
-                  <div className="h-56 overflow-hidden bg-slate-200">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <p className="text-[10px] font-bold text-orange-500 uppercase tracking-widest mb-1">
-                      {member.role}
-                    </p>
-                    <h3 className="font-display font-extrabold text-base text-wix-dark uppercase tracking-wide mb-3">
-                      {member.name}
-                    </h3>
-                    <p className="text-xs text-slate-500 leading-relaxed font-medium">{member.bio}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Location & Quick Contact ── */}
-        <section className="py-20 md:py-28 bg-wix-dark text-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <span className="text-xs font-bold text-orange-400 uppercase tracking-widest block mb-3">
-                  Find Us
-                </span>
-                <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-white uppercase">
-                  Based in <span className="text-orange-500">India</span>,<br />Serving Globally
-                </h2>
-                <p className="mt-5 text-sm text-slate-300 font-medium leading-relaxed">
-                  Our engineering team operates from India, delivering projects for clients across the country and internationally. 
-                  We work fully online — making collaboration seamless regardless of your location.
-                </p>
-                <div className="mt-8 space-y-4">
-                  <div className="flex items-center gap-3 text-sm text-slate-300">
-                    <MapPin className="h-5 w-5 text-orange-400 flex-shrink-0" />
-                    <span className="font-medium">India — Remote-first, serving pan-India & global clients</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-slate-300">
-                    <Mail className="h-5 w-5 text-orange-400 flex-shrink-0" />
-                    <a href="mailto:info@civilathand.in" className="font-medium hover:text-orange-400 transition-colors">
-                      info@civilathand.in
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-slate-300">
-                    <Phone className="h-5 w-5 text-orange-400 flex-shrink-0" />
-                    <span className="font-medium">Available via WhatsApp & Client Portal</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white/5 border border-white/10 rounded-md p-8 md:p-10">
-                <p className="text-xs font-bold text-orange-400 uppercase tracking-widest mb-2">Ready to Start?</p>
-                <h3 className="font-display text-xl font-extrabold text-white uppercase mb-4">
-                  Let's Work Together
-                </h3>
-                <p className="text-sm text-slate-300 font-medium mb-8 leading-relaxed">
-                  Submit your project requirements and our engineering team will reach out within 24 hours 
-                  with a detailed scope and proposal.
-                </p>
-                <div className="flex flex-col gap-3">
+            <div className="bg-wix-dark rounded-md overflow-hidden">
+              <div className="grid grid-cols-1 lg:grid-cols-2">
+                <div className="bg-orange-500 p-10 md:p-14">
+                  <span className="text-[10px] font-bold text-white/70 uppercase tracking-widest block mb-3">Get Started</span>
+                  <h2 className="font-display text-3xl font-extrabold text-white uppercase leading-tight mb-4">
+                    Ready to Work With Us?
+                  </h2>
+                  <p className="text-sm text-orange-100 font-medium leading-relaxed mb-8">
+                    Share your project requirements and our engineering team will respond
+                    within 24 hours with a detailed scope and proposal.
+                  </p>
                   <Link
                     href="/contact"
-                    className="inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-4 text-xs uppercase tracking-widest rounded-md transition-all"
+                    className="inline-flex items-center gap-2 bg-white hover:bg-wix-dark text-orange-500 hover:text-white font-bold px-7 py-4 text-[11px] uppercase tracking-widest rounded-md transition-all"
                   >
-                    Start a Project <ArrowRight className="h-4 w-4" />
+                    Contact Us <ArrowRight className="h-4 w-4" />
                   </Link>
-                  <Link
-                    href="/services/all-services"
-                    className="inline-flex items-center justify-center gap-2 bg-transparent border border-white/20 hover:border-white text-white font-bold px-6 py-4 text-xs uppercase tracking-widest rounded-md transition-all"
-                  >
-                    <Briefcase className="h-4 w-4" />
-                    View All Services
-                  </Link>
+                </div>
+
+                <div className="p-10 md:p-14 flex flex-col justify-center">
+                  <div className="space-y-5">
+                    <div className="flex items-center gap-4 text-sm text-slate-300">
+                      <div className="w-9 h-9 bg-white/5 border border-white/10 rounded-md flex items-center justify-center flex-shrink-0">
+                        <Mail className="h-4 w-4 text-orange-400" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-0.5">Email</p>
+                        <a href="mailto:info.civilathand@zohomail.in" className="font-medium hover:text-orange-400 transition-colors text-sm">
+                          info.civilathand@zohomail.in
+                        </a>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-slate-300">
+                      <div className="w-9 h-9 bg-white/5 border border-white/10 rounded-md flex items-center justify-center flex-shrink-0">
+                        <Phone className="h-4 w-4 text-orange-400" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-0.5">Phone / WhatsApp</p>
+                        <a href="tel:+917703977002" className="font-medium hover:text-orange-400 transition-colors text-sm">
+                          +91 770-39-770-02
+                        </a>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-slate-300">
+                      <div className="w-9 h-9 bg-white/5 border border-white/10 rounded-md flex items-center justify-center flex-shrink-0">
+                        <MapPin className="h-4 w-4 text-orange-400" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-0.5">Location</p>
+                        <span className="font-medium text-sm">Haryana, India — Remote-first, Global Delivery</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-8 pt-8 border-t border-white/10">
+                    <Link
+                      href="/education"
+                      className="inline-flex items-center gap-2 text-orange-400 hover:text-orange-300 font-bold text-[11px] uppercase tracking-widest transition-all"
+                    >
+                      Explore Civil At Hand Education <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
