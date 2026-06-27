@@ -16,11 +16,20 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     setIsAuthenticated(isAuth);
 
     const isAuthPage = pathname === "/auth" || pathname.startsWith("/auth/");
+    const isProtectedCalculator = 
+      (pathname.startsWith("/calculators/") && pathname !== "/calculators") ||
+      (pathname.startsWith("/calculator/") && pathname !== "/calculator");
+
+    const isProtectedService = 
+      pathname.startsWith("/services/") && 
+      pathname !== "/services" && 
+      pathname !== "/services/all-services";
+
     const isProtectedPage = 
-      pathname.startsWith("/calculators") ||
-      pathname.startsWith("/calculator") ||
-      pathname.startsWith("/services") ||
-      pathname.startsWith("/dashboard");
+      isProtectedCalculator ||
+      isProtectedService ||
+      pathname.startsWith("/dashboard") ||
+      pathname.startsWith("/profile");
 
     if (!isAuth && isProtectedPage) {
       // Redirect to sign in if accessing protected route
@@ -34,11 +43,20 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   }, [pathname, router]);
 
   // Keep a clean premium loading state while verifying credentials
+  const isProtectedCalculator = 
+    (pathname.startsWith("/calculators/") && pathname !== "/calculators") ||
+    (pathname.startsWith("/calculator/") && pathname !== "/calculator");
+
+  const isProtectedService = 
+    pathname.startsWith("/services/") && 
+    pathname !== "/services" && 
+    pathname !== "/services/all-services";
+
   const isProtected = 
-    pathname.startsWith("/calculators") ||
-    pathname.startsWith("/calculator") ||
-    pathname.startsWith("/services") ||
-    pathname.startsWith("/dashboard");
+    isProtectedCalculator ||
+    isProtectedService ||
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/profile");
 
   if (loading && isProtected) {
     return (

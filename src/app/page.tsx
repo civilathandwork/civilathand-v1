@@ -172,23 +172,7 @@ export default function Home() {
     }
   }, [user]);
 
-  useEffect(() => {
-    if (pathname === "/services") {
-      const el = document.getElementById("services");
-      if (el) {
-        setTimeout(() => {
-          el.scrollIntoView({ behavior: "smooth" });
-        }, 150);
-      }
-    } else if (pathname === "/calculator" || pathname === "/calculators") {
-      const el = document.getElementById("calculators");
-      if (el) {
-        setTimeout(() => {
-          el.scrollIntoView({ behavior: "smooth" });
-        }, 150);
-      }
-    }
-  }, [pathname]);
+
   
   // Interactive Lifecycle Step State
   const [activeLifecycleStep, setActiveLifecycleStep] = useState(0);
@@ -509,7 +493,7 @@ export default function Home() {
         </section>
 
         {/* SECTION 3: SERVICES SECTION */}
-        <section id="services" className="py-24 bg-white">
+        <section id="services" className="py-24 bg-white border-b border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial="hidden"
@@ -522,13 +506,14 @@ export default function Home() {
               <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
                 End-to-End Civil & Structural Services
               </h2>
-              <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
                 Combining senior-level human expertise with automated design verification to deliver top-tier drawings, models, and estimations.
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {services.slice(0, 2).map((service, idx) => {
+            {/* All four in single row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {services.slice(0, 4).map((service, idx) => {
                 const Icon = service.icon;
                 return (
                   <motion.div 
@@ -536,23 +521,24 @@ export default function Home() {
                     initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: (idx % 2) * 0.05 }}
+                    transition={{ duration: 0.4, delay: idx * 0.05 }}
                     className="group border border-slate-200 hover:border-wix-dark rounded-md p-6 bg-white hover:bg-slate-50/50 transition-all duration-300 flex flex-col justify-between shadow-sm"
                   >
                     <div>
                       <div className="h-10 w-10 rounded-md bg-slate-50 text-wix-dark group-hover:bg-wix-dark group-hover:text-white flex items-center justify-center mb-4 border border-slate-200 transition-colors">
                         <Icon className="h-5.5 w-5.5 text-orange-500" />
                       </div>
-                      <h3 className="font-display font-bold text-sm text-wix-dark mb-2 leading-tight uppercase tracking-wider">
+                      <h3 className="font-display font-bold text-sm text-wix-dark mb-2 leading-tight uppercase tracking-wider group-hover:text-orange-500 transition-colors">
                         {service.title}
                       </h3>
                       <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
                         {service.desc}
                       </p>
                     </div>
-                    <div className="pt-5 mt-auto">
-                      <Link href={service.href || "#contact"} className="text-[10px] font-extrabold text-orange-500 hover:text-wix-dark uppercase tracking-widest flex items-center gap-1">
-                        Get Estimate <ArrowRight className="h-3 w-3" />
+                    <div className="pt-5 mt-auto border-t border-slate-100/60 flex items-center justify-between">
+                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Expert Consulting</span>
+                      <Link href="/services" className="text-[10px] font-extrabold text-orange-500 hover:text-wix-dark uppercase tracking-widest flex items-center gap-1 group/link">
+                        Explore details <ArrowRight className="h-3 w-3 transform group-hover/link:translate-x-0.5 transition-transform" />
                       </Link>
                     </div>
                   </motion.div>
@@ -562,7 +548,7 @@ export default function Home() {
 
             <div className="text-center mt-12">
               <Link
-                href="/services/all-services"
+                href="/services"
                 className="inline-flex items-center gap-2 rounded-md bg-wix-dark hover:bg-orange-500 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm"
               >
                 View All Services
@@ -591,8 +577,9 @@ export default function Home() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {hubCards.slice(0, 2).map((card, idx) => {
+            {/* All four in single row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {hubCards.slice(0, 4).map((card, idx) => {
                 const Icon = card.icon;
                 return (
                   <motion.div
@@ -600,14 +587,14 @@ export default function Home() {
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: (idx % 2) * 0.05 }}
+                    transition={{ duration: 0.4, delay: idx * 0.05 }}
                     className="group border border-slate-200 hover:border-wix-dark rounded-md p-6 bg-white hover:bg-slate-50/50 transition-all duration-300 flex flex-col justify-between shadow-sm"
                   >
                     <div>
                       <div className="h-10 w-10 rounded-md bg-slate-50 text-wix-dark group-hover:bg-wix-dark group-hover:text-white flex items-center justify-center mb-4 border border-slate-200 transition-colors">
                         <Icon className="h-5.5 w-5.5 text-orange-500" />
                       </div>
-                      <h3 className="font-display font-bold text-sm text-wix-dark mb-2 leading-tight uppercase tracking-wider">
+                      <h3 className="font-display font-bold text-sm text-wix-dark mb-2 leading-tight uppercase tracking-wider group-hover:text-orange-500 transition-colors">
                         {card.title}
                       </h3>
                       <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
@@ -617,7 +604,7 @@ export default function Home() {
                     <div className="pt-5 mt-auto flex items-center justify-between border-t border-slate-100/60">
                       <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">{card.badge}</span>
                       <Link
-                        href={card.href}
+                        href="/calculator"
                         className="text-[10px] font-extrabold text-orange-500 hover:text-wix-dark uppercase tracking-widest flex items-center gap-1 group/link"
                       >
                         Open Calculator
@@ -631,7 +618,7 @@ export default function Home() {
 
             <div className="text-center mt-12">
               <Link
-                href="/calculator/all-calculators"
+                href="/calculator"
                 className="inline-flex items-center gap-2 rounded-md bg-wix-dark hover:bg-orange-500 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm"
               >
                 View All Calculators
