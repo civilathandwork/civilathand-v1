@@ -20,8 +20,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
       pathname.startsWith("/calculators") ||
       pathname.startsWith("/calculator") ||
       pathname.startsWith("/services") ||
-      pathname.startsWith("/dashboard") ||
-      pathname.startsWith("/cah-expert-control");
+      pathname.startsWith("/dashboard");
 
     if (!isAuth && isProtectedPage) {
       // Redirect to sign in if accessing protected route
@@ -39,8 +38,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     pathname.startsWith("/calculators") ||
     pathname.startsWith("/calculator") ||
     pathname.startsWith("/services") ||
-    pathname.startsWith("/dashboard") ||
-    pathname.startsWith("/cah-expert-control");
+    pathname.startsWith("/dashboard");
 
   if (loading && isProtected) {
     return (

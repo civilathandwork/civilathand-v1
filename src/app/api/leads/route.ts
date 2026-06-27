@@ -60,7 +60,23 @@ export async function GET() {
     }
 
     const leads = await collection.find({}).toArray();
-    const formattedLeads = leads.map(({ _id, ...rest }) => rest);
+    const usersCollection = db.collection("users");
+    const emails = leads.map((l) => l.email.toLowerCase());
+    const users = await usersCollection.find({ email: { $in: emails } }).toArray();
+    const usersMap = new Map(users.map((u) => [u.email.toLowerCase(), u]));
+
+    const formattedLeads = leads.map(({ _id, ...rest }) => {
+      const matchedUser = usersMap.get(rest.email.toLowerCase()) as any;
+      return {
+        ...rest,
+        profileDetails: matchedUser ? {
+          gender: matchedUser.gender || "",
+          dob: matchedUser.dob || "",
+          company: matchedUser.company || "",
+          address: matchedUser.address || ""
+        } : null
+      };
+    });
     return NextResponse.json(formattedLeads, { headers });
   } catch (error) {
     console.error("Error in GET /api/leads:", error);

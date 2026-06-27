@@ -596,9 +596,11 @@ export const AdminView: React.FC = () => {
                         <p className="text-[10px] text-navy-600 mt-0.5">{lead.email} • {lead.phone}</p>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className={`px-2.5 py-0.5 rounded-full font-bold text-[10px] capitalize ${lead.status === "new" ? "bg-orange-100 text-orange-700" :
+                        <span className={`px-2.5 py-0.5 rounded-full font-bold text-[10px] capitalize ${
+                            lead.status === "new" ? "bg-orange-100 text-orange-700" :
+                            lead.status === "contacted" ? "bg-blue-100 text-blue-700 border border-blue-200/50" :
                             lead.status === "converted" ? "bg-emerald-100 text-emerald-700" :
-                              "bg-slate-100 text-slate-700"
+                            "bg-slate-100 text-slate-700"
                           }`}>
                           {lead.status}
                         </span>
@@ -613,6 +615,40 @@ export const AdminView: React.FC = () => {
                       <p className="font-semibold text-navy-950">Requested Pipeline: {lead.service}</p>
                       <p className="text-navy-600 mt-1 italic leading-relaxed">"{lead.details}"</p>
                     </div>
+
+                    {(lead as any).profileDetails && (
+                      <div className="p-3 bg-slate-50/75 rounded-lg border border-slate-200/60 text-[11px] font-medium text-slate-700 space-y-1.5">
+                        <span className="block font-bold text-navy-950 text-[9px] uppercase tracking-wider">
+                          Registered Client Profile
+                        </span>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1">
+                          {(lead as any).profileDetails.company && (
+                            <div>
+                              <span className="text-slate-400 font-semibold">Company: </span>
+                              <span className="text-slate-700 font-bold">{(lead as any).profileDetails.company}</span>
+                            </div>
+                          )}
+                          {(lead as any).profileDetails.gender && (
+                            <div>
+                              <span className="text-slate-400 font-semibold">Gender: </span>
+                              <span className="text-slate-700 font-bold">{(lead as any).profileDetails.gender}</span>
+                            </div>
+                          )}
+                          {(lead as any).profileDetails.dob && (
+                            <div>
+                              <span className="text-slate-400 font-semibold">Date of Birth: </span>
+                              <span className="text-slate-700 font-bold">{(lead as any).profileDetails.dob}</span>
+                            </div>
+                          )}
+                          {(lead as any).profileDetails.address && (
+                            <div className="md:col-span-2">
+                              <span className="text-slate-400 font-semibold">Location / Address: </span>
+                              <span className="text-slate-700 font-bold">{(lead as any).profileDetails.address}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
 
                     <div className="flex justify-end gap-2 border-t border-slate-100 pt-3">
                       <button

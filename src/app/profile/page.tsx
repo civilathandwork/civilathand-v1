@@ -6,9 +6,12 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Mail, Phone, Calendar, Building2, MapPin, Save, Loader2, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { useProjects } from "@/context/ProjectContext";
 
 export default function ProfilePage() {
   const router = useRouter();
+  const { leads } = useProjects();
+  const [user, setUser] = useState<any>(null);
   
   // Form fields state
   const [userId, setUserId] = useState("");
@@ -30,6 +33,7 @@ export default function ProfilePage() {
       const userJson = localStorage.getItem("cah_user");
       if (userJson) {
         const u = JSON.parse(userJson);
+        setUser(u);
         setUserId(u.id || "");
         setName(u.name || "");
         setEmail(u.email || "");
@@ -41,6 +45,10 @@ export default function ProfilePage() {
       }
     }
   }, []);
+
+  const userLeads = user && leads
+    ? leads.filter((l) => l.email.toLowerCase() === user.email.toLowerCase())
+    : [];
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -293,6 +301,45 @@ export default function ProfilePage() {
 
             </form>
 
+          </div>
+
+          {/* Requested Services Status Tracking */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6 mt-8">
+            <div className="border-b border-slate-100 pb-4">
+              <h3 className="font-display font-extrabold text-lg text-slate-900 uppercase tracking-wide">
+                Requested Services Status Tracking
+              </h3>
+              <p className="text-[11px] text-slate-500 mt-1">
+                Real-time tracking of engineering requests submitted by your email.
+              </p>
+            </div>
+
+            {userLeads.length === 0 ? (
+              <div className="text-center py-6 text-slate-400 text-xs font-semibold">
+                No active service requests submitted yet.
+              </div>
+            ) : (
+              <div className="divide-y divide-slate-100">
+                {userLeads.map((lead) => (
+                  <div key={lead.id} className="py-4 flex justify-between items-center text-xs">
+                    <div>
+                      <h4 className="font-bold text-slate-900">{lead.service}</h4>
+                      <p className="text-[10px] text-slate-400 mt-0.5">Submitted: {lead.date} • Source: {lead.source}</p>
+                    </div>
+                    <div>
+                      <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                        lead.status === "new" ? "bg-amber-100 text-amber-800" :
+                        lead.status === "contacted" ? "bg-indigo-100 text-indigo-800" :
+                        "bg-emerald-100 text-emerald-800"
+                      }`}>
+                        {lead.status === "new" ? "Under Review" :
+                         lead.status === "contacted" ? "Contacted" : "Active Project"}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
         </div>

@@ -9,10 +9,28 @@ import { User, Activity, Clock, FileCheck } from "lucide-react";
 
 export default function DashboardPage() {
   const { projects, drawings, invoices } = useProjects();
+  const [user, setUser] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userJson = localStorage.getItem("cah_user");
+      if (userJson) {
+        setUser(JSON.parse(userJson));
+      }
+    }
+  }, []);
+
+  const userProjects = user 
+    ? projects.filter((p) => p.clientName.toLowerCase() === user.name.toLowerCase()) 
+    : [];
+
+  const userInvoices = user 
+    ? invoices.filter((inv) => userProjects.some((p) => p.id === inv.projectId))
+    : [];
 
   // Basic stats
-  const activeProjectsCount = projects.filter((p) => p.status !== "Completed").length;
-  const pendingPaymentsCount = invoices.filter((i) => i.status === "Unpaid").length;
+  const activeProjectsCount = userProjects.filter((p) => p.status !== "Completed").length;
+  const pendingPaymentsCount = userInvoices.filter((i) => i.status === "Unpaid").length;
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
@@ -28,7 +46,7 @@ export default function DashboardPage() {
             
             <div className="relative z-10">
               <h1 className="font-display font-extrabold text-2xl md:text-3xl tracking-tight">
-                Welcome Back, <span className="text-orange-500">Guest</span>
+                Welcome Back, <span className="text-orange-500">{user ? user.name : "Guest"}</span>
               </h1>
               <p className="text-xs text-slate-300 mt-1">
                 Access your blueprints, monitor active engineering pipelines, and complete milestone billing.

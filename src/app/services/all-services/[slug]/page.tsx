@@ -25,12 +25,13 @@ import {
 export default function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const service = servicesData.find((s) => s.id === slug);
-  const { addLead } = useProjects();
+  const { addLead, uploadDrawing } = useProjects();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
   const [success, setSuccess] = useState(false);
 
   React.useEffect(() => {
@@ -45,7 +46,7 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ slug: 
     }
   }, []);
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!service) return;
 
@@ -58,11 +59,22 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ slug: 
       details: message
     });
 
+    if (files.length > 0) {
+      for (const f of files) {
+        await uploadDrawing({
+          name: f.name,
+          size: (f.size / (1024 * 1024)).toFixed(1) + " MB",
+          serviceType: service.title
+        });
+      }
+    }
+
     setSuccess(true);
     setName("");
     setEmail("");
     setPhone("");
     setMessage("");
+    setFiles([]);
     setTimeout(() => setSuccess(false), 3000);
   };
 
@@ -257,6 +269,25 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ slug: 
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Specify built area, height layout constraints, soil parameter scopes, etc."
                       className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs font-bold focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder-slate-300 resize-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[9px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">
+                      Upload Engineering Drawings / Plans (Optional, Multiple)
+                    </label>
+                    <input
+                      type="file"
+                      multiple
+                      accept=".pdf,.dwg,.dxf,.png,.jpg"
+                      onChange={(e) => {
+                        if (e.target.files) {
+                          setFiles(Array.from(e.target.files));
+                        } else {
+                          setFiles([]);
+                        }
+                      }}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:border-orange-500 text-slate-800"
                     />
                   </div>
 

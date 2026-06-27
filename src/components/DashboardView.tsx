@@ -23,6 +23,7 @@ export const DashboardView: React.FC = () => {
     projects, 
     drawings, 
     invoices, 
+    leads,
     chatMessages, 
     uploadDrawing, 
     payInvoice, 
@@ -30,9 +31,40 @@ export const DashboardView: React.FC = () => {
   } = useProjects();
 
   const [activeTab, setActiveTab] = useState<"projects" | "upload" | "payments" | "chat">("projects");
+  const [user, setUser] = useState<any>(null);
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userJson = localStorage.getItem("cah_user");
+      if (userJson) {
+        setUser(JSON.parse(userJson));
+      }
+    }
+  }, []);
+
+  // Filter lists based on logged-in user
+  const userProjects = user 
+    ? projects.filter((p) => p.clientName.toLowerCase() === user.name.toLowerCase()) 
+    : [];
+
+  const userLeads = user && leads
+    ? leads.filter((l) => l.email.toLowerCase() === user.email.toLowerCase())
+    : [];
+
+  const userDrawings = user 
+    ? drawings.filter((d) => {
+        const linkedToProject = userProjects.some((p) => p.drawings.includes(d.name));
+        const matchesService = userProjects.some((p) => p.service === d.serviceType) || userLeads.some((l) => l.service === d.serviceType);
+        return linkedToProject || matchesService;
+      })
+    : [];
+
+  const userInvoices = user 
+    ? invoices.filter((inv) => userProjects.some((p) => p.id === inv.projectId))
+    : [];
   
   // State for Drawing Upload
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const [serviceType, setServiceType] = useState("Structural Design");
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
@@ -50,22 +82,27 @@ export const DashboardView: React.FC = () => {
   }, [chatMessages]);
 
   // Handle Drawing Submit
-  const handleUploadSubmit = (e: React.FormEvent) => {
+  const handleUploadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!file) return;
+    if (files.length === 0) return;
 
     setUploading(true);
-    setTimeout(() => {
-      uploadDrawing({
-        name: file.name,
-        size: (file.size / (1024 * 1024)).toFixed(1) + " MB",
-        serviceType
-      });
+    try {
+      for (const f of files) {
+        await uploadDrawing({
+          name: f.name,
+          size: (f.size / (1024 * 1024)).toFixed(1) + " MB",
+          serviceType
+        });
+      }
       setUploading(false);
       setUploadSuccess(true);
-      setFile(null);
+      setFiles([]);
       setTimeout(() => setUploadSuccess(false), 3000);
-    }, 2000);
+    } catch (err) {
+      console.error("Error uploading drawings:", err);
+      setUploading(false);
+    }
   };
 
   // Handle Payment Submit
@@ -132,22 +169,72 @@ export const DashboardView: React.FC = () => {
                 <p className="text-xs text-navy-600 mt-1">Real-time status updates and execution progress of your designs.</p>
               </div>
 
-              {projects.length === 0 ? (
+              {userProjects.length === 0 && userLeads.length === 0 ? (
                 <div className="border border-dashed border-slate-200 rounded-xl p-12 text-center text-navy-600 text-sm">
-                  No active projects found. Go to 'Upload Drawings' to initialize a new design request.
+                  Nothing requested. Go to 'Explore Services' or 'Upload Drawings' to initialize a new design request.
                 </div>
               ) : (
                 <div className="space-y-6">
-                  {projects.map((project, idx) => (
+                  {/* Service Requests (Leads) */}
+                  {userLeads.map((lead, idx) => (
+                    <motion.div
+                      key={lead.id}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: idx * 0.05 }}
+                      className="border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm bg-slate-50/50 hover:shadow-md transition-all duration-300 relative overflow-hidden"
+                    >
+                      {/* Left amber highlight indicator for requested lead */}
+                      <div className="absolute top-0 left-0 w-1.5 h-full bg-amber-500"></div>
+
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 pl-2">
+                        <div>
+                          <span className="text-[9px] bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wide">
+                            Requested Service
+                          </span>
+                          <h4 className="font-display font-extrabold text-lg text-navy-950 mt-1">{lead.service}</h4>
+                          <p className="text-[10px] text-navy-600 font-medium">Source: {lead.source}</p>
+                        </div>
+                        <div className="text-left sm:text-right">
+                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${
+                            lead.status === "new" ? "bg-amber-50 text-amber-700 border-amber-250/30" :
+                            lead.status === "contacted" ? "bg-indigo-55 text-indigo-700 border-indigo-250/30" :
+                            "bg-emerald-50 text-emerald-700 border-emerald-250/30"
+                          } border`}>
+                            {lead.status === "new" ? "Under Review" : 
+                             lead.status === "contacted" ? "Contacted" : "Active Project"}
+                          </span>
+                          <span className="block text-[10px] text-navy-600 mt-1.5 flex items-center gap-1 sm:justify-end">
+                            <Calendar className="h-3 w-3" />
+                            Submitted: {lead.date}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Scope Details box */}
+                      <div className="pl-2">
+                        <span className="block font-bold text-navy-950 uppercase tracking-wide text-[9px] mb-1">Scope details</span>
+                        <p className="text-xs text-slate-650 leading-relaxed font-medium bg-white p-3 rounded-lg border border-slate-100">
+                          {lead.details}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
+
+                  {/* Active Projects */}
+                  {userProjects.map((project, idx) => (
                     <motion.div 
                       key={project.id}
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: idx * 0.1 }}
-                      className="border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition-all duration-300"
+                      transition={{ duration: 0.3, delay: (userLeads.length + idx) * 0.05 }}
+                      className="border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden"
                     >
+                      {/* Left green highlight indicator for active design */}
+                      <div className="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
+
                       {/* Project Meta Header */}
-                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5 pl-2">
                         <div>
                           <span className="text-[10px] bg-slate-100 text-navy-950 px-2 py-0.5 rounded-full font-bold uppercase tracking-wide">
                             ID: {project.id.toUpperCase()}
@@ -172,7 +259,7 @@ export const DashboardView: React.FC = () => {
                       </div>
 
                       {/* Progress Bar */}
-                      <div className="mb-6">
+                      <div className="mb-6 pl-2">
                         <div className="flex justify-between text-xs font-bold mb-1.5">
                           <span className="text-navy-600">Milestone Progress</span>
                           <span className="text-navy-950">{project.progress}%</span>
@@ -188,7 +275,7 @@ export const DashboardView: React.FC = () => {
                       </div>
 
                       {/* Technical Specifications Timeline */}
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-5 border-t border-slate-100 text-xs">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-5 border-t border-slate-100 text-xs pl-2">
                         <div className="flex items-start gap-2.5">
                           <MapPin className="h-4.5 w-4.5 text-navy-600 mt-0.5" />
                           <div>
@@ -248,12 +335,13 @@ export const DashboardView: React.FC = () => {
                     <input
                       type="file"
                       required
+                      multiple
                       accept=".pdf,.dwg,.dxf"
                       onChange={(e) => {
-                        if (e.target.files && e.target.files[0]) {
-                          setFile(e.target.files[0]);
+                        if (e.target.files) {
+                          setFiles(Array.from(e.target.files));
                         } else {
-                          setFile(null);
+                          setFiles([]);
                         }
                       }}
                       className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-800 shadow-sm transition-all"
@@ -293,7 +381,7 @@ export const DashboardView: React.FC = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
-                    disabled={uploading || !file}
+                    disabled={uploading || files.length === 0}
                     className="w-full bg-navy-950 hover:bg-orange-600 disabled:bg-slate-300 text-white font-bold py-3 rounded-lg text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-premium"
                   >
                     {uploading ? (
@@ -319,38 +407,44 @@ export const DashboardView: React.FC = () => {
               <div>
                 <h4 className="font-display font-extrabold text-sm text-navy-950 mb-4 uppercase tracking-wider">File Vault Status</h4>
                 <div className="border border-slate-200 rounded-xl overflow-hidden divide-y divide-slate-100">
-                  {drawings.map((draw, idx) => (
-                    <motion.div 
-                      key={draw.id} 
-                      initial={{ opacity: 0, y: 5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.25, delay: idx * 0.05 }}
-                      className="flex justify-between items-center p-4 bg-white hover:bg-slate-50 transition-colors text-xs"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="bg-slate-100 p-2 rounded-lg text-navy-700">
-                          <FileText className="h-5.5 w-5.5" />
+                  {userDrawings.length === 0 ? (
+                    <div className="p-6 text-center text-navy-600 text-xs font-semibold bg-white">
+                      No drawings uploaded yet.
+                    </div>
+                  ) : (
+                    userDrawings.map((draw, idx) => (
+                      <motion.div 
+                        key={draw.id} 
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.25, delay: idx * 0.05 }}
+                        className="flex justify-between items-center p-4 bg-white hover:bg-slate-50 transition-colors text-xs"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="bg-slate-100 p-2 rounded-lg text-navy-700">
+                            <FileText className="h-5.5 w-5.5" />
+                          </div>
+                          <div>
+                            <p className="font-semibold text-navy-950">{draw.name}</p>
+                            <p className="text-[10px] text-navy-600">{draw.size} • Uploaded on {draw.uploadDate}</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="font-semibold text-navy-950">{draw.name}</p>
-                          <p className="text-[10px] text-navy-600">{draw.size} • Uploaded on {draw.uploadDate}</p>
+                        <div className="flex items-center gap-4">
+                          <span className="text-[10px] text-navy-600 font-medium bg-slate-100 px-2 py-0.5 rounded">
+                            {draw.serviceType}
+                          </span>
+                          <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-bold text-[10px] ${
+                            draw.status === "Ready" ? "bg-emerald-100 text-emerald-700" :
+                            draw.status === "Analyzing" ? "bg-amber-100 text-amber-700 flex animate-pulse" :
+                            "bg-slate-100 text-slate-700"
+                          }`}>
+                            {draw.status === "Analyzing" && <Loader2 className="h-3 w-3 animate-spin" />}
+                            {draw.status}
+                          </span>
                         </div>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <span className="text-[10px] text-navy-600 font-medium bg-slate-100 px-2 py-0.5 rounded">
-                          {draw.serviceType}
-                        </span>
-                        <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-bold text-[10px] ${
-                          draw.status === "Ready" ? "bg-emerald-100 text-emerald-700" :
-                          draw.status === "Analyzing" ? "bg-amber-100 text-amber-700 flex animate-pulse" :
-                          "bg-slate-100 text-slate-700"
-                        }`}>
-                          {draw.status === "Analyzing" && <Loader2 className="h-3 w-3 animate-spin" />}
-                          {draw.status}
-                        </span>
-                      </div>
-                    </motion.div>
-                  ))}
+                      </motion.div>
+                    ))
+                  )}
                 </div>
               </div>
             </motion.div>
@@ -372,12 +466,12 @@ export const DashboardView: React.FC = () => {
               </div>
 
               <div className="space-y-4">
-                {invoices.length === 0 ? (
+                {userInvoices.length === 0 ? (
                   <div className="border border-dashed border-slate-200 rounded-xl p-12 text-center text-navy-600 text-sm">
                     No invoices generated yet. Invoices will be created after our engineers audit your uploaded plans.
                   </div>
                 ) : (
-                  invoices.map((inv, idx) => (
+                  userInvoices.map((inv, idx) => (
                     <motion.div 
                       key={inv.id} 
                       initial={{ opacity: 0, y: 10 }}

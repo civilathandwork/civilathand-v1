@@ -630,8 +630,19 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       const createdDrawing: DrawingFile = await res.json();
       setDrawings((prev) => [createdDrawing, ...prev]);
 
-      // Add to project files if matching service or create a mock project
-      const matchProj = projects.find((p) => p.service === createdDrawing.serviceType);
+      let currentClient = "Guest Client";
+      if (typeof window !== "undefined") {
+        const userJson = localStorage.getItem("cah_user");
+        if (userJson) {
+          currentClient = JSON.parse(userJson).name || "Guest Client";
+        }
+      }
+
+      // Add to project files if matching service and clientName or create a mock project
+      const matchProj = projects.find((p) => 
+        p.service === createdDrawing.serviceType && 
+        p.clientName.toLowerCase() === currentClient.toLowerCase()
+      );
       if (matchProj) {
         const updatedDrawings = [...matchProj.drawings, createdDrawing.name];
         const projRes = await fetch(`/api/projects/${matchProj.id}`, {
@@ -647,7 +658,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         // Auto create a mock project when a user uploads drawings
         await addProject({
           title: `Design Request: ${createdDrawing.serviceType}`,
-          clientName: "Guest Client",
+          clientName: currentClient,
           service: createdDrawing.serviceType,
           areaSqFt: 2000,
           location: "Mumbai, MH",
