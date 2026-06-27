@@ -73,12 +73,13 @@ const LinktreeIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
-  const isHome = pathname === "/";
+  const isHome = pathname === "/" || pathname === "/services" || pathname === "/calculator";
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
+      const currentScroll = window.scrollY;
+      if (currentScroll > 20) {
         setScrolled(true);
       } else {
         setScrolled(false);
@@ -123,12 +124,12 @@ export const Header: React.FC = () => {
       isHome 
         ? scrolled 
           ? "fixed top-0 left-0 bg-white/95 border-b border-slate-200/60 text-wix-dark shadow-sm backdrop-blur-md" 
-          : "absolute top-0 left-0 bg-transparent border-b border-white/5 text-white"
+          : "fixed top-0 left-0 bg-transparent border-b border-white/5 text-white"
         : "sticky top-0 bg-white/95 border-b border-slate-200/60 text-wix-dark"
     }`}>
       {/* Upper Utility Bar (Dual-Tier) */}
       <div className={`bg-slate-900 border-b border-slate-800 text-slate-300 text-[10px] hidden md:block transition-all duration-300 overflow-hidden ${
-        scrolled ? "max-h-0 py-0 border-b-0 opacity-0" : "max-h-10 py-1.5 opacity-100"
+        isHome && scrolled ? "max-h-0 py-0 border-b-0 opacity-0" : "max-h-10 py-1.5 opacity-100"
       }`}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <div className="flex items-center gap-3">
