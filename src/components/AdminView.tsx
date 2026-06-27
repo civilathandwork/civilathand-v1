@@ -767,18 +767,6 @@ export const AdminView: React.FC = () => {
                               <span className="text-slate-700 font-bold">{(lead as any).profileDetails.company}</span>
                             </div>
                           )}
-                          {(lead as any).profileDetails.gender && (
-                            <div>
-                              <span className="text-slate-400 font-semibold">Gender: </span>
-                              <span className="text-slate-700 font-bold">{(lead as any).profileDetails.gender}</span>
-                            </div>
-                          )}
-                          {(lead as any).profileDetails.dob && (
-                            <div>
-                              <span className="text-slate-400 font-semibold">Date of Birth: </span>
-                              <span className="text-slate-700 font-bold">{(lead as any).profileDetails.dob}</span>
-                            </div>
-                          )}
                           {(lead as any).profileDetails.address && (
                             <div className="md:col-span-2">
                               <span className="text-slate-400 font-semibold">Location / Address: </span>

@@ -18,8 +18,6 @@ export default function ProfilePage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [gender, setGender] = useState("");
-  const [dob, setDob] = useState("");
   const [company, setCompany] = useState("");
   const [address, setAddress] = useState("");
 
@@ -38,8 +36,6 @@ export default function ProfilePage() {
         setName(u.name || "");
         setEmail(u.email || "");
         setPhone(u.phone || "");
-        setGender(u.gender || "");
-        setDob(u.dob || "");
         setCompany(u.company || "");
         setAddress(u.address || "");
       }
@@ -65,8 +61,6 @@ export default function ProfilePage() {
           name,
           email,
           phone,
-          gender,
-          dob,
           company,
           address
         })
@@ -206,39 +200,7 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                {/* Gender */}
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                    Gender
-                  </label>
-                  <select
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 font-bold"
-                  >
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                    <option value="Prefer not to say">Prefer not to say</option>
-                  </select>
-                </div>
 
-                {/* Date of Birth */}
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                    Date of Birth (DOB)
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="date"
-                      value={dob}
-                      onChange={(e) => setDob(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 font-bold"
-                    />
-                    <Calendar className="absolute left-3.5 top-3 h-4 w-4 text-slate-400" />
-                  </div>
-                </div>
 
                 {/* Company Name */}
                 <div>

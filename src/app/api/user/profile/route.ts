@@ -5,7 +5,7 @@ const dbName = process.env.MONGODB_DB || "civil-at-hand";
 
 export async function PUT(request: Request) {
   try {
-    const { id, name, email, phone, gender, dob, company, address } = await request.json();
+    const { id, name, email, phone, company, address } = await request.json();
 
     if (!id) {
       return NextResponse.json({ error: "User ID is required" }, { status: 400 });
@@ -23,8 +23,6 @@ export async function PUT(request: Request) {
           name, 
           email: email?.toLowerCase(), 
           phone, 
-          gender, 
-          dob, 
           company, 
           address,
           updatedAt: new Date().toISOString()

@@ -70,8 +70,6 @@ export async function GET() {
       return {
         ...rest,
         profileDetails: matchedUser ? {
-          gender: matchedUser.gender || "",
-          dob: matchedUser.dob || "",
           company: matchedUser.company || "",
           address: matchedUser.address || ""
         } : null
