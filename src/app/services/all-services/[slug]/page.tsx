@@ -33,6 +33,18 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ slug: 
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
 
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userJson = localStorage.getItem("cah_user");
+      if (userJson) {
+        const u = JSON.parse(userJson);
+        if (u.name) setName(u.name);
+        if (u.email) setEmail(u.email);
+        if (u.phone) setPhone(u.phone);
+      }
+    }
+  }, []);
+
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!service) return;
