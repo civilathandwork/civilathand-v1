@@ -30,6 +30,8 @@ const initialLeads = [
   }
 ];
 
+let isSeededCached = false;
+
 export async function GET() {
   try {
     const client = await clientPromise;
@@ -41,16 +43,20 @@ export async function GET() {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
 
-    // Atomic upsert — prevents race condition on simultaneous first requests
-    const seedResult = await settingsCollection.findOneAndUpdate(
-      { key: "leads_seeded" },
-      { $setOnInsert: { key: "leads_seeded", value: true } },
-      { upsert: true, returnDocument: "before" }
-    );
+    if (!isSeededCached) {
+      // Atomic upsert — prevents race condition on simultaneous first requests
+      const seedResult = await settingsCollection.findOneAndUpdate(
+        { key: "leads_seeded" },
+        { $setOnInsert: { key: "leads_seeded", value: true } },
+        { upsert: true, returnDocument: "before" }
+      );
 
-    if (!seedResult) {
-      await collection.insertMany(initialLeads);
-      return NextResponse.json(initialLeads, { headers });
+      if (!seedResult) {
+        await collection.insertMany(initialLeads);
+        isSeededCached = true;
+        return NextResponse.json(initialLeads, { headers });
+      }
+      isSeededCached = true;
     }
 
     const leads = await collection.find({}).toArray();

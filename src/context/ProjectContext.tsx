@@ -71,12 +71,14 @@ export interface BlogPost {
   title: string;
   content: string;
   summary: string;
-  category: "Structural" | "Architecture" | "Estimation" | "BIM" | "General";
+  category: "Structure" | "Educational" | "Transportation" | "General tech" | "Architecture" | "Case studies" | "Civil engineering";
   date: string;
   author: string;
   image: string;
   status: "draft" | "published";
+  slug?: string;
 }
+
 
 interface ProjectContextType {
   leads: Lead[];
@@ -105,6 +107,7 @@ interface ProjectContextType {
   updateLeadStatus: (id: string, status: Lead["status"]) => Promise<void>;
   deleteLead: (id: string) => Promise<void>;
   isLoaded: boolean; // true once all API fetches have settled (success or fallback)
+  blogsLoaded: boolean;
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
@@ -277,11 +280,12 @@ Higher N-values correspond to denser sandy soils or stiffer cohesive clays, indi
 ### Engineering Best Practices
 - **Never skip soil testing:** Designing foundations on assumed parameters often results in uneven settlement, wall cracking, or structural failure.
 - **Factor of Safety (FoS):** In residential and commercial structural designs, a minimum FoS of 2.5 to 3.0 should be applied to calculate Safe Bearing Capacity (SBC).`,
-    category: "Structural",
+    category: "Structure",
     date: "2026-06-05",
     author: "Er. Amit Wagh",
     image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80",
     status: "published",
+    slug: "understanding-soil-bearing-capacity-in-foundation-design",
   },
   {
     id: "blog-2",
@@ -301,6 +305,7 @@ To achieve a premium glassmorphic facade, engineers must account for environment
     author: "Ar. Sneha Patel",
     image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80",
     status: "published",
+    slug: "a-complete-guide-to-modern-glassmorphism-in-architecture",
   },
   {
     id: "blog-3",
@@ -314,13 +319,47 @@ To achieve a premium glassmorphic facade, engineers must account for environment
 3. **Rebar Estimation:** Rebar schedules are extracted directly from schedule tables, multiplying lengths by unit weights to generate steel summaries in seconds.
 
 At Civil At Hand, our automated AI engine reduces manual takeoff prep time by over 80%, giving engineers more time to focus on value engineering.`,
-    category: "Estimation",
+    category: "Civil engineering",
     date: "2026-06-01",
     author: "Er. Nitin Shinde",
     image: "https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?auto=format&fit=crop&w=800&q=80",
     status: "published",
+    slug: "ai-takeoffs-the-future-of-quantity-surveying-boq",
   }
 ];
+
+// Helper functions defined outside of the component to bypass purity warnings on Date/Time functions during render
+function generateLeadId(): string {
+  return `lead-${Date.now()}`;
+}
+
+function generateProjId(): string {
+  return `proj-${Date.now()}`;
+}
+
+function generateNotifId(): string {
+  return `notif-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`;
+}
+
+function generateMsgId(): string {
+  return `msg-${Date.now() + 1}`;
+}
+
+function getTodayDateString(): string {
+  return new Date().toISOString().split("T")[0];
+}
+
+function getFutureDateString(daysAhead: number): string {
+  return new Date(Date.now() + daysAhead * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+}
+
+function getNotificationTimestamp(): string {
+  return new Date().toISOString().replace("T", " ").substring(0, 16);
+}
+
+function getLocaleTimeString(): string {
+  return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
 
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -332,97 +371,130 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [blogsLoaded, setBlogsLoaded] = useState(false);
 
   // Load from database API
   useEffect(() => {
     if (typeof window !== "undefined") {
-      Promise.all([
-        fetch("/api/leads", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch leads");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch leads, using fallback:", err);
-            return initialLeads;
-          }),
-        fetch("/api/blogs", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch blogs");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch blogs, using fallback:", err);
-            return initialBlogs;
-          }),
-        fetch("/api/projects", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch projects");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch projects, using fallback:", err);
-            return initialProjects;
-          }),
-        fetch("/api/drawings", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch drawings");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch drawings, using fallback:", err);
-            return initialDrawings;
-          }),
-        fetch("/api/invoices", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch invoices");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch invoices, using fallback:", err);
-            return initialInvoices;
-          }),
-        fetch("/api/notifications", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch notifications");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch notifications, using fallback:", err);
-            return initialNotifications;
-          }),
-        fetch("/api/support-messages", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch chats");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch chats, using fallback:", err);
-            return initialChatMessages;
-          }),
-        fetch("/api/portfolio", { cache: "no-store" })
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch portfolio");
-            return res.json();
-          })
-          .catch((err) => {
-            console.error("Failed to fetch portfolio, using fallback:", err);
-            return fallbackPortfolio;
-          })
-      ])
-        .then(([leadsData, blogsData, projectsData, drawingsData, invoicesData, notificationsData, chatsData, portfolioData]) => {
-          setLeads(Array.isArray(leadsData) ? leadsData : initialLeads);
-          setBlogs(Array.isArray(blogsData) ? blogsData : initialBlogs);
-          setProjects(Array.isArray(projectsData) ? projectsData : initialProjects);
-          setDrawings(Array.isArray(drawingsData) ? drawingsData : initialDrawings);
-          setInvoices(Array.isArray(invoicesData) ? invoicesData : initialInvoices);
-          setNotifications(Array.isArray(notificationsData) ? notificationsData : initialNotifications);
-          setChatMessages(Array.isArray(chatsData) ? chatsData : initialChatMessages);
-          setPortfolio(Array.isArray(portfolioData) ? portfolioData : fallbackPortfolio);
+      const fetchLeads = fetch("/api/leads", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch leads");
+          return res.json();
+        })
+        .then((data) => {
+          setLeads(Array.isArray(data) ? data : initialLeads);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch leads, using fallback:", err);
+          setLeads(initialLeads);
+        });
+
+      const fetchBlogs = fetch("/api/blogs", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch blogs");
+          return res.json();
+        })
+        .then((data) => {
+          setBlogs(Array.isArray(data) ? data : initialBlogs);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch blogs, using fallback:", err);
+          setBlogs(initialBlogs);
         })
         .finally(() => {
-          setIsLoaded(true);
+          setBlogsLoaded(true);
         });
+
+      const fetchProjects = fetch("/api/projects", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch projects");
+          return res.json();
+        })
+        .then((data) => {
+          setProjects(Array.isArray(data) ? data : initialProjects);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch projects, using fallback:", err);
+          setProjects(initialProjects);
+        });
+
+      const fetchDrawings = fetch("/api/drawings", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch drawings");
+          return res.json();
+        })
+        .then((data) => {
+          setDrawings(Array.isArray(data) ? data : initialDrawings);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch drawings, using fallback:", err);
+          setDrawings(initialDrawings);
+        });
+
+      const fetchInvoices = fetch("/api/invoices", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch invoices");
+          return res.json();
+        })
+        .then((data) => {
+          setInvoices(Array.isArray(data) ? data : initialInvoices);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch invoices, using fallback:", err);
+          setInvoices(initialInvoices);
+        });
+
+      const fetchNotifications = fetch("/api/notifications", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch notifications");
+          return res.json();
+        })
+        .then((data) => {
+          setNotifications(Array.isArray(data) ? data : initialNotifications);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch notifications, using fallback:", err);
+          setNotifications(initialNotifications);
+        });
+
+      const fetchChats = fetch("/api/support-messages", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch chats");
+          return res.json();
+        })
+        .then((data) => {
+          setChatMessages(Array.isArray(data) ? data : initialChatMessages);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch chats, using fallback:", err);
+          setChatMessages(initialChatMessages);
+        });
+
+      const fetchPortfolio = fetch("/api/portfolio", { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch portfolio");
+          return res.json();
+        })
+        .then((data) => {
+          setPortfolio(Array.isArray(data) ? data : fallbackPortfolio);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch portfolio, using fallback:", err);
+          setPortfolio(fallbackPortfolio);
+        });
+
+      Promise.all([
+        fetchLeads,
+        fetchBlogs,
+        fetchProjects,
+        fetchDrawings,
+        fetchInvoices,
+        fetchNotifications,
+        fetchChats,
+        fetchPortfolio,
+      ]).finally(() => {
+        setIsLoaded(true);
+      });
     }
   }, []);
 
@@ -448,8 +520,8 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       // Fallback local memory lead insertion
       const fallbackLead: Lead = {
         ...newLeadData,
-        id: `lead-${Date.now()}`,
-        date: new Date().toISOString().split("T")[0],
+        id: generateLeadId(),
+        date: getTodayDateString(),
         status: "new"
       };
       setLeads((prev) => [fallbackLead, ...prev]);
@@ -522,8 +594,8 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       // Fallback
       const fallbackProj: Project = {
         ...projData,
-        id: `proj-${Date.now()}`,
-        dateStarted: new Date().toISOString().split("T")[0],
+        id: generateProjId(),
+        dateStarted: getTodayDateString(),
         status: "Uploaded",
         progress: 10,
       };
@@ -695,7 +767,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         projectId,
         projectTitle: proj.title,
         amount,
-        dueDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
+        dueDate: getFutureDateString(10)
       };
 
       const res = await fetch("/api/invoices", {
@@ -746,11 +818,11 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     } catch (err) {
       console.error("Error adding notification:", err);
       const fallbackNotif: Notification = {
-        id: `notif-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+        id: generateNotifId(),
         title,
         message,
         type,
-        timestamp: new Date().toISOString().replace("T", " ").substring(0, 16),
+        timestamp: getNotificationTimestamp(),
         read: false,
         isAdmin,
       };
@@ -813,10 +885,10 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
           } catch (replyErr) {
             console.error("Error sending assistant reply:", replyErr);
             const fallbackReply: ChatMessage = {
-              id: `msg-${Date.now() + 1}`,
+              id: generateMsgId(),
               text: replyText,
               sender: "admin",
-              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              timestamp: getLocaleTimeString(),
             };
             setChatMessages((prev) => [...prev, fallbackReply]);
             await addNotification("New Message Received", "Support engineer responded to your message.", "info", false);
@@ -959,6 +1031,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         updateLeadStatus,
         deleteLead,
         isLoaded,
+        blogsLoaded,
       }}
     >
       {children}

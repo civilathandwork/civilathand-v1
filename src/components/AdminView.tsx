@@ -2,19 +2,20 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useProjects, Lead, Project, BlogPost } from "@/context/ProjectContext";
+import { generateSlug } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Users, 
-  Settings, 
-  BarChart3, 
-  FolderKanban, 
-  FileSpreadsheet, 
-  Receipt, 
-  TrendingUp, 
-  FilePlus, 
-  UserCheck, 
-  ArrowUpRight, 
-  Clock, 
+import {
+  Users,
+  Settings,
+  BarChart3,
+  FolderKanban,
+  FileSpreadsheet,
+  Receipt,
+  TrendingUp,
+  FilePlus,
+  UserCheck,
+  ArrowUpRight,
+  Clock,
   CheckCircle,
   AlertCircle,
   BookOpen,
@@ -44,18 +45,20 @@ import {
   Paintbrush,
   Briefcase,
   MapPin,
-  Plus
+  Plus,
+  Image as ImageIcon,
+  Type
 } from "lucide-react";
 
 export const AdminView: React.FC = () => {
-  const { 
-    leads, 
-    projects, 
-    invoices, 
+  const {
+    leads,
+    projects,
+    invoices,
     blogs,
     portfolio,
-    updateProjectStatus, 
-    generateInvoice, 
+    updateProjectStatus,
+    generateInvoice,
     addProject,
     addBlog,
     updateBlog,
@@ -84,7 +87,7 @@ export const AdminView: React.FC = () => {
     .filter((i) => i.status === "Unpaid")
     .reduce((acc, curr) => acc + curr.amount, 0);
 
-  const conversionRate = leads.length > 0 
+  const conversionRate = leads.length > 0
     ? ((leads.filter(l => l.status === "converted").length / leads.length) * 100).toFixed(0)
     : "35";
 
@@ -119,7 +122,7 @@ export const AdminView: React.FC = () => {
   const [blogTitle, setBlogTitle] = useState("");
   const [blogSummary, setBlogSummary] = useState("");
   const [blogContent, setBlogContent] = useState("");
-  const [blogCategory, setBlogCategory] = useState<BlogPost["category"]>("General");
+  const [blogCategory, setBlogCategory] = useState<BlogPost["category"]>("Structure");
   const [blogAuthor, setBlogAuthor] = useState("CivAtHand Admin");
   const [blogImage, setBlogImage] = useState("");
   const [blogStatus, setBlogStatus] = useState<BlogPost["status"]>("published");
@@ -260,6 +263,11 @@ export const AdminView: React.FC = () => {
   const [editorMode, setEditorMode] = useState<"write" | "preview">("write");
   const [showTemplates, setShowTemplates] = useState(false);
   const [showColors, setShowColors] = useState(false);
+  const [showFonts, setShowFonts] = useState(false);
+  const [showImageMenu, setShowImageMenu] = useState(false);
+  const [urlInput, setUrlInput] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [isBannerUploading, setIsBannerUploading] = useState(false);
 
   const editorRef = useRef<HTMLDivElement>(null);
 
@@ -269,7 +277,7 @@ export const AdminView: React.FC = () => {
         editorRef.current.innerHTML = blogContent;
       }
     }
-  }, [isBlogModalOpen, editorMode]);
+  }, [isBlogModalOpen, editorMode, blogContent]);
 
   const convertMarkdownToHtml = (markdown: string): string => {
     if (!markdown) return "";
@@ -289,6 +297,93 @@ export const AdminView: React.FC = () => {
 
   const handleEditorInput = (e: React.FormEvent<HTMLDivElement>) => {
     setBlogContent(e.currentTarget.innerHTML);
+  };
+
+  const handleEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    if (target && target.tagName === "IMG") {
+      const img = target as HTMLImageElement;
+      const currentWidth = img.style.width || img.getAttribute("width") || "auto";
+      const newWidth = prompt("Enter new image width (e.g., 50%, 100%, 300px, or 'auto' to reset):", currentWidth);
+      if (newWidth !== null) {
+        const trimmed = newWidth.trim();
+        if (trimmed === "" || trimmed.toLowerCase() === "auto") {
+          img.style.width = "";
+          img.removeAttribute("width");
+        } else {
+          img.style.width = trimmed;
+        }
+        img.style.height = "auto";
+        if (editorRef.current) {
+          setBlogContent(editorRef.current.innerHTML);
+        }
+      }
+    }
+  };
+
+  const uploadFile = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) throw new Error("Upload failed");
+    const data = await res.json();
+    if (!data.url) throw new Error("No URL returned");
+    return data.url;
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const url = await uploadFile(file);
+      runCommand("insertImage", url);
+      setShowImageMenu(false);
+    } catch (err) {
+      console.warn("File upload failed, falling back to Base64:", err);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64Url = event.target?.result as string;
+        if (base64Url) {
+          runCommand("insertImage", base64Url);
+        }
+      };
+      reader.readAsDataURL(file);
+      setShowImageMenu(false);
+    } finally {
+      setIsUploading(false);
+      e.target.value = "";
+    }
+  };
+
+  const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsBannerUploading(true);
+    try {
+      const url = await uploadFile(file);
+      setBlogImage(url);
+    } catch (err) {
+      console.warn("Banner file upload failed, falling back to Base64:", err);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64Url = event.target?.result as string;
+        if (base64Url) {
+          setBlogImage(base64Url);
+        }
+      };
+      reader.readAsDataURL(file);
+    } finally {
+      setIsBannerUploading(false);
+      e.target.value = "";
+    }
   };
 
   const handleEditorKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -336,7 +431,7 @@ export const AdminView: React.FC = () => {
     const specTemplate = `<h3>Concrete Quality Spec Sheet</h3><ul><li>Concrete Grade: M25</li><li>Testing Standard: IS 516</li><li>7-Day Target Strength: 16.5 N/mm²</li><li>28-Day Target Strength: 25 N/mm²</li></ul><h3>Site Inspection Checklist</h3><ul><li>Check concrete slump before placing</li><li>Verify rebar clear cover spacing</li><li>Cure with ponding method for 14 days</li></ul><p></p>`;
     const takeoffTemplate = `<h3>Structural Quantity Takeoff</h3><ul><li>Member ID: column-C1-ground-floor</li><li>Cement Grade: OPC 43</li><li>Steel Bar Diameter: 12mm / 16mm / 20mm</li><li>Sand Zone: Zone II River Sand</li></ul><h3>Estimation Details</h3><ul><li>Coarse Aggregate required: 8.5 m³</li><li>Steel reinforcement required: 1.25 Tons</li><li>Total Cement required: 180 Bags</li></ul><p></p>`;
     const templateHtml = templateType === "spec" ? specTemplate : takeoffTemplate;
-    
+
     if (editorRef.current) {
       editorRef.current.focus();
       // Use the modern Selection + Range API instead of the deprecated
@@ -381,7 +476,8 @@ export const AdminView: React.FC = () => {
       category: blogCategory,
       author: blogAuthor || "CivAtHand Admin",
       image: fallbackImage,
-      status: blogStatus
+      status: blogStatus,
+      slug: generateSlug(blogTitle)
     };
 
     if (editingBlogId) {
@@ -399,7 +495,7 @@ export const AdminView: React.FC = () => {
     setBlogTitle("");
     setBlogSummary("");
     setBlogContent("");
-    setBlogCategory("General");
+    setBlogCategory("Structure");
     setBlogAuthor("CivAtHand Admin");
     setBlogImage("");
     setBlogStatus("published");
@@ -410,7 +506,7 @@ export const AdminView: React.FC = () => {
     setBlogTitle("");
     setBlogSummary("");
     setBlogContent("");
-    setBlogCategory("General");
+    setBlogCategory("Structure");
     setBlogAuthor("CivAtHand Admin");
     setBlogImage("");
     setBlogStatus("published");
@@ -422,11 +518,11 @@ export const AdminView: React.FC = () => {
     setEditingBlogId(post.id);
     setBlogTitle(post.title);
     setBlogSummary(post.summary);
-    
+
     const isHtml = post.content.includes("<p>") || post.content.includes("<h3>") || post.content.includes("<ul>");
     const contentHtml = isHtml ? post.content : convertMarkdownToHtml(post.content);
     setBlogContent(contentHtml);
-    
+
     setBlogCategory(post.category);
     setBlogAuthor(post.author);
     setBlogImage(post.image);
@@ -441,7 +537,7 @@ export const AdminView: React.FC = () => {
     setBlogTitle("");
     setBlogSummary("");
     setBlogContent("");
-    setBlogCategory("General");
+    setBlogCategory("Structure");
     setBlogAuthor("CivAtHand Admin");
     setBlogImage("");
     setBlogStatus("published");
@@ -466,11 +562,10 @@ export const AdminView: React.FC = () => {
               whileHover={{ x: 4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex-shrink-0 flex items-center gap-3 w-full px-4 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 ${
-                activeTab === tab.id
+              className={`flex-shrink-0 flex items-center gap-3 w-full px-4 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 ${activeTab === tab.id
                   ? "bg-navy-950 text-white shadow-premium"
                   : "bg-white text-navy-700 hover:bg-slate-50 border border-slate-200"
-              }`}
+                }`}
             >
               <tab.icon className="h-4.5 w-4.5 text-orange-500" />
               {tab.title}
@@ -485,7 +580,7 @@ export const AdminView: React.FC = () => {
       {/* Main Panel Content */}
       <div className="lg:col-span-9 bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-premium min-h-[500px] overflow-hidden flex flex-col">
         <AnimatePresence mode="wait">
-          
+
           {/* TAB 1: Analytics */}
           {activeTab === "analytics" && (
             <motion.div
@@ -509,7 +604,7 @@ export const AdminView: React.FC = () => {
                   { title: "Active Leads", val: `${leads.length} Leads`, desc: `${leads.filter(l => l.status === "new").length} New requests`, isTrend: false },
                   { title: "Sales Conversion", val: `${conversionRate}%`, desc: "Leads to project conversion", isTrend: false }
                 ].map((kpi, idx) => (
-                  <motion.div 
+                  <motion.div
                     key={idx}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -534,7 +629,7 @@ export const AdminView: React.FC = () => {
                 <h4 className="font-display font-extrabold text-sm text-navy-950 mb-4 uppercase tracking-wider">
                   Monthly Revenue Growth Trend
                 </h4>
-                
+
                 {/* Responsive SVG Container */}
                 <div className="w-full h-60">
                   <svg className="w-full h-full" viewBox="0 0 500 200" preserveAspectRatio="none">
@@ -548,7 +643,7 @@ export const AdminView: React.FC = () => {
                         <stop offset="100%" stopColor="#ff6b00" stopOpacity="0.0" />
                       </linearGradient>
                     </defs>
-                    
+
                     {/* Chart Path Area with Delay */}
                     <motion.path
                       initial={{ opacity: 0 }}
@@ -578,17 +673,17 @@ export const AdminView: React.FC = () => {
                       { cx: 400, cy: 60 },
                       { cx: 500, cy: 40 }
                     ].map((pt, index) => (
-                      <motion.circle 
+                      <motion.circle
                         key={index}
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.2 * index + 0.8 }}
-                        cx={pt.cx} 
-                        cy={pt.cy} 
-                        r="4.5" 
-                        fill="#0a192f" 
-                        stroke="#ff6b00" 
-                        strokeWidth="2" 
+                        cx={pt.cx}
+                        cy={pt.cy}
+                        r="4.5"
+                        fill="#0a192f"
+                        stroke="#ff6b00"
+                        strokeWidth="2"
                       />
                     ))}
                   </svg>
@@ -624,8 +719,8 @@ export const AdminView: React.FC = () => {
 
               <div className="space-y-4">
                 {leads.map((lead, idx) => (
-                  <motion.div 
-                    key={lead.id} 
+                  <motion.div
+                    key={lead.id}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, delay: idx * 0.05 }}
@@ -640,11 +735,10 @@ export const AdminView: React.FC = () => {
                         <p className="text-[10px] text-navy-600 mt-0.5">{lead.email} • {lead.phone}</p>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className={`px-2.5 py-0.5 rounded-full font-bold text-[10px] capitalize ${
-                          lead.status === "new" ? "bg-orange-100 text-orange-700" :
-                          lead.status === "converted" ? "bg-emerald-100 text-emerald-700" :
-                          "bg-slate-100 text-slate-700"
-                        }`}>
+                        <span className={`px-2.5 py-0.5 rounded-full font-bold text-[10px] capitalize ${lead.status === "new" ? "bg-orange-100 text-orange-700" :
+                            lead.status === "converted" ? "bg-emerald-100 text-emerald-700" :
+                              "bg-slate-100 text-slate-700"
+                          }`}>
                           {lead.status}
                         </span>
                         <span className="text-[10px] text-navy-600 flex items-center gap-1">
@@ -716,8 +810,8 @@ export const AdminView: React.FC = () => {
 
               <div className="space-y-4">
                 {projects.map((proj, idx) => (
-                  <motion.div 
-                    key={proj.id} 
+                  <motion.div
+                    key={proj.id}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, delay: idx * 0.05 }}
@@ -844,9 +938,8 @@ export const AdminView: React.FC = () => {
                           <p className="font-semibold text-navy-950">{inv.projectTitle}</p>
                           <p className="text-[10px] text-navy-600">ID: #{inv.id.toUpperCase()} • ₹{inv.amount.toLocaleString("en-IN")}</p>
                         </div>
-                        <span className={`px-2 py-0.5 rounded font-bold text-[9px] ${
-                          inv.status === "Paid" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"
-                        }`}>
+                        <span className={`px-2 py-0.5 rounded font-bold text-[9px] ${inv.status === "Paid" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"
+                          }`}>
                           {inv.status}
                         </span>
                       </div>
@@ -889,7 +982,7 @@ export const AdminView: React.FC = () => {
                 <h4 className="font-display font-extrabold text-sm text-navy-950 uppercase tracking-wider">
                   Active Blog Articles ({blogs.length})
                 </h4>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-[580px] pr-1 animate-fadeIn">
                   {blogs.length === 0 ? (
                     <div className="col-span-2 text-center py-20 bg-slate-50 border border-dashed border-slate-200 rounded-xl text-slate-500">
@@ -902,15 +995,14 @@ export const AdminView: React.FC = () => {
                         <div className="h-16 w-24 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0 relative border border-slate-100">
                           <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
                         </div>
-                        
+
                         <div className="flex-grow space-y-1.5 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-[8px] bg-navy-100 text-navy-700 px-1.5 py-0.5 rounded font-bold uppercase tracking-wide">
                               {post.category}
                             </span>
-                            <span className={`text-[8px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wide ${
-                              post.status === "published" ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-600"
-                            }`}>
+                            <span className={`text-[8px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wide ${post.status === "published" ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-600"
+                              }`}>
                               {post.status}
                             </span>
                             <span className="text-[9px] text-navy-500 ml-auto font-medium">{post.date}</span>
@@ -918,7 +1010,7 @@ export const AdminView: React.FC = () => {
                           <h5 className="font-display font-extrabold text-xs text-navy-950 truncate" title={post.title}>{post.title}</h5>
                           <p className="text-[10px] text-navy-600 line-clamp-1 italic">"{post.summary}"</p>
                           <p className="text-[9px] text-navy-600 font-semibold">Author: {post.author}</p>
-                          
+
                           <div className="flex gap-2 items-center pt-2 border-t border-slate-100 mt-2">
                             <button
                               onClick={() => {
@@ -929,7 +1021,7 @@ export const AdminView: React.FC = () => {
                             >
                               {post.status === "published" ? "Unpublish" : "Publish"}
                             </button>
-                            
+
                             <div className="flex gap-1.5 ml-auto">
                               <button
                                 onClick={() => startEditBlog(post)}
@@ -990,7 +1082,7 @@ export const AdminView: React.FC = () => {
                       {/* Modal Form */}
                       <form onSubmit={handleBlogSubmit} className="p-6 md:p-8 space-y-6 flex-grow">
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                          
+
                           {/* Left Half: Metadata */}
                           <div className="lg:col-span-5 space-y-4">
                             <div>
@@ -1013,11 +1105,13 @@ export const AdminView: React.FC = () => {
                                   onChange={(e) => setBlogCategory(e.target.value as any)}
                                   className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:bg-white text-slate-800 font-semibold shadow-sm transition-all"
                                 >
-                                  <option value="Structural">Structural</option>
+                                  <option value="Structure">Structure</option>
+                                  <option value="Educational">Educational</option>
+                                  <option value="Transportation">Transportation</option>
+                                  <option value="General tech">General Tech</option>
                                   <option value="Architecture">Architecture</option>
-                                  <option value="Estimation">Estimation</option>
-                                  <option value="BIM">BIM Services</option>
-                                  <option value="General">General Tech</option>
+                                  <option value="Case studies">Case Studies</option>
+                                  <option value="Civil engineering">Civil Engineering</option>
                                 </select>
                               </div>
                               <div>
@@ -1047,32 +1141,51 @@ export const AdminView: React.FC = () => {
                               </div>
                             </div>
 
-                            {/* Banner Image URL — stores only a URL, never base64, to avoid MongoDB document-size limits */}
-                            <div>
-                              <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1.5">Banner Image URL</label>
-                              <div className="flex items-center gap-3">
-                                {blogImage && (
-                                  <div className="relative h-11 w-16 rounded-lg overflow-hidden border border-slate-300 bg-slate-50 group flex-shrink-0">
-                                    <img src={blogImage} alt="Banner Preview" className="h-full w-full object-cover" />
-                                    <button
-                                      type="button"
-                                      onClick={() => setBlogImage("")}
-                                      className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[8px] font-bold transition-all uppercase tracking-wide cursor-pointer"
-                                    >
-                                      Remove
-                                    </button>
-                                  </div>
-                                )}
-                                <input
-                                  type="url"
-                                  value={blogImage}
-                                  onChange={(e) => setBlogImage(e.target.value)}
-                                  placeholder="https://images.unsplash.com/photo-..."
-                                  className="flex-grow bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:bg-white text-slate-800 font-semibold shadow-sm transition-all"
-                                />
-                              </div>
-                              <p className="text-[9px] text-slate-400 mt-1">Paste any public image URL (Unsplash, CDN, etc.). Only the URL is stored — not the file.</p>
-                            </div>
+                             {/* Banner Image URL — stores only a URL, never base64, to avoid MongoDB document-size limits */}
+                             <div>
+                               <div className="flex justify-between items-center mb-1.5">
+                                 <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider">Banner Image URL</label>
+                                 <div className="flex items-center gap-2">
+                                   <input
+                                     type="file"
+                                     id="bannerImageUploadInput"
+                                     accept="image/*"
+                                     onChange={handleBannerUpload}
+                                     style={{ display: "none" }}
+                                   />
+                                   <button
+                                     type="button"
+                                     disabled={isBannerUploading}
+                                     onClick={() => document.getElementById("bannerImageUploadInput")?.click()}
+                                     className="bg-orange-50 hover:bg-orange-100 text-orange-700 font-bold px-2 py-1 rounded text-[9px] uppercase tracking-wide cursor-pointer transition-colors"
+                                   >
+                                     {isBannerUploading ? "Uploading..." : "Upload Device File"}
+                                   </button>
+                                 </div>
+                               </div>
+                               <div className="flex items-center gap-3">
+                                 {blogImage && (
+                                   <div className="relative h-11 w-16 rounded-lg overflow-hidden border border-slate-300 bg-slate-50 group flex-shrink-0">
+                                     <img src={blogImage} alt="Banner Preview" className="h-full w-full object-cover" />
+                                     <button
+                                       type="button"
+                                       onClick={() => setBlogImage("")}
+                                       className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[8px] font-bold transition-all uppercase tracking-wide cursor-pointer"
+                                     >
+                                       Remove
+                                     </button>
+                                   </div>
+                                 )}
+                                 <input
+                                   type="url"
+                                   value={blogImage}
+                                   onChange={(e) => setBlogImage(e.target.value)}
+                                   placeholder="https://images.unsplash.com/photo-..."
+                                   className="flex-grow bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:bg-white text-slate-800 font-semibold shadow-sm transition-all"
+                                 />
+                               </div>
+                               <p className="text-[9px] text-slate-400 mt-1">Select a local device file to upload it, or paste any public image URL. Only the URL path is stored in the database.</p>
+                             </div>
 
                             <div>
                               <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1.5">Brief Summary</label>
@@ -1099,18 +1212,16 @@ export const AdminView: React.FC = () => {
                                   <button
                                     type="button"
                                     onClick={() => setEditorMode("write")}
-                                    className={`px-3 py-0.5 rounded-md text-[9px] font-bold uppercase transition-all ${
-                                      editorMode === "write" ? "bg-white text-navy-950 shadow-sm" : "text-navy-600 hover:text-navy-950"
-                                    }`}
+                                    className={`px-3 py-0.5 rounded-md text-[9px] font-bold uppercase transition-all ${editorMode === "write" ? "bg-white text-navy-950 shadow-sm" : "text-navy-600 hover:text-navy-950"
+                                      }`}
                                   >
                                     Write
                                   </button>
                                   <button
                                     type="button"
                                     onClick={() => setEditorMode("preview")}
-                                    className={`px-3 py-0.5 rounded-md text-[9px] font-bold uppercase transition-all ${
-                                      editorMode === "preview" ? "bg-white text-navy-950 shadow-sm" : "text-navy-600 hover:text-navy-950"
-                                    }`}
+                                    className={`px-3 py-0.5 rounded-md text-[9px] font-bold uppercase transition-all ${editorMode === "preview" ? "bg-white text-navy-950 shadow-sm" : "text-navy-600 hover:text-navy-950"
+                                      }`}
                                   >
                                     Preview
                                   </button>
@@ -1118,9 +1229,9 @@ export const AdminView: React.FC = () => {
                               </div>
 
                               {editorMode === "write" ? (
-                                <div className="border border-slate-300 rounded-lg overflow-hidden bg-white shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600 transition-all">
+                                <div className="border border-slate-300 rounded-lg bg-white shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600 transition-all">
                                   {/* Rich Formatting Toolbar */}
-                                  <div className="flex flex-wrap items-center gap-1 bg-slate-50 border-b border-slate-200 px-2 py-1.5 text-slate-600 select-none">
+                                  <div className="flex flex-wrap items-center gap-1 bg-slate-50 border-b border-slate-200 px-2 py-1.5 text-slate-600 select-none rounded-t-lg">
                                     {/* Group 1: Text Styles */}
                                     <button
                                       type="button"
@@ -1175,6 +1286,40 @@ export const AdminView: React.FC = () => {
                                       title="Superscript"
                                     >
                                       <Superscript className="h-3.5 w-3.5" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
+                                      onClick={() => {
+                                        try {
+                                          const current = document.queryCommandValue("fontSize") || "3";
+                                          const next = Math.min(7, parseInt(current) + 1);
+                                          runCommand("fontSize", next.toString());
+                                        } catch (err) {
+                                          console.warn(err);
+                                        }
+                                      }}
+                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors flex items-center justify-center font-display font-extrabold text-[10px] w-6 h-6 select-none"
+                                      title="Increase Font Size"
+                                    >
+                                      A+
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onMouseDown={(e) => e.preventDefault()}
+                                      onClick={() => {
+                                        try {
+                                          const current = document.queryCommandValue("fontSize") || "3";
+                                          const next = Math.max(1, parseInt(current) - 1);
+                                          runCommand("fontSize", next.toString());
+                                        } catch (err) {
+                                          console.warn(err);
+                                        }
+                                      }}
+                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors flex items-center justify-center font-display font-extrabold text-[10px] w-6 h-6 select-none"
+                                      title="Decrease Font Size"
+                                    >
+                                      A-
                                     </button>
                                     <div className="h-4 w-[1px] bg-slate-300 mx-1 flex-shrink-0" />
 
@@ -1278,18 +1423,73 @@ export const AdminView: React.FC = () => {
                                     <div className="h-4 w-[1px] bg-slate-300 mx-1 flex-shrink-0" />
 
                                     {/* Group 5: Insert actions & Color */}
-                                    <button
-                                      type="button"
-                                      onMouseDown={(e) => e.preventDefault()}
-                                      onClick={() => {
-                                        const url = prompt("Enter link URL:", "https://");
-                                        if (url) runCommand("createLink", url);
-                                      }}
-                                      className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
-                                      title="Insert Link (Ctrl+K)"
-                                    >
-                                      <Link2 className="h-3.5 w-3.5" />
-                                    </button>
+                                     <button
+                                       type="button"
+                                       onMouseDown={(e) => e.preventDefault()}
+                                       onClick={() => {
+                                         const url = prompt("Enter link URL:", "https://");
+                                         if (url) runCommand("createLink", url);
+                                       }}
+                                       className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors"
+                                       title="Insert Link (Ctrl+K)"
+                                     >
+                                       <Link2 className="h-3.5 w-3.5" />
+                                     </button>
+
+                                     {/* Insert Image Dropdown */}
+                                     <div className="relative">
+                                       <button
+                                         type="button"
+                                         onMouseDown={(e) => e.preventDefault()}
+                                         onClick={() => setShowImageMenu(!showImageMenu)}
+                                         className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors flex items-center"
+                                         title="Insert Image Options"
+                                       >
+                                         <ImageIcon className="h-3.5 w-3.5" />
+                                       </button>
+                                       {showImageMenu && (
+                                         <div className="absolute right-0 mt-1.5 p-3.5 bg-white border border-slate-200 rounded-xl shadow-premium-lg z-25 flex flex-col gap-3.5 animate-fadeIn select-none w-56">
+                                           <div className="space-y-1.5">
+                                             <label className="block text-[9px] font-bold text-navy-950 uppercase tracking-wider">Upload from Device</label>
+                                             <input
+                                               type="file"
+                                               accept="image/*"
+                                               disabled={isUploading}
+                                               onChange={handleImageUpload}
+                                               className="w-full text-[10px] text-slate-600 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[9px] file:font-bold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer file:cursor-pointer"
+                                             />
+                                             {isUploading && (
+                                               <span className="text-[8px] text-orange-600 font-semibold animate-pulse block mt-0.5">Uploading...</span>
+                                             )}
+                                           </div>
+                                           <div className="border-t border-slate-100 pt-2.5 space-y-1.5">
+                                             <label className="block text-[9px] font-bold text-navy-950 uppercase tracking-wider">Insert from URL</label>
+                                             <div className="flex gap-1.5">
+                                               <input
+                                                 type="url"
+                                                 placeholder="https://example.com/image.png"
+                                                 value={urlInput}
+                                                 onChange={(e) => setUrlInput(e.target.value)}
+                                                 className="flex-grow bg-slate-50 border border-slate-300 rounded px-2 py-1 text-[10px] focus:outline-none focus:border-blue-600 focus:bg-white text-slate-800 font-semibold shadow-sm transition-all"
+                                               />
+                                               <button
+                                                 type="button"
+                                                 onClick={() => {
+                                                   if (urlInput.trim()) {
+                                                     runCommand("insertImage", urlInput.trim());
+                                                     setUrlInput("");
+                                                     setShowImageMenu(false);
+                                                   }
+                                                 }}
+                                                 className="bg-navy-950 hover:bg-orange-600 text-white font-bold px-2.5 py-1 rounded text-[9px] uppercase tracking-wide cursor-pointer transition-colors"
+                                               >
+                                                 Insert
+                                               </button>
+                                             </div>
+                                           </div>
+                                         </div>
+                                       )}
+                                     </div>
 
                                     {/* Text Color Dropdown */}
                                     <div className="relative">
@@ -1303,13 +1503,19 @@ export const AdminView: React.FC = () => {
                                         <Paintbrush className="h-3.5 w-3.5" />
                                       </button>
                                       {showColors && (
-                                        <div className="absolute left-0 mt-1.5 p-1.5 bg-white border border-slate-200 rounded-lg shadow-premium-lg z-25 flex gap-1 animate-fadeIn select-none">
+                                        <div className="absolute right-0 mt-1.5 p-2 bg-white border border-slate-200 rounded-xl shadow-premium-lg z-25 grid grid-cols-6 gap-1.5 animate-fadeIn select-none w-44">
                                           {[
-                                            { name: "Orange", hex: "#ff6b00" },
-                                            { name: "Navy", hex: "#0a192f" },
-                                            { name: "Slate", hex: "#475569" },
-                                            { name: "Green", hex: "#10b981" },
-                                            { name: "Red", hex: "#ef4444" },
+                                            { name: "Red", hex: "#721126ff" },
+                                            { name: "Pink", hex: "#df1c1cff" },
+                                            { name: "Purple", hex: "#6b1bb5ff" },
+                                            { name: "Blue", hex: "#2525ebff" },
+                                            { name: "Sky Blue", hex: "#026bc7e7" },
+                                            { name: "Teal", hex: "#1b940dff" },
+                                            { name: "Green", hex: "#16a34a" },
+                                            { name: "Yellow", hex: "#ca8a04" },
+                                            { name: "Orange", hex: "#dff021ff" },
+                                            { name: "Gray", hex: "#1c2634ff" },
+                                            { name: "Navy", hex: "#1e3a8a" },
                                             { name: "Black", hex: "#000000" }
                                           ].map((color) => (
                                             <button
@@ -1320,10 +1526,50 @@ export const AdminView: React.FC = () => {
                                                 runCommand("foreColor", color.hex);
                                                 setShowColors(false);
                                               }}
-                                              className="w-5 h-5 rounded-full border border-slate-350 cursor-pointer shadow-sm hover:scale-110 transition-transform"
+                                              className="w-5 h-5 rounded-full border border-slate-300 cursor-pointer shadow-sm hover:scale-110 transition-transform"
                                               style={{ backgroundColor: color.hex }}
                                               title={color.name}
                                             />
+                                          ))}
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    {/* Font Family Dropdown */}
+                                    <div className="relative">
+                                      <button
+                                        type="button"
+                                        onMouseDown={(e) => e.preventDefault()}
+                                        onClick={() => setShowFonts(!showFonts)}
+                                        className="p-1 rounded hover:bg-slate-200 hover:text-navy-950 transition-colors flex items-center"
+                                        title="Font Family"
+                                      >
+                                        <Type className="h-3.5 w-3.5" />
+                                      </button>
+                                      {showFonts && (
+                                        <div className="absolute right-0 mt-1.5 w-40 bg-white border border-slate-200 rounded-lg shadow-premium-lg z-25 py-1 text-slate-800 text-[10px] font-semibold divide-y divide-slate-100 max-h-48 overflow-y-auto">
+                                          {[
+                                            { name: "Default", family: "system-ui, sans-serif" },
+                                            { name: "Times New Roman", family: "Times New Roman, Georgia, serif" },
+                                            { name: "Arial", family: "Arial, Helvetica, sans-serif" },
+                                            { name: "Georgia", family: "Georgia, serif" },
+                                            { name: "Courier New", family: "Courier New, Courier, monospace" },
+                                            { name: "Verdana", family: "Verdana, Geneva, sans-serif" },
+                                            { name: "Impact", family: "Impact, Charcoal, sans-serif" }
+                                          ].map((font) => (
+                                            <button
+                                              key={font.family}
+                                              type="button"
+                                              onMouseDown={(e) => e.preventDefault()}
+                                              onClick={() => {
+                                                runCommand("fontName", font.family);
+                                                setShowFonts(false);
+                                              }}
+                                              className="w-full text-left px-3 py-1.5 hover:bg-slate-50 transition-colors block text-[10px]"
+                                              style={{ fontFamily: font.family }}
+                                            >
+                                              {font.name}
+                                            </button>
                                           ))}
                                         </div>
                                       )}
@@ -1339,7 +1585,7 @@ export const AdminView: React.FC = () => {
                                       <Eraser className="h-3.5 w-3.5" />
                                     </button>
                                     <div className="h-4 w-[1px] bg-slate-300 mx-1 flex-shrink-0" />
-                                    
+
                                     {/* Pre-made Templates Dropdown */}
                                     <div className="relative">
                                       <button
@@ -1353,7 +1599,7 @@ export const AdminView: React.FC = () => {
                                         Templates
                                       </button>
                                       {showTemplates && (
-                                        <div className="absolute left-0 mt-1.5 w-48 bg-white border border-slate-200 rounded-lg shadow-premium-lg z-20 py-1 text-slate-800 text-[10px] font-semibold divide-y divide-slate-100">
+                                        <div className="absolute right-0 mt-1.5 w-48 bg-white border border-slate-200 rounded-lg shadow-premium-lg z-20 py-1 text-slate-800 text-[10px] font-semibold divide-y divide-slate-100">
                                           <button
                                             type="button"
                                             onMouseDown={(e) => e.preventDefault()}
@@ -1376,7 +1622,8 @@ export const AdminView: React.FC = () => {
                                   </div>
 
                                   <div className="relative w-full">
-                                    <style dangerouslySetInnerHTML={{ __html: `
+                                    <style dangerouslySetInnerHTML={{
+                                      __html: `
                                       #blogContentTextarea:empty::before {
                                         content: attr(data-placeholder);
                                         color: #94a3b8;
@@ -1427,6 +1674,19 @@ export const AdminView: React.FC = () => {
                                         border-top: 2px dashed #cbd5e1;
                                         margin: 16px 0;
                                       }
+                                      #blogContentTextarea img {
+                                        max-width: 100%;
+                                        height: auto;
+                                        border-radius: 8px;
+                                        margin: 12px auto;
+                                        display: block;
+                                        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+                                        cursor: pointer;
+                                        transition: outline 0.1s ease;
+                                      }
+                                      #blogContentTextarea img:hover {
+                                        outline: 3px solid #ff6b00;
+                                      }
                                     `}} />
                                     <div
                                       ref={editorRef}
@@ -1434,20 +1694,21 @@ export const AdminView: React.FC = () => {
                                       contentEditable={true}
                                       onInput={handleEditorInput}
                                       onKeyDown={handleEditorKeyDown}
-                                      data-placeholder="Write full article body. Supports visual editing: Bold, Italic, Headings, and Lists."
+                                      onClick={handleEditorClick}
+                                      data-placeholder="Write full article body. Supports visual editing: Bold, Italic, Headings, and Lists. Click on an image to resize it."
                                       className="w-full bg-transparent border-none px-3 py-2.5 text-xs focus:outline-none text-slate-800 font-semibold overflow-y-auto min-h-[220px] max-h-[350px] outline-none prose prose-slate"
                                       style={{ minHeight: "220px" }}
                                     />
                                   </div>
 
                                   {/* Stats footer */}
-                                  <div className="bg-slate-50 border-t border-slate-100 px-3 py-1 flex justify-between text-[9px] font-bold text-slate-500 uppercase tracking-wider select-none">
+                                  <div className="bg-slate-50 border-t border-slate-100 px-3 py-1 flex justify-between text-[9px] font-bold text-slate-500 uppercase tracking-wider select-none rounded-b-lg">
                                     <span>Words: {blogContent.trim() === "" ? 0 : blogContent.trim().split(/\s+/).length}</span>
                                     <span>Chars: {blogContent.length}</span>
                                   </div>
                                 </div>
                               ) : (
-                                <div 
+                                <div
                                   className="border border-slate-300 rounded-lg p-4 bg-slate-50 min-h-[305px] overflow-y-auto max-h-[380px] prose prose-slate text-xs leading-relaxed font-medium"
                                   dangerouslySetInnerHTML={{ __html: blogContent || '<span class="text-slate-400 italic">Nothing to preview. Start writing!</span>' }}
                                 />

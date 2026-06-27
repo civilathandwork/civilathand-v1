@@ -2,11 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Calculators } from "@/components/Calculators";
 import { useProjects } from "@/context/ProjectContext";
+import { generateSlug } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { portfolioItems } from "@/data/portfolio";
+import { servicesData } from "@/data/services";
 import { 
   Briefcase, 
   Cpu, 
@@ -23,7 +26,12 @@ import {
   Leaf, 
   Compass, 
   ArrowRight,
-  Star
+  Star,
+  Calculator,
+  FlaskConical,
+  Weight,
+  BrickWall,
+  Sparkles
 } from "lucide-react";
 
 // Custom Bridge Icon
@@ -78,8 +86,91 @@ const testimonials = [
   { name: "Priya Sharma", role: "Senior Civil Engineer, UrbanEdge Consultants", review: "Civil At Hand has become a trusted partner for our estimation and drafting requirements. Their technical expertise, quick delivery, and attention to detail are truly impressive. Highly recommended for civil engineering professionals and firms.", rating: 5, image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" }
 ];
 
+interface CalcHubCard {
+  id: string;
+  href: string;
+  title: string;
+  description: string;
+  badge: string;
+  standard: string;
+  icon: React.ComponentType<{ className?: string }>;
+  accentColor: string;
+}
+
+const hubCards: CalcHubCard[] = [
+  {
+    id: "cost",
+    href: "/calculator/all-calculators/construction-cost-estimator",
+    title: "Construction Cost Estimator",
+    description: "Prepare accurate budgets and detailed materials breakdown for 2026 Indian residential structures.",
+    badge: "Cost Breakdown",
+    standard: "2026 Market Rates",
+    icon: Calculator,
+    accentColor: "from-orange-500 to-amber-500",
+  },
+  {
+    id: "concrete",
+    href: "/calculator/all-calculators/concrete-volumetrics",
+    title: "Concrete Volumetrics",
+    description: "Calculate dry volume, cement bags, sand, and aggregate requirements using standard mix ratios.",
+    badge: "IS 456:2000",
+    standard: "Dry factor 1.54 | 5% wastage",
+    icon: FlaskConical,
+    accentColor: "from-blue-500 to-indigo-500",
+  },
+  {
+    id: "steel",
+    href: "/calculator/all-calculators/steel-rebar-weight",
+    title: "Steel Rebar Weight",
+    description: "Derive unit weights and total reinforcing steel weight in KG and Metric Tons for standard bar sizes.",
+    badge: "IS 1786:2008",
+    standard: "W = D² / 162.2 | 7% wastage",
+    icon: Weight,
+    accentColor: "from-slate-700 to-slate-900",
+  },
+  {
+    id: "brick",
+    href: "/calculator/all-calculators/brick-masonry-wall",
+    title: "Brick & Masonry Wall",
+    description: "Estimate bricks, mortar volume, cement bags, and sand count for load-bearing and partition walls.",
+    badge: "IS 1077:1992",
+    standard: "500 bricks/m³ | 7% wastage",
+    icon: BrickWall,
+    accentColor: "from-red-500 to-orange-600",
+  },
+  {
+    id: "boq",
+    href: "/calculator/all-calculators/ai-boq-takeoff",
+    title: "AI BOQ Takeoff",
+    description: "Audit layouts, drawings, and prepare a 16-line Bill of Quantities using standard CPWD DSR 2023 rates.",
+    badge: "CPWD DSR 2023",
+    standard: "Auto CAD & PDF Audit",
+    icon: Sparkles,
+    accentColor: "from-purple-600 to-pink-600",
+  },
+];
+
 export default function Home() {
   const { addLead, blogs, portfolio } = useProjects();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname === "/services") {
+      const el = document.getElementById("services");
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth" });
+        }, 150);
+      }
+    } else if (pathname === "/calculator" || pathname === "/calculators") {
+      const el = document.getElementById("calculators");
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth" });
+        }, 150);
+      }
+    }
+  }, [pathname]);
   
   // Interactive Lifecycle Step State
   const [activeLifecycleStep, setActiveLifecycleStep] = useState(0);
@@ -133,14 +224,21 @@ export default function Home() {
     setTimeout(() => setContactSuccess(false), 3000);
   };
 
-  const services: Array<{ title: string; desc: string; icon: any; href?: string }> = [
-    { title: "Structural Design", desc: "High-grade structural detailing and frame analysis using state-of-the-art computer automation.", icon: Cpu },
-    { title: "BOQ Estimation", desc: "Detailed Material bills and cost projections computed automatically with IS-code standard accuracies.", icon: FileTextIcon },
-    { title: "Quantity Surveying", desc: "Professional pre-construction quantity audits, concrete takeoffs, and rebar scheduling.", icon: Briefcase },
-    { title: "PDF to AutoCAD", desc: "Seamless vectorization of blueprint drawings to fully editable DWG/DXF files.", icon: FileTextIcon },
-    { title: "BIM Services", desc: "Virtual design coordination and 3D modeling up to LOD 400 specification standards.", icon: Compass },
-    { title: "Interior Design", desc: "Ergonomic workspace designs, custom interior layouts, and wood-finish specifications.", icon: HomeIcon },
-  ];
+  const services = servicesData.map(s => {
+    let IconComponent;
+    if (s.iconName === "Cpu") IconComponent = Cpu;
+    else if (s.iconName === "FileText") IconComponent = FileTextIcon;
+    else if (s.iconName === "Briefcase") IconComponent = Briefcase;
+    else if (s.iconName === "Compass") IconComponent = Compass;
+    else IconComponent = HomeIcon;
+
+    return {
+      title: s.title,
+      desc: s.desc,
+      icon: IconComponent,
+      href: `/services/all-services/${s.id}`
+    };
+  });
 
   const lifecycleSteps = [
     {
@@ -281,7 +379,7 @@ export default function Home() {
                   variants={heroItemVariants}
                   className="text-sm text-slate-300 max-w-xl leading-relaxed font-medium"
                 >
-                  Planning, Design, Quantity Estimation, Construction Automation, and Project Management in One Cohesive Platform.
+                   One Platform for Architectural Design, Structural Drawings, BOQ Estimation, BIM Modelling & Quantity Surveying — Delivered Online Across India, AI-Powered Tools with Code-Compliant Accuracy
                 </motion.p>
                 
                 <motion.div 
@@ -389,8 +487,8 @@ export default function Home() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {services.map((service, idx) => {
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {services.slice(0, 2).map((service, idx) => {
                 const Icon = service.icon;
                 return (
                   <motion.div 
@@ -398,7 +496,7 @@ export default function Home() {
                     initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: (idx % 3) * 0.05 }}
+                    transition={{ duration: 0.4, delay: (idx % 2) * 0.05 }}
                     className="group border border-slate-200 hover:border-wix-dark rounded-md p-6 bg-white hover:bg-slate-50/50 transition-all duration-300 flex flex-col justify-between shadow-sm"
                   >
                     <div>
@@ -421,11 +519,87 @@ export default function Home() {
                 );
               })}
             </div>
+
+            <div className="text-center mt-12">
+              <Link
+                href="/services/all-services"
+                className="inline-flex items-center gap-2 rounded-md bg-wix-dark hover:bg-orange-500 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm"
+              >
+                View All Services
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
         </section>
 
         {/* SECTION 4: AUTOMATION TOOLS */}
-        <Calculators />
+        <section id="calculators" className="py-24 bg-slate-50 border-t border-slate-200">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={scrollRevealVariants}
+              className="text-center max-w-3xl mx-auto mb-16"
+            >
+              <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Automation & Takeoffs</span>
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
+                IS-Code Civil Engineering Calculators
+              </h2>
+              <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
+                Calibrated to Indian Standard (IS) codes and CPWD Delhi Schedule of Rates (DSR) 2023. Select a tool to estimate materials, concrete volume, steel weights, brickwork, or run automated BOQ takeoff audits.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {hubCards.slice(0, 2).map((card, idx) => {
+                const Icon = card.icon;
+                return (
+                  <motion.div
+                    key={card.id}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.4, delay: (idx % 2) * 0.05 }}
+                    className="group border border-slate-200 hover:border-wix-dark rounded-md p-6 bg-white hover:bg-slate-50/50 transition-all duration-300 flex flex-col justify-between shadow-sm"
+                  >
+                    <div>
+                      <div className="h-10 w-10 rounded-md bg-slate-50 text-wix-dark group-hover:bg-wix-dark group-hover:text-white flex items-center justify-center mb-4 border border-slate-200 transition-colors">
+                        <Icon className="h-5.5 w-5.5 text-orange-500" />
+                      </div>
+                      <h3 className="font-display font-bold text-sm text-wix-dark mb-2 leading-tight uppercase tracking-wider">
+                        {card.title}
+                      </h3>
+                      <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
+                        {card.description}
+                      </p>
+                    </div>
+                    <div className="pt-5 mt-auto flex items-center justify-between border-t border-slate-100/60">
+                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">{card.badge}</span>
+                      <Link
+                        href={card.href}
+                        className="text-[10px] font-extrabold text-orange-500 hover:text-wix-dark uppercase tracking-widest flex items-center gap-1 group/link"
+                      >
+                        Open Calculator
+                        <ArrowRight className="h-3 w-3 transform group-hover/link:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            <div className="text-center mt-12">
+              <Link
+                href="/calculator/all-calculators"
+                className="inline-flex items-center gap-2 rounded-md bg-wix-dark hover:bg-orange-500 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm"
+              >
+                View All Calculators
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </section>
 
 
 
@@ -1015,7 +1189,7 @@ export default function Home() {
 
                       <div className="pt-2">
                         <Link
-                          href={`/blog/${post.id}`}
+                          href={`/blog/${post.slug || generateSlug(post.title)}`}
                           className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-400 hover:text-white uppercase tracking-widest transition-colors"
                         >
                           Read Post <ArrowRight className="h-3.5 w-3.5" />
