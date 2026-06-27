@@ -87,7 +87,7 @@ export default function AboutPage() {
                 </p>
                 <div className="mt-10 flex flex-wrap gap-3">
                   <Link
-                    href="/services/all-services"
+                    href="/services"
                     className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-3 text-[11px] uppercase tracking-widest rounded-md transition-all"
                   >
                     Our Services <ArrowRight className="h-4 w-4" />
@@ -206,7 +206,7 @@ export default function AboutPage() {
                   <h3 className="font-display font-extrabold text-sm text-wix-dark uppercase tracking-wide mb-2">{s.title}</h3>
                   <p className="text-xs text-slate-500 leading-relaxed font-medium">{s.desc}</p>
                   <Link
-                    href="/services/all-services"
+                    href="/services"
                     className="inline-flex items-center gap-1 text-[10px] font-bold text-orange-500 uppercase tracking-widest mt-4 hover:gap-2 transition-all"
                   >
                     Learn More <ArrowRight className="h-3 w-3" />
