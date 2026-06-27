@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
+import { generateSlug } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -22,9 +23,17 @@ export async function PUT(
       return NextResponse.json({ error: "Portfolio item not found" }, { status: 404 });
     }
 
+    // Generate new slug if title is updated
+    const newSlug = body.title ? generateSlug(body.title) : item.id;
+    let finalId = item.id;
+    if (body.title && newSlug !== item.id) {
+      const existing = await collection.findOne({ id: newSlug });
+      finalId = existing ? `${newSlug}-${Date.now().toString().slice(-4)}` : newSlug;
+    }
+
     const updatedData = {
       ...body,
-      id: item.id, // Keep the original id
+      id: finalId,
     };
 
     delete (updatedData as any)._id;

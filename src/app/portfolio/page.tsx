@@ -9,6 +9,8 @@ import { PortfolioItem } from "@/data/portfolio";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, MapPin, Briefcase, ChevronRight, HardHat } from "lucide-react";
 
+const isPdf = (url: string) => url?.toLowerCase().endsWith(".pdf") || (url?.includes("/uploads/") && url?.toLowerCase().includes(".pdf"));
+
 export default function PortfolioPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -134,11 +136,19 @@ export default function PortfolioPage() {
                   >
                     {/* Banner Image */}
                     <div className="md:w-1/2 h-56 md:h-auto overflow-hidden relative">
-                      <img 
-                        src={project.img} 
-                        alt={project.title} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                      />
+                      {isPdf(project.img) ? (
+                        <div className="w-full h-full min-h-56 flex flex-col items-center justify-center bg-slate-900 text-slate-400 p-4">
+                          <HardHat className="h-8 w-8 text-orange-500 mb-2 animate-bounce" />
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-200">PDF Document</span>
+                          <span className="text-[9px] text-slate-500 mt-1 max-w-full truncate text-center px-2">{project.title}</span>
+                        </div>
+                      ) : (
+                        <img 
+                          src={project.img} 
+                          alt={project.title} 
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                        />
+                      )}
                       <span className="absolute top-3 left-3 bg-slate-900 text-white font-bold text-[9px] px-3 py-1 rounded-none uppercase tracking-widest">
                         {project.status}
                       </span>

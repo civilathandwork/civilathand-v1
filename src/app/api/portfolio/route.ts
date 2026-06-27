@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 import { portfolioItems as initialPortfolio } from "@/data/portfolio";
+import { generateSlug } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -64,8 +65,12 @@ export async function POST(request: Request) {
     const db = client.db(dbName);
     const collection = db.collection("portfolio");
 
+    const slug = generateSlug(title);
+    const existing = await collection.findOne({ id: slug });
+    const finalId = existing ? `${slug}-${Date.now().toString().slice(-4)}` : slug;
+
     const newPortfolioItem = {
-      id: `port-${Date.now()}`,
+      id: finalId,
       title,
       category,
       area: area || "TBD",

@@ -19,6 +19,8 @@ import {
   ChevronRight
 } from "lucide-react";
 
+const isPdf = (url: string) => url?.toLowerCase().endsWith(".pdf") || (url?.includes("/uploads/") && url?.toLowerCase().includes(".pdf"));
+
 export default function PortfolioDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { portfolio, isLoaded } = useProjects();
@@ -105,11 +107,19 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ id: 
 
               {/* Main Visual Image Banner */}
               <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-sm relative">
-                <img 
-                  src={project.img} 
-                  alt={project.title} 
-                  className="w-full h-full object-cover"
-                />
+                {isPdf(project.img) ? (
+                  <iframe 
+                    src={project.img} 
+                    className="w-full h-full border-0" 
+                    title={project.title}
+                  />
+                ) : (
+                  <img 
+                    src={project.img} 
+                    alt={project.title} 
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
 
               {/* Project Description Narrative */}
@@ -154,11 +164,19 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ id: 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {project.gallery.map((imgUrl, gIdx) => (
                       <div key={gIdx} className="h-56 rounded-xl overflow-hidden border border-slate-200 relative group">
-                        <img 
-                          src={imgUrl} 
-                          alt={`${project.title} details ${gIdx + 1}`} 
-                          className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500 ease-out"
-                        />
+                        {isPdf(imgUrl) ? (
+                          <iframe 
+                            src={imgUrl} 
+                            className="w-full h-full border-0" 
+                            title={`${project.title} PDF ${gIdx + 1}`}
+                          />
+                        ) : (
+                          <img 
+                            src={imgUrl} 
+                            alt={`${project.title} details ${gIdx + 1}`} 
+                            className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500 ease-out"
+                          />
+                        )}
                       </div>
                     ))}
                   </div>
