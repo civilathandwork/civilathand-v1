@@ -30,11 +30,9 @@ export const metadata: Metadata = {
 };
 
 const milestones = [
-  { year: "2016", title: "Founded", desc: "Started as a structural detailing studio serving local architects in Haryana, India." },
-  { year: "2018", title: "BOQ Division", desc: "Launched dedicated BOQ estimation and quantity surveying services using CPWD DSR rates." },
-  { year: "2020", title: "BIM Practice", desc: "Established a full BIM coordination practice delivering LOD 300–400 models using Revit and Navisworks." },
-  { year: "2022", title: "Digital Tools", desc: "Released proprietary AI-powered calculation engines — concrete, steel, brick, cost estimation, and BOQ takeoff." },
-  { year: "2024", title: "Global Delivery", desc: "Expanded to serve clients across India, Middle East, and Southeast Asia through a remote-first model." },
+  { year: "2024", title: "Founded", desc: "Started as a structural detailing studio serving local architects in Haryana, India." },
+  { year: "2026", title: "Digital Tools", desc: "Released proprietary AI-powered calculation engines — concrete, steel, brick, cost estimation, and BOQ takeoff." },
+  { year: "2026", title: "Global Delivery", desc: "Expanded to serve clients across India, Middle East, and Southeast Asia through a remote-first model." },
   { year: "2026", title: "Education Vertical", desc: "Launched Civil At Hand Education — offering courses, test series, and mentorship for civil engineering aspirants." },
 ];
 
@@ -53,7 +51,7 @@ const whyUs = [
   { icon: Award, label: "Licensed Engineers", desc: "All structural outputs signed off by licensed, experienced civil engineers." },
   { icon: Users, label: "Client First", desc: "Milestone-based updates, transparent communication, dedicated support on every project." },
   { icon: TrendingUp, label: "24-72 Hr Delivery", desc: "Standard projects delivered in 1-3 business days with full technical accuracy." },
-  { icon: Star, label: "500+ Projects", desc: "Trusted by 150+ clients across residential, commercial, and infrastructure sectors." },
+  { icon: Star, label: "21+ Projects", desc: "Trusted by 11+ clients across residential, commercial, and infrastructure sectors." },
 ];
 
 export default function AboutPage() {
@@ -74,7 +72,7 @@ export default function AboutPage() {
                 <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 rounded-full px-4 py-1.5 mb-6">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
                   <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest">
-                    Civil At Hand - Est. 2016
+                    Civil At Hand - Est. 2024
                   </span>
                 </div>
                 <h1 className="font-display text-5xl md:text-6xl font-extrabold text-white uppercase leading-tight tracking-tight">
@@ -105,9 +103,9 @@ export default function AboutPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { value: "500+", label: "Projects Delivered", sub: "Across India and globally" },
-                  { value: "150+", label: "Clients Served", sub: "Architects, developers, EPC" },
-                  { value: "8+", label: "Years of Expertise", sub: "Since 2016" },
+                  { value: "21+", label: "Projects Delivered", sub: "Across India and globally" },
+                  { value: "11+", label: "Clients Served", sub: "Architects, developers, EPC" },
+                  { value: "2+", label: "Years of Expertise", sub: "Since 2024" },
                   { value: "24-72h", label: "Turnaround Time", sub: "Standard projects" },
                 ].map((s) => (
                   <div
@@ -136,7 +134,7 @@ export default function AboutPage() {
                 </h2>
                 <div className="space-y-4 text-sm text-slate-600 font-medium leading-relaxed">
                   <p>
-                    Civil At Hand was founded in 2016 in Haryana, India, with a single purpose:
+                    Civil At Hand was founded in 2024 in Haryana, India, with a single purpose:
                     to deliver structurally precise, code-compliant engineering outputs at a pace
                     that modern construction projects demand.
                   </p>
