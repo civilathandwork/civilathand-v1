@@ -75,6 +75,23 @@ export const Header: React.FC = () => {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const checkUser = () => {
+      const userJson = localStorage.getItem("cah_user");
+      setUser(userJson ? JSON.parse(userJson) : null);
+    };
+    checkUser();
+    window.addEventListener("storage", checkUser);
+    return () => window.removeEventListener("storage", checkUser);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("cah_user");
+    setUser(null);
+    window.location.href = "/auth";
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -297,21 +314,79 @@ export const Header: React.FC = () => {
             </div>
 
             {/* Client Dashboard Link */}
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                href="/dashboard"
-                className={`flex items-center gap-1.5 border px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all duration-300 ${
-                  isDashboardView
-                    ? "bg-orange-500 border-orange-500 text-white shadow-sm"
-                    : isHomeDark
-                      ? "bg-white border-white text-wix-dark hover:bg-transparent hover:text-white"
-                      : "bg-wix-dark border-wix-dark text-white hover:bg-transparent hover:text-wix-dark"
-                }`}
-              >
-                <User className="h-3.5 w-3.5" />
-                Client Portal
-              </Link>
-            </motion.div>
+            {user ? (
+              <div className="flex items-center gap-3">
+                {/* User badge */}
+                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                  <Link 
+                    href="/profile"
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${
+                      isHomeDark 
+                        ? "text-slate-200 bg-white/5 border-white/5 hover:border-orange-500/30" 
+                        : "text-wix-dark bg-slate-100 border-slate-100 hover:border-orange-500/30"
+                    }`}
+                    title="View Profile"
+                  >
+                    <User className="h-3.5 w-3.5 text-orange-500" />
+                    <span>{user.name}</span>
+                  </Link>
+                </motion.div>
+
+                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                  <Link
+                    href="/dashboard"
+                    className={`flex items-center gap-1.5 border px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all duration-300 ${
+                      isDashboardView
+                        ? "bg-orange-500 border-orange-500 text-white shadow-sm"
+                        : isHomeDark
+                          ? "bg-white border-white text-wix-dark hover:bg-transparent hover:text-white"
+                          : "bg-wix-dark border-wix-dark text-white hover:bg-transparent hover:text-wix-dark"
+                    }`}
+                  >
+                    Client Portal
+                  </Link>
+                </motion.div>
+
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={handleLogout}
+                  className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all duration-300 border ${
+                    isHomeDark
+                      ? "border-white/20 text-slate-300 hover:bg-white/10 hover:text-white"
+                      : "border-slate-300 text-slate-700 hover:bg-slate-100 hover:text-navy-950"
+                  } cursor-pointer`}
+                >
+                  Logout
+                </motion.button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                  <Link
+                    href="/auth?mode=signin"
+                    className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all duration-300 ${
+                      isHomeDark ? "text-slate-300 hover:text-white" : "text-wix-dark hover:text-orange-500"
+                    }`}
+                  >
+                    Sign In
+                  </Link>
+                </motion.div>
+
+                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                  <Link
+                    href="/auth?mode=signup"
+                    className={`flex items-center gap-1.5 border px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all duration-300 ${
+                      isHomeDark
+                        ? "bg-white border-white text-wix-dark hover:bg-transparent hover:text-white"
+                        : "bg-orange-500 border-orange-500 text-white hover:bg-orange-600 hover:border-orange-600 shadow-orange-glow"
+                    }`}
+                  >
+                    Sign Up
+                  </Link>
+                </motion.div>
+              </div>
+            )}
 
             {/* Admin Panel Link */}
             {isAdminView && (
@@ -382,16 +457,50 @@ export const Header: React.FC = () => {
                 </Link>
               ))}
               <hr className="border-slate-100" />
-              <Link
-                href="/dashboard"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold transition-all ${
-                  isHomeDark ? "bg-white text-wix-dark hover:bg-slate-200" : "bg-navy-950 text-white hover:bg-slate-800"
-                }`}
-              >
-                <User className="h-4 w-4" />
-                Client Portal
-              </Link>
+              {user ? (
+                <>
+                  <Link
+                    href="/profile"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-center py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest block hover:text-orange-500 transition-colors"
+                  >
+                    Signed in as <span className="text-orange-500">{user.name}</span>
+                  </Link>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold transition-all ${
+                      isHomeDark ? "bg-white text-wix-dark hover:bg-slate-200" : "bg-navy-950 text-white hover:bg-slate-800"
+                    }`}
+                  >
+                    <User className="h-4 w-4" />
+                    Client Portal
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handleLogout();
+                    }}
+                    className={`w-full flex items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-xs font-bold transition-all ${
+                      isHomeDark
+                        ? "border-white/20 text-slate-300 hover:bg-white/10 hover:text-white"
+                        : "border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-navy-950"
+                    } cursor-pointer`}
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/auth"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold transition-all ${
+                    isHomeDark ? "bg-white text-wix-dark hover:bg-slate-200" : "bg-orange-500 text-white hover:bg-orange-600 shadow-orange-glow"
+                  }`}
+                >
+                  Sign In
+                </Link>
+              )}
               {isAdminView && (
                 <Link
                   href="/cah-expert-control"

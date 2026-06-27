@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { ProjectProvider } from "@/context/ProjectContext";
 import { FloatingSocials } from "@/components/FloatingSocials";
+import { AuthGuard } from "@/components/AuthGuard";
 import Script from "next/script";
 import "./globals.css";
 
@@ -31,8 +32,10 @@ export default function RootLayout({
       </head>
       <body>
         <ProjectProvider>
-          {children}
-          <FloatingSocials />
+          <AuthGuard>
+            {children}
+            <FloatingSocials />
+          </AuthGuard>
         </ProjectProvider>
 
         {/* Google Analytics (gtag.js) */}

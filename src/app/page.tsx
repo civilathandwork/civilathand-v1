@@ -153,6 +153,24 @@ const hubCards: CalcHubCard[] = [
 export default function Home() {
   const { addLead, blogs } = useProjects();
   const pathname = usePathname();
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userJson = localStorage.getItem("cah_user");
+      if (userJson) {
+        setUser(JSON.parse(userJson));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      if (user.name) setName(user.name);
+      if (user.email) setEmail(user.email);
+      if (user.phone) setPhone(user.phone);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (pathname === "/services") {
@@ -381,27 +399,49 @@ export default function Home() {
                 >
                    One Platform for Architectural Design, Structural Drawings, BOQ Estimation, BIM Modelling & Quantity Surveying — Delivered Online Across India, AI-Powered Tools with Code-Compliant Accuracy
                 </motion.p>
-                
-                <motion.div 
+                               <motion.div 
                   variants={heroItemVariants}
                   className="flex flex-wrap gap-4 pt-2"
                 >
-                  <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
-                    <a
-                      href="#contact"
-                      className="inline-block rounded-md bg-orange-500 hover:bg-orange-600 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm"
-                    >
-                      Get Consultation
-                    </a>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
-                    <a
-                      href="#services"
-                      className="inline-block rounded-md border border-slate-500 hover:border-white hover:bg-white/10 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest"
-                    >
-                      Explore Services
-                    </a>
-                  </motion.div>
+                  {!user ? (
+                    <>
+                      <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
+                        <Link
+                          href="/auth?mode=signup"
+                          className="inline-block rounded-md bg-orange-500 hover:bg-orange-600 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm shadow-orange-glow"
+                        >
+                          Create Account
+                        </Link>
+                      </motion.div>
+                      <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
+                        <Link
+                          href="/auth?mode=signin"
+                          className="inline-block rounded-md border border-slate-500 hover:border-white hover:bg-white/10 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest"
+                        >
+                          Sign In
+                        </Link>
+                      </motion.div>
+                    </>
+                  ) : (
+                    <>
+                      <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
+                        <a
+                          href="#contact"
+                          className="inline-block rounded-md bg-orange-500 hover:bg-orange-600 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm"
+                        >
+                          Get Consultation
+                        </a>
+                      </motion.div>
+                      <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
+                        <a
+                          href="#services"
+                          className="inline-block rounded-md border border-slate-500 hover:border-white hover:bg-white/10 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest"
+                        >
+                          Explore Services
+                        </a>
+                      </motion.div>
+                    </>
+                  )}
                 </motion.div>
               </div>
 
