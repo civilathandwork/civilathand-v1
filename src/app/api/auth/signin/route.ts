@@ -5,9 +5,9 @@ const dbName = process.env.MONGODB_DB || "civil-at-hand";
 
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    const { email, password, isGoogle, name } = await request.json();
 
-    if (!email || !password) {
+    if (!email || (!password && !isGoogle)) {
       return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
     }
 
@@ -15,11 +15,25 @@ export async function POST(request: Request) {
     const db = client.db(dbName);
     const collection = db.collection("users");
 
-    // Find user by email and password
-    const user = await collection.findOne({ 
-      email: email.toLowerCase(),
-      password: password 
-    });
+    let user;
+    if (isGoogle) {
+      user = await collection.findOne({ email: email.toLowerCase() });
+      if (!user) {
+        user = {
+          id: `user-${Date.now()}`,
+          name: name || "Google User",
+          email: email.toLowerCase(),
+          password: "google-oauth-linked",
+          createdAt: new Date().toISOString()
+        };
+        await collection.insertOne(user);
+      }
+    } else {
+      user = await collection.findOne({ 
+        email: email.toLowerCase(),
+        password: password 
+      });
+    }
 
     if (!user) {
       return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });

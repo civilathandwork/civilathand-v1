@@ -29,6 +29,172 @@ export default function AuthPage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
+  const handleGoogleSignIn = () => {
+    setLoading(true);
+    setErrorMsg(null);
+    setSuccessMsg(null);
+
+    const width = 500;
+    const height = 600;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+
+    const popup = window.open(
+      "",
+      "google_signin_popup",
+      `width=${width},height=${height},left=${left},top=${top},scrollbars=no,resizable=no`
+    );
+
+    if (popup) {
+      popup.document.write(`
+        <html>
+          <head>
+            <title>Sign in - Google Accounts</title>
+            <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+            <style>
+              body {
+                font-family: 'Roboto', sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #ffffff;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                color: #202124;
+              }
+              .card {
+                width: 380px;
+                border: 1px solid #dadce0;
+                border-radius: 8px;
+                padding: 40px;
+                box-sizing: border-box;
+                text-align: center;
+              }
+              .logo {
+                width: 75px;
+                height: 24px;
+                margin-bottom: 16px;
+              }
+              h1 {
+                font-size: 24px;
+                font-weight: 400;
+                margin: 0 0 8px 0;
+              }
+              p {
+                font-size: 16px;
+                color: #5f6368;
+                margin: 0 0 24px 0;
+              }
+              .user-option {
+                display: flex;
+                align-items: center;
+                padding: 12px;
+                border: 1px solid #dadce0;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+                text-align: left;
+                margin-bottom: 16px;
+              }
+              .user-option:hover {
+                background-color: #f8f9fa;
+              }
+              .avatar {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background-color: #4285F4;
+                color: #ffffff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                margin-right: 12px;
+                font-size: 16px;
+              }
+              .user-info {
+                flex-grow: 1;
+              }
+              .user-name {
+                font-size: 14px;
+                font-weight: 500;
+              }
+              .user-email {
+                font-size: 12px;
+                color: #5f6368;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="card">
+              <svg class="logo" viewBox="0 0 74 24" fill="none">
+                <path fill="#EA4335" d="M22.8 12.4c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6 6 2.7 6 6zm-12 0c0 2.2 1.8 4 4 4s4-1.8 4-4-1.8-4-4-4-4 1.8-4 4z"/>
+                <path fill="#FBBC05" d="M35.6 12.4c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6 6 2.7 6 6zm-12 0c0 2.2 1.8 4 4 4s4-1.8 4-4-1.8-4-4-4-4 1.8-4 4z"/>
+                <path fill="#4285F4" d="M48.2 12.4c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6c1.7 0 3.2.7 4.2 1.8l-3 3c-.6-.6-1.4-.9-2.2-.9-1.7 0-3 1.3-3 3s1.3 3 3 3c2 0 2.7-1.4 2.8-2.1H42.2v-4h9c0 .6.1 1.2.1 1.8 0 3.2-2.1 5.4-5.1 5.4z"/>
+                <path fill="#34A853" d="M57.6 12.4c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6 6 2.7 6 6zm-12 0c0 2.2 1.8 4 4 4s4-1.8 4-4-1.8-4-4-4-4 1.8-4 4z"/>
+              </svg>
+              <h1>Choose an account</h1>
+              <p>to continue to Civil At Hand</p>
+              
+              <div class="user-option" onclick="selectUser('Google Test Client', 'google.client@gmail.com')">
+                <div class="avatar">G</div>
+                <div class="user-info">
+                  <div class="user-name">Google Test Client</div>
+                  <div class="user-email">google.client@gmail.com</div>
+                </div>
+              </div>
+            </div>
+
+            <script>
+              function selectUser(name, email) {
+                window.opener.postMessage({ type: 'GOOGLE_AUTH_SUCCESS', name, email }, '*');
+                window.close();
+              }
+            </script>
+          </body>
+        </html>
+      `);
+    }
+
+    const handleMessage = async (event: MessageEvent) => {
+      if (event.data && event.data.type === "GOOGLE_AUTH_SUCCESS") {
+        window.removeEventListener("message", handleMessage);
+        const { name, email } = event.data;
+
+        try {
+          const res = await fetch("/api/auth/signin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name,
+              email,
+              isGoogle: true
+            })
+          });
+
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.error || "Authentication failed.");
+          }
+
+          setSuccessMsg("Signed in with Google successfully!");
+          localStorage.setItem("cah_user", JSON.stringify(data));
+          window.dispatchEvent(new Event("storage"));
+          setTimeout(() => {
+            router.replace("/");
+          }, 1000);
+        } catch (err: any) {
+          setErrorMsg(err.message || "Google authentication failed. Please try standard sign in.");
+          setLoading(false);
+        }
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -252,6 +418,34 @@ export default function AuthPage() {
                   <ArrowRight className="h-4.5 w-4.5 text-white" />
                 </>
               )}
+            </motion.button>
+
+            {/* Divider */}
+            <div className="relative my-5">
+              <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                <div className="w-full border-t border-slate-800"></div>
+              </div>
+              <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-wider">
+                <span className="bg-slate-900 px-3 text-slate-500">Or continue with</span>
+              </div>
+            </div>
+
+            {/* Google Sign In Button */}
+            <motion.button
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              type="button"
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+              className="w-full bg-slate-950 hover:bg-slate-900 border border-slate-800 text-white font-bold py-3.5 px-4 rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-55"
+            >
+              <svg className="h-4.5 w-4.5 shrink-0" viewBox="0 0 24 24">
+                <path
+                  fill="#EA4335"
+                  d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114-3.41 0-6.19-2.78-6.19-6.19s2.78-6.19 6.19-6.19c1.7 0 3.22.69 4.32 1.8l3.1-3.1C19.44 2.22 15.93.9 12.24.9 5.86.9.7 6.06.7 12.44s5.16 11.54 11.54 11.54c6.26 0 11.34-5.08 11.34-11.34 0-.74-.08-1.46-.24-2.16H12.24z"
+                />
+              </svg>
+              <span>Sign in with Google</span>
             </motion.button>
 
           </form>
