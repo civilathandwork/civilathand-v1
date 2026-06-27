@@ -7,7 +7,6 @@ import { Footer } from "@/components/Footer";
 import { Calculators } from "@/components/Calculators";
 import { useProjects } from "@/context/ProjectContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { portfolioItems } from "@/data/portfolio";
 import { 
   Briefcase, 
   Cpu, 
@@ -80,7 +79,7 @@ const testimonials = [
 ];
 
 export default function Home() {
-  const { addLead, blogs } = useProjects();
+  const { addLead, blogs, portfolio } = useProjects();
   
   // Interactive Lifecycle Step State
   const [activeLifecycleStep, setActiveLifecycleStep] = useState(0);
@@ -556,7 +555,7 @@ export default function Home() {
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {portfolioItems.map((proj, idx) => (
+              {portfolio.slice(0, 4).map((proj, idx) => (
                 <motion.div 
                   key={proj.id} 
                   initial={{ opacity: 0, y: 15 }}

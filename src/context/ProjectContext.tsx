@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { PortfolioItem, portfolioItems as fallbackPortfolio } from "@/data/portfolio";
 
 export interface Lead {
   id: string;
@@ -85,6 +86,7 @@ interface ProjectContextType {
   notifications: Notification[];
   chatMessages: ChatMessage[];
   blogs: BlogPost[];
+  portfolio: PortfolioItem[];
   addLead: (lead: Omit<Lead, "id" | "date" | "status">) => Promise<void>;
   addProject: (project: Omit<Project, "id" | "dateStarted" | "progress" | "status">) => Promise<void>;
   updateProjectStatus: (id: string, status: Project["status"]) => Promise<void>;
@@ -97,6 +99,9 @@ interface ProjectContextType {
   addBlog: (blog: Omit<BlogPost, "id" | "date">) => Promise<void>;
   updateBlog: (id: string, blog: Partial<BlogPost>) => Promise<void>;
   deleteBlog: (id: string) => Promise<void>;
+  addPortfolioItem: (item: Omit<PortfolioItem, "id">) => Promise<void>;
+  updatePortfolioItem: (id: string, item: Partial<PortfolioItem>) => Promise<void>;
+  deletePortfolioItem: (id: string) => Promise<void>;
   updateLeadStatus: (id: string, status: Lead["status"]) => Promise<void>;
   deleteLead: (id: string) => Promise<void>;
   isLoaded: boolean; // true once all API fetches have settled (success or fallback)
@@ -325,6 +330,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Load from database API
@@ -393,9 +399,18 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
           .catch((err) => {
             console.error("Failed to fetch chats, using fallback:", err);
             return initialChatMessages;
+          }),
+        fetch("/api/portfolio", { cache: "no-store" })
+          .then((res) => {
+            if (!res.ok) throw new Error("Failed to fetch portfolio");
+            return res.json();
+          })
+          .catch((err) => {
+            console.error("Failed to fetch portfolio, using fallback:", err);
+            return fallbackPortfolio;
           })
       ])
-        .then(([leadsData, blogsData, projectsData, drawingsData, invoicesData, notificationsData, chatsData]) => {
+        .then(([leadsData, blogsData, projectsData, drawingsData, invoicesData, notificationsData, chatsData, portfolioData]) => {
           setLeads(Array.isArray(leadsData) ? leadsData : initialLeads);
           setBlogs(Array.isArray(blogsData) ? blogsData : initialBlogs);
           setProjects(Array.isArray(projectsData) ? projectsData : initialProjects);
@@ -403,6 +418,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
           setInvoices(Array.isArray(invoicesData) ? invoicesData : initialInvoices);
           setNotifications(Array.isArray(notificationsData) ? notificationsData : initialNotifications);
           setChatMessages(Array.isArray(chatsData) ? chatsData : initialChatMessages);
+          setPortfolio(Array.isArray(portfolioData) ? portfolioData : fallbackPortfolio);
         })
         .finally(() => {
           setIsLoaded(true);
@@ -866,6 +882,54 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
+  const addPortfolioItem = async (itemData: Omit<PortfolioItem, "id">) => {
+    try {
+      const res = await fetch("/api/portfolio", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(itemData)
+      });
+      if (!res.ok) throw new Error("Failed to add portfolio item");
+      const newItem = await res.json();
+      setPortfolio((prev) => [newItem, ...prev]);
+      await addNotification(
+        "New Portfolio Masterpiece Added",
+        `Project "${newItem.title}" has been published to portfolio.`,
+        "success",
+        true
+      );
+    } catch (error) {
+      console.error("Error adding portfolio item:", error);
+    }
+  };
+
+  const updatePortfolioItem = async (id: string, itemData: Partial<PortfolioItem>) => {
+    try {
+      const res = await fetch(`/api/portfolio/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(itemData)
+      });
+      if (!res.ok) throw new Error("Failed to update portfolio item");
+      const updatedItem = await res.json();
+      setPortfolio((prev) => prev.map((item) => item.id === id ? updatedItem : item));
+    } catch (error) {
+      console.error("Error updating portfolio item:", error);
+    }
+  };
+
+  const deletePortfolioItem = async (id: string) => {
+    try {
+      const res = await fetch(`/api/portfolio/${id}`, {
+        method: "DELETE"
+      });
+      if (!res.ok) throw new Error("Failed to delete portfolio item");
+      setPortfolio((prev) => prev.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error("Error deleting portfolio item:", error);
+    }
+  };
+
   return (
     <ProjectContext.Provider
       value={{
@@ -876,6 +940,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         notifications,
         chatMessages,
         blogs,
+        portfolio,
         addLead,
         addProject,
         updateProjectStatus,
@@ -888,6 +953,9 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         addBlog,
         updateBlog,
         deleteBlog,
+        addPortfolioItem,
+        updatePortfolioItem,
+        deletePortfolioItem,
         updateLeadStatus,
         deleteLead,
         isLoaded,
