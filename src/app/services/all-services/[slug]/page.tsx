@@ -75,7 +75,6 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ slug: 
     setPhone("");
     setMessage("");
     setFiles([]);
-    setTimeout(() => setSuccess(false), 3000);
   };
 
   const getIconComponent = (iconName: string) => {
@@ -216,102 +215,114 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ slug: 
               
               {/* Consultation request panel */}
               <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-5">
-                <div className="space-y-1">
-                  <span className="text-[10px] text-orange-500 font-extrabold uppercase tracking-widest block">Consultation</span>
-                  <h4 className="font-display font-extrabold text-sm text-slate-900 uppercase tracking-wide leading-tight">
-                    Request expert consult
-                  </h4>
-                  <p className="text-[10px] text-slate-400 leading-relaxed font-medium">
-                    Submit your drawing references or scope specifications for a complimentary structural estimate.
-                  </p>
-                </div>
-
-                <form onSubmit={handleContactSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-[9px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">Full Name</label>
-                    <input
-                      type="text"
-                      required
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="e.g. Anand Sen"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder-slate-300"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[9px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">Email Address</label>
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="e.g. anand@senbuilders.com"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder-slate-300"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[9px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">Phone Number</label>
-                    <input
-                      type="tel"
-                      required
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="e.g. +91 98765 43210"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder-slate-300"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[9px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">Project Details / Scope</label>
-                    <textarea
-                      required
-                      rows={3}
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      placeholder="Specify built area, height layout constraints, soil parameter scopes, etc."
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs font-bold focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder-slate-300 resize-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[9px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">
-                      Upload Engineering Drawings / Plans (Optional, Multiple)
-                    </label>
-                    <input
-                      type="file"
-                      multiple
-                      accept=".pdf,.dwg,.dxf,.png,.jpg"
-                      onChange={(e) => {
-                        if (e.target.files) {
-                          setFiles(Array.from(e.target.files));
-                        } else {
-                          setFiles([]);
-                        }
-                      }}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:border-orange-500 text-slate-800"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg py-3 text-xs font-bold transition-all uppercase tracking-widest flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
+                {success ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex flex-col items-center justify-center p-8 bg-emerald-50 border border-emerald-100 rounded-2xl text-center space-y-4 py-12"
                   >
-                    <PhoneCall className="h-4 w-4" />
-                    Submit Request
-                  </button>
+                    <div className="h-14 w-14 rounded-full bg-emerald-100 flex items-center justify-center">
+                      <CheckCircle2 className="h-8 w-8 text-emerald-600 animate-pulse" />
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="font-display font-extrabold text-base text-emerald-950 uppercase tracking-wider">
+                        Requested
+                      </h4>
+                      <p className="text-[11px] text-emerald-700 leading-normal font-semibold max-w-[200px] mx-auto">
+                        Your service request has been logged successfully!
+                      </p>
+                    </div>
+                    <span className="inline-block px-3 py-1 bg-emerald-650 text-white rounded-full text-[10px] font-bold uppercase tracking-wider">
+                      Status: Under Review
+                    </span>
+                  </motion.div>
+                ) : (
+                  <>
+                    <div className="space-y-1">
+                      <span className="text-[10px] text-orange-500 font-extrabold uppercase tracking-widest block">Consultation</span>
+                      <h4 className="font-display font-extrabold text-sm text-slate-900 uppercase tracking-wide leading-tight">
+                        Request expert consult
+                      </h4>
+                      <p className="text-[10px] text-slate-400 leading-relaxed font-medium">
+                        Submit your drawing references or scope specifications for a complimentary structural estimate.
+                      </p>
+                    </div>
 
-                  <AnimatePresence>
-                    {success && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0 }}
-                        className="bg-emerald-50 border border-emerald-100 text-emerald-800 text-[10px] font-bold rounded-lg p-3 text-center"
+                    <form onSubmit={handleContactSubmit} className="space-y-4">
+                      <div>
+                        <label className="block text-[9px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">Full Name</label>
+                        <input
+                          type="text"
+                          required
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="e.g. Anand Sen"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder-slate-300"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[9px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">Email Address</label>
+                        <input
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="e.g. anand@senbuilders.com"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder-slate-300"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[9px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">Phone Number</label>
+                        <input
+                          type="tel"
+                          required
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          placeholder="e.g. +91 98765 43210"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder-slate-300"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[9px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">Project Details / Scope</label>
+                        <textarea
+                          required
+                          rows={3}
+                          value={message}
+                          onChange={(e) => setMessage(e.target.value)}
+                          placeholder="Specify built area, height layout constraints, soil parameter scopes, etc."
+                          className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs font-bold focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder-slate-300 resize-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[9px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">
+                          Upload Engineering Drawings / Plans (Optional, Multiple)
+                        </label>
+                        <input
+                          type="file"
+                          multiple
+                          accept=".pdf,.dwg,.dxf,.png,.jpg"
+                          onChange={(e) => {
+                            if (e.target.files) {
+                              setFiles(Array.from(e.target.files));
+                            } else {
+                              setFiles([]);
+                            }
+                          }}
+                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:border-orange-500 text-slate-800"
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg py-3 text-xs font-bold transition-all uppercase tracking-widest flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
                       >
-                        Request submitted successfully! Our structural team will contact you shortly.
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </form>
+                        <PhoneCall className="h-4 w-4" />
+                        Submit Request
+                      </button>
+                    </form>
+                  </>
+                )}
               </div>
 
             </aside>
