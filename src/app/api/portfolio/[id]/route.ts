@@ -1,0 +1,64 @@
+import { NextResponse } from "next/server";
+import clientPromise from "@/lib/mongodb";
+
+export const dynamic = "force-dynamic";
+
+const dbName = process.env.MONGODB_DB || "civil-at-hand";
+
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const body = await request.json();
+
+    const client = await clientPromise;
+    const db = client.db(dbName);
+    const collection = db.collection("portfolio");
+
+    const item = await collection.findOne({ id });
+    if (!item) {
+      return NextResponse.json({ error: "Portfolio item not found" }, { status: 404 });
+    }
+
+    const updatedData = {
+      ...body,
+      id: item.id, // Keep the original id
+    };
+
+    delete (updatedData as any)._id;
+
+    await collection.updateOne({ id }, { $set: updatedData });
+
+    const { _id, ...originalItemWithoutId } = item;
+    return NextResponse.json({ ...originalItemWithoutId, ...updatedData });
+  } catch (error) {
+    console.error("Error updating portfolio item:", error);
+    return NextResponse.json({ error: "Failed to update portfolio item" }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+
+    const client = await clientPromise;
+    const db = client.db(dbName);
+    const collection = db.collection("portfolio");
+
+    const deleteResult = await collection.deleteOne({ id });
+
+    if (deleteResult.deletedCount === 0) {
+      return NextResponse.json({ success: true, message: "Portfolio item was already deleted or not found" });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting portfolio item:", error);
+    return NextResponse.json({ error: "Failed to delete portfolio item" }, { status: 500 });
+  }
+}

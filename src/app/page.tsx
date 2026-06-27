@@ -151,7 +151,7 @@ const hubCards: CalcHubCard[] = [
 ];
 
 export default function Home() {
-  const { addLead, blogs } = useProjects();
+  const { addLead, blogs, portfolio } = useProjects();
   const pathname = usePathname();
   const [user, setUser] = useState<any>(null);
 
@@ -769,7 +769,7 @@ export default function Home() {
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {portfolioItems.map((proj, idx) => (
+              {portfolio.slice(0, 4).map((proj, idx) => (
                 <motion.div 
                   key={proj.id} 
                   initial={{ opacity: 0, y: 15 }}

@@ -4,7 +4,7 @@ import React, { use } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { portfolioItems } from "@/data/portfolio";
+import { useProjects } from "@/context/ProjectContext";
 import { motion } from "framer-motion";
 import { 
   ArrowLeft, 
@@ -21,7 +21,23 @@ import {
 
 export default function PortfolioDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const project = portfolioItems.find((p) => p.id === id);
+  const { portfolio, isLoaded } = useProjects();
+  const project = portfolio.find((p) => p.id === id);
+
+  if (!isLoaded) {
+    return (
+      <div className="flex flex-col min-h-screen bg-wix-cream">
+        <Header />
+        <main className="flex-grow py-12 relative z-10 flex items-center justify-center">
+          <div className="text-center space-y-3">
+            <div className="h-8 w-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">Loading project case study...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!project) {
     return (

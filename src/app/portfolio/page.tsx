@@ -4,18 +4,20 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { portfolioItems, PortfolioItem } from "@/data/portfolio";
+import { useProjects } from "@/context/ProjectContext";
+import { PortfolioItem } from "@/data/portfolio";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, MapPin, Briefcase, ChevronRight, HardHat } from "lucide-react";
 
 export default function PortfolioPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const { portfolio, isLoaded } = useProjects();
 
   const categories = ["All", "Industrial", "Commercial", "Residential", "PEB Steel"];
 
   // Filter logic
-  const filteredProjects = portfolioItems.filter((project) => {
+  const filteredProjects = portfolio.filter((project) => {
     const matchesCategory = selectedCategory === "All" || project.category === selectedCategory;
     const matchesSearch = 
       project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -92,12 +94,26 @@ export default function PortfolioPage() {
 
           {/* Grid Listing */}
           <AnimatePresence mode="popLayout">
-            {filteredProjects.length === 0 ? (
+            {!isLoaded ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                {[1, 2, 3, 4].map((n) => (
+                  <div key={n} className="border border-slate-200 rounded-xl overflow-hidden shadow-sm bg-white animate-pulse h-56 flex flex-col md:flex-row">
+                    <div className="md:w-1/2 bg-slate-200 h-full"></div>
+                    <div className="p-6 md:w-1/2 space-y-4 flex flex-col justify-center">
+                      <div className="h-3.5 bg-slate-200 w-1/4 rounded"></div>
+                      <div className="h-5 bg-slate-200 w-3/4 rounded"></div>
+                      <div className="h-3 bg-slate-200 w-full rounded"></div>
+                      <div className="h-3 bg-slate-200 w-5/6 rounded"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : filteredProjects.length === 0 ? (
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="text-center py-20 bg-white border border-slate-200 rounded-2xl shadow-premium"
+                className="text-center py-20 bg-white border border-slate-200 rounded-2xl shadow-premium w-full"
               >
                 <HardHat className="h-12 w-12 mx-auto text-slate-400 mb-4 animate-pulse" />
                 <h3 className="font-display font-bold text-lg text-slate-900">No Projects Found</h3>
@@ -106,7 +122,7 @@ export default function PortfolioPage() {
                 </p>
               </motion.div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
                 {filteredProjects.map((project, idx) => (
                   <motion.div 
                     key={project.id}
