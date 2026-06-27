@@ -70,7 +70,7 @@ export interface BlogPost {
   title: string;
   content: string;
   summary: string;
-  category: "Structural" | "Architecture" | "Estimation" | "BIM" | "General";
+  category: "Structure" | "Educational" | "Transportation" | "General tech" | "Architecture" | "Case studies" | "Civil engineering";
   date: string;
   author: string;
   image: string;
@@ -275,7 +275,7 @@ Higher N-values correspond to denser sandy soils or stiffer cohesive clays, indi
 ### Engineering Best Practices
 - **Never skip soil testing:** Designing foundations on assumed parameters often results in uneven settlement, wall cracking, or structural failure.
 - **Factor of Safety (FoS):** In residential and commercial structural designs, a minimum FoS of 2.5 to 3.0 should be applied to calculate Safe Bearing Capacity (SBC).`,
-    category: "Structural",
+    category: "Structure",
     date: "2026-06-05",
     author: "Er. Amit Wagh",
     image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80",
@@ -314,7 +314,7 @@ To achieve a premium glassmorphic facade, engineers must account for environment
 3. **Rebar Estimation:** Rebar schedules are extracted directly from schedule tables, multiplying lengths by unit weights to generate steel summaries in seconds.
 
 At Civil At Hand, our automated AI engine reduces manual takeoff prep time by over 80%, giving engineers more time to focus on value engineering.`,
-    category: "Estimation",
+    category: "Civil engineering",
     date: "2026-06-01",
     author: "Er. Nitin Shinde",
     image: "https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?auto=format&fit=crop&w=800&q=80",

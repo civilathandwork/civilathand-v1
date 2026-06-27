@@ -26,6 +26,8 @@ const initialNotifications = [
   }
 ];
 
+let isSeededCached = false;
+
 export async function GET() {
   try {
     const client = await clientPromise;
@@ -37,16 +39,20 @@ export async function GET() {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
 
-    // Atomic upsert — prevents race condition on simultaneous first requests
-    const seedResult = await settingsCollection.findOneAndUpdate(
-      { key: "notifications_seeded" },
-      { $setOnInsert: { key: "notifications_seeded", value: true } },
-      { upsert: true, returnDocument: "before" }
-    );
+    if (!isSeededCached) {
+      // Atomic upsert — prevents race condition on simultaneous first requests
+      const seedResult = await settingsCollection.findOneAndUpdate(
+        { key: "notifications_seeded" },
+        { $setOnInsert: { key: "notifications_seeded", value: true } },
+        { upsert: true, returnDocument: "before" }
+      );
 
-    if (!seedResult) {
-      await collection.insertMany(initialNotifications);
-      return NextResponse.json(initialNotifications, { headers });
+      if (!seedResult) {
+        await collection.insertMany(initialNotifications);
+        isSeededCached = true;
+        return NextResponse.json(initialNotifications, { headers });
+      }
+      isSeededCached = true;
     }
 
     const notifications = await collection.find({}).toArray();

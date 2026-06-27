@@ -114,7 +114,7 @@ export const AdminView: React.FC = () => {
   const [blogTitle, setBlogTitle] = useState("");
   const [blogSummary, setBlogSummary] = useState("");
   const [blogContent, setBlogContent] = useState("");
-  const [blogCategory, setBlogCategory] = useState<BlogPost["category"]>("General");
+  const [blogCategory, setBlogCategory] = useState<BlogPost["category"]>("Structure");
   const [blogAuthor, setBlogAuthor] = useState("CivAtHand Admin");
   const [blogImage, setBlogImage] = useState("");
   const [blogStatus, setBlogStatus] = useState<BlogPost["status"]>("published");
@@ -357,7 +357,7 @@ export const AdminView: React.FC = () => {
     setBlogTitle("");
     setBlogSummary("");
     setBlogContent("");
-    setBlogCategory("General");
+    setBlogCategory("Structure");
     setBlogAuthor("CivAtHand Admin");
     setBlogImage("");
     setBlogStatus("published");
@@ -368,7 +368,7 @@ export const AdminView: React.FC = () => {
     setBlogTitle("");
     setBlogSummary("");
     setBlogContent("");
-    setBlogCategory("General");
+    setBlogCategory("Structure");
     setBlogAuthor("CivAtHand Admin");
     setBlogImage("");
     setBlogStatus("published");
@@ -399,7 +399,7 @@ export const AdminView: React.FC = () => {
     setBlogTitle("");
     setBlogSummary("");
     setBlogContent("");
-    setBlogCategory("General");
+    setBlogCategory("Structure");
     setBlogAuthor("CivAtHand Admin");
     setBlogImage("");
     setBlogStatus("published");
@@ -966,11 +966,13 @@ export const AdminView: React.FC = () => {
                                   onChange={(e) => setBlogCategory(e.target.value as any)}
                                   className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:bg-white text-slate-800 font-semibold shadow-sm transition-all"
                                 >
-                                  <option value="Structural">Structural</option>
+                                  <option value="Structure">Structure</option>
+                                  <option value="Educational">Educational</option>
+                                  <option value="Transportation">Transportation</option>
+                                  <option value="General tech">General Tech</option>
                                   <option value="Architecture">Architecture</option>
-                                  <option value="Estimation">Estimation</option>
-                                  <option value="BIM">BIM Services</option>
-                                  <option value="General">General Tech</option>
+                                  <option value="Case studies">Case Studies</option>
+                                  <option value="Civil engineering">Civil Engineering</option>
                                 </select>
                               </div>
                               <div>

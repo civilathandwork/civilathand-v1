@@ -12,7 +12,7 @@ const initialBlogs = [
     title: "Understanding Soil Bearing Capacity in Foundation Design",
     summary: "A deep dive into soil investigation reports, standard penetration tests (SPT), and how structural engineers calculate safe bearing capacity.",
     content: "Structural stability begins at the foundation. Before laying a single cubic meter of concrete, civil engineers must understand the mechanical behaviors of the sub-soil.\n\n### What is Soil Bearing Capacity?\nBearing capacity is the capacity of soil to support the loads applied to the ground. The maximum pressure that the soil can support safely without undergoing shear failure or excessive settlement is called the Ultimate Bearing Capacity.\n\n### The Role of SPT (Standard Penetration Test)\nThe SPT value (N-value) is a critical parameter. During exploration:\n1. A split-spoon sampler is driven into the soil.\n2. The number of blows required to drive the sampler through three successive 150mm intervals is recorded.\n3. The sum of blow counts for the last two intervals is the N-value.\n\nHigher N-values correspond to denser sandy soils or stiffer cohesive clays, indicating superior bearing strength.\n\n### Engineering Best Practices\n- **Never skip soil testing:** Designing foundations on assumed parameters often results in uneven settlement, wall cracking, or structural failure.\n- **Factor of Safety (FoS):** In residential and commercial structural designs, a minimum FoS of 2.5 to 3.0 should be applied to calculate Safe Bearing Capacity (SBC).",
-    category: "Structural",
+    category: "Structure",
     date: "2026-06-05",
     author: "Er. Amit Wagh",
     image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80",
@@ -36,7 +36,7 @@ const initialBlogs = [
     title: "AI Takeoffs: The Future of Quantity Surveying & BOQ",
     "summary": "How deep learning visual engines are automating coordinate mapping and volume estimation directly from structural DWG and PDF files.",
     content: "Traditional quantity takeoffs require structural estimators to manually scale blueprints, measure linear feet, and manually count reinforcement bars. This process is time-consuming and prone to human error. AI-assisted takeoffs are transforming the engineering industry.\n\n### How AI BOQ Takeoffs Work\n1. **Object Detection:** Machine learning algorithms identify standard symbols (rebar shapes, columns, footing dimensions, wall lengths) on 2D drawings.\n2. **Dynamic Scaling:** By recognizing scale legends (e.g. 1:100), the engine calculates concrete volumes and brickwork counts automatically.\n3. **Rebar Estimation:** Rebar schedules are extracted directly from schedule tables, multiplying lengths by unit weights to generate steel summaries in seconds.\n\nAt Civil At Hand, our automated AI engine reduces manual takeoff prep time by over 80%, giving engineers more time to focus on value engineering.",
-    category: "Estimation",
+    category: "Civil engineering",
     date: "2026-06-01",
     author: "Er. Nitin Shinde",
     image: "https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?auto=format&fit=crop&w=800&q=80",
@@ -44,6 +44,8 @@ const initialBlogs = [
     slug: "ai-takeoffs-the-future-of-quantity-surveying-boq"
   }
 ];
+
+let isSeededCached = false;
 
 export async function GET() {
   try {
@@ -56,19 +58,23 @@ export async function GET() {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
 
-    // Atomic upsert — only inserts the seed flag if it doesn't already exist.
-    // This prevents a race condition where two simultaneous requests could both
-    // pass the findOne check and seed duplicate data.
-    const seedResult = await settingsCollection.findOneAndUpdate(
-      { key: "seeded" },
-      { $setOnInsert: { key: "seeded", value: true } },
-      { upsert: true, returnDocument: "before" }
-    );
+    if (!isSeededCached) {
+      // Atomic upsert — only inserts the seed flag if it doesn't already exist.
+      // This prevents a race condition where two simultaneous requests could both
+      // pass the findOne check and seed duplicate data.
+      const seedResult = await settingsCollection.findOneAndUpdate(
+        { key: "seeded" },
+        { $setOnInsert: { key: "seeded", value: true } },
+        { upsert: true, returnDocument: "before" }
+      );
 
-    if (!seedResult) {
-      // seedResult is null → the document didn't exist before → we just created it → seed now
-      await collection.insertMany(initialBlogs);
-      return NextResponse.json(initialBlogs, { headers });
+      if (!seedResult) {
+        // seedResult is null → the document didn't exist before → we just created it → seed now
+        await collection.insertMany(initialBlogs);
+        isSeededCached = true;
+        return NextResponse.json(initialBlogs, { headers });
+      }
+      isSeededCached = true;
     }
 
     // Fetch all blogs
@@ -99,7 +105,7 @@ export async function POST(request: Request) {
       title,
       content,
       summary: summary || "",
-      category: category || "General",
+      category: category || "General tech",
       date: new Date().toISOString().split("T")[0],
       author: author || "Admin",
       image: image || "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80",

@@ -18,7 +18,7 @@ export default function BlogListingPage() {
   const publishedBlogs = blogs.filter((post) => post.status === "published");
 
   // Filter categories
-  const categories = ["All", "Structural", "Architecture", "Estimation", "BIM", "General"];
+  const categories = ["All", "Structure", "Educational", "Transportation", "General tech", "Architecture", "Case studies", "Civil engineering"];
 
   // Filter and Search logic
   const filteredBlogs = publishedBlogs.filter((post) => {

@@ -32,6 +32,8 @@ const initialDrawings = [
   }
 ];
 
+let isSeededCached = false;
+
 export async function GET() {
   try {
     const client = await clientPromise;
@@ -43,16 +45,20 @@ export async function GET() {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
 
-    // Atomic upsert — prevents race condition on simultaneous first requests
-    const seedResult = await settingsCollection.findOneAndUpdate(
-      { key: "drawings_seeded" },
-      { $setOnInsert: { key: "drawings_seeded", value: true } },
-      { upsert: true, returnDocument: "before" }
-    );
+    if (!isSeededCached) {
+      // Atomic upsert — prevents race condition on simultaneous first requests
+      const seedResult = await settingsCollection.findOneAndUpdate(
+        { key: "drawings_seeded" },
+        { $setOnInsert: { key: "drawings_seeded", value: true } },
+        { upsert: true, returnDocument: "before" }
+      );
 
-    if (!seedResult) {
-      await collection.insertMany(initialDrawings);
-      return NextResponse.json(initialDrawings, { headers });
+      if (!seedResult) {
+        await collection.insertMany(initialDrawings);
+        isSeededCached = true;
+        return NextResponse.json(initialDrawings, { headers });
+      }
+      isSeededCached = true;
     }
 
     const drawings = await collection.find({}).toArray();
