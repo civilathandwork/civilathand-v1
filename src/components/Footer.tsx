@@ -232,7 +232,7 @@ export const Footer: React.FC = () => {
             {/* Brand Info */}
             <div>
               <div className="flex items-center gap-2 mb-5">
-                <div className="flex h-14 w-14 items-center justify-center rounded-md bg-white overflow-hidden shadow-sm border border-slate-700">
+                <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white overflow-hidden shadow-sm border border-slate-700">
                   <img src="/logo.jpg" alt="Civil At Hand Logo" className="h-full w-full object-cover" />
                 </div>
                 <span className="font-display text-lg font-extrabold tracking-tight text-white">
@@ -254,6 +254,7 @@ export const Footer: React.FC = () => {
                 <li>
                   <Link href="/services" className="hover:text-orange-500 transition-colors">Our Services</Link>
                 </li>
+
                 <li>
                   <Link href="/calculator" className="hover:text-orange-500 transition-colors">Design Calculators</Link>
                 </li>
@@ -263,24 +264,42 @@ export const Footer: React.FC = () => {
                 <li>
                   <Link href="/blog" className="hover:text-orange-500 transition-colors font-bold text-orange-500">Engineering Blog</Link>
                 </li>
+                 <li>
+                  <Link href="/about" className="hover:text-orange-500 transition-colors">About Us</Link>
+                </li>
+                 <li>
+                  <Link href="/contact" className="hover:text-orange-500 transition-colors">Contact US</Link>
+                </li>
               </ul>
             </div>
 
-            {/* Helpful Pages */}
+            {/* Contacts */}
             <div>
-              <h3 className="font-display font-bold text-xs text-white uppercase tracking-widest mb-5">Helpful Pages</h3>
-              <ul className="space-y-3 text-xs text-slate-400 font-medium">
-                <li>
-                  <Link href="/about" className="hover:text-orange-500 transition-colors">About Us</Link>
+              <h3 className="font-display font-bold text-xs text-white uppercase tracking-widest mb-5">Corporate Office</h3>
+              <ul className="space-y-4 text-xs text-slate-400">
+                <li className="flex items-start gap-2.5">
+                  <MapPin className="h-4 w-4 text-orange-500 flex-shrink-0 mt-0.5" />
+                  <span>
+                    Civil At Hand : Design and consultancy,<br />
+                    Haryana, India
+                  </span>
                 </li>
-                <li>
-                  <Link href="/contact" className="hover:text-orange-500 transition-colors">Contact US</Link>
+                <li className="flex items-center gap-2.5">
+                  <Phone className="h-4 w-4 text-orange-500 flex-shrink-0" />
+                  <a href="tel:+917703977002" className="hover:text-orange-500 transition-colors">+91 770-39-770-02</a>
                 </li>
-                <li>
-                  <Link href="/faq" className="hover:text-orange-500 transition-colors">FAQ</Link>
+                <li className="flex items-center gap-2.5">
+                  <Mail className="h-4 w-4 text-orange-500 flex-shrink-0" />
+                  <a href="mailto:info.civilathand@zohomail.in" className="hover:text-orange-500 transition-colors">info.civilathand@zohomail.in</a>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <Mail className="h-4 w-4 text-orange-500 flex-shrink-0" />
+                  <a href="mailto:support.civilathand@gmail.com" className="hover:text-orange-500 transition-colors">support.civilathand@gmail.com</a>
                 </li>
               </ul>
             </div>
+
+
           </div>
 
           <hr className="border-slate-800 mb-8" />
