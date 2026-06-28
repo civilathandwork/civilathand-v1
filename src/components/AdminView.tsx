@@ -146,6 +146,40 @@ export const AdminView: React.FC = () => {
   const [isPortModalOpen, setIsPortModalOpen] = useState(false);
   const [portSearchTerm, setPortSearchTerm] = useState("");
 
+  const [uploadingField, setUploadingField] = useState<string | null>(null);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: "main" | number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const fieldKey = target === "main" ? "main" : `gallery-${target}`;
+    setUploadingField(fieldKey);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Upload failed");
+      const data = await res.json();
+      
+      if (target === "main") {
+        setPortImg(data.url);
+      } else {
+        updateGalleryField(target, data.url);
+      }
+    } catch (err) {
+      console.error("Error uploading file:", err);
+      alert("Failed to upload file. Please try again.");
+    } finally {
+      setUploadingField(null);
+    }
+  };
+
   const addSpecField = () => setPortSpecs([...portSpecs, ""]);
   const updateSpecField = (index: number, val: string) => {
     const updated = [...portSpecs];
@@ -1983,14 +2017,25 @@ export const AdminView: React.FC = () => {
                             </div>
 
                             <div>
-                              <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1.5">Main Image URL</label>
-                              <input
-                                type="url"
-                                value={portImg}
-                                onChange={(e) => setPortImg(e.target.value)}
-                                placeholder="https://images.unsplash.com/photo-..."
-                                className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:bg-white text-slate-800 font-semibold shadow-sm transition-all"
-                              />
+                              <label className="block text-[10px] font-bold text-navy-950 uppercase tracking-wider mb-1.5">Main Image or PDF File (URL / Local Upload)</label>
+                              <div className="flex gap-2">
+                                <input
+                                  type="text"
+                                  value={portImg}
+                                  onChange={(e) => setPortImg(e.target.value)}
+                                  placeholder="Paste image/PDF URL or upload from local gallery..."
+                                  className="flex-grow bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:bg-white text-slate-800 font-semibold shadow-sm transition-all"
+                                />
+                                <label className="bg-slate-900 hover:bg-orange-500 text-white font-bold px-4 py-2.5 rounded-lg text-xs uppercase tracking-wider transition-all flex items-center justify-center cursor-pointer shadow-sm shrink-0">
+                                  {uploadingField === "main" ? "Uploading..." : "Upload File"}
+                                  <input
+                                    type="file"
+                                    accept="image/*,application/pdf"
+                                    onChange={(e) => handleFileUpload(e, "main")}
+                                    className="hidden"
+                                  />
+                                </label>
+                              </div>
                             </div>
 
                             <div>
@@ -2148,16 +2193,25 @@ export const AdminView: React.FC = () => {
                                 {portGallery.map((gal, index) => (
                                   <div key={index} className="flex gap-2 items-center">
                                     <input
-                                      type="url"
+                                      type="text"
                                       value={gal}
                                       onChange={(e) => updateGalleryField(index, e.target.value)}
-                                      placeholder="https://images.unsplash.com/photo-..."
+                                      placeholder="Paste URL or upload local file..."
                                       className="flex-grow bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:border-blue-600 text-slate-800 font-semibold shadow-sm"
                                     />
+                                    <label className="bg-slate-900 hover:bg-orange-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider transition-all flex items-center justify-center cursor-pointer shadow-sm shrink-0">
+                                      {uploadingField === `gallery-${index}` ? "..." : "Upload"}
+                                      <input
+                                        type="file"
+                                        accept="image/*,application/pdf"
+                                        onChange={(e) => handleFileUpload(e, index)}
+                                        className="hidden"
+                                      />
+                                    </label>
                                     <button
                                       type="button"
                                       onClick={() => removeGalleryField(index)}
-                                      className="text-red-500 hover:text-red-700 font-bold p-1 cursor-pointer"
+                                      className="text-red-500 hover:text-red-700 font-bold p-1 cursor-pointer shrink-0"
                                     >
                                       <Trash2 className="h-4 w-4" />
                                     </button>

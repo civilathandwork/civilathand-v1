@@ -73,7 +73,7 @@ const LinktreeIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
-  const isHome = pathname === "/" || pathname === "/services" || pathname === "/calculator";
+  const isHome = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState<any>(null);
 

@@ -1,11 +1,11 @@
 "use client";
 
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useProjects } from "@/context/ProjectContext";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowLeft, 
   MapPin, 
@@ -16,13 +16,17 @@ import {
   FileDown, 
   PhoneCall,
   HardHat,
-  ChevronRight
+  ChevronRight,
+  X
 } from "lucide-react";
+
+const isPdf = (url: string) => url?.toLowerCase().endsWith(".pdf") || (url?.includes("/uploads/") && url?.toLowerCase().includes(".pdf"));
 
 export default function PortfolioDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { portfolio, isLoaded } = useProjects();
   const project = portfolio.find((p) => p.id === id);
+  const [lightboxUrl, setLightboxUrl] = useState<string | null>(null);
 
   if (!isLoaded) {
     return (
@@ -105,11 +109,20 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ id: 
 
               {/* Main Visual Image Banner */}
               <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-sm relative">
-                <img 
-                  src={project.img} 
-                  alt={project.title} 
-                  className="w-full h-full object-cover"
-                />
+                {isPdf(project.img) ? (
+                  <iframe 
+                    src={project.img} 
+                    className="w-full h-full border-0" 
+                    title={project.title}
+                  />
+                ) : (
+                  <img 
+                    src={project.img} 
+                    alt={project.title} 
+                    className="w-full h-full object-cover cursor-zoom-in hover:opacity-95 transition-opacity"
+                    onClick={() => setLightboxUrl(project.img)}
+                  />
+                )}
               </div>
 
               {/* Project Description Narrative */}
@@ -154,11 +167,20 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ id: 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {project.gallery.map((imgUrl, gIdx) => (
                       <div key={gIdx} className="h-56 rounded-xl overflow-hidden border border-slate-200 relative group">
-                        <img 
-                          src={imgUrl} 
-                          alt={`${project.title} details ${gIdx + 1}`} 
-                          className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500 ease-out"
-                        />
+                        {isPdf(imgUrl) ? (
+                          <iframe 
+                            src={imgUrl} 
+                            className="w-full h-full border-0" 
+                            title={`${project.title} PDF ${gIdx + 1}`}
+                          />
+                        ) : (
+                          <img 
+                            src={imgUrl} 
+                            alt={`${project.title} details ${gIdx + 1}`} 
+                            className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500 ease-out cursor-zoom-in"
+                            onClick={() => setLightboxUrl(imgUrl)}
+                          />
+                        )}
                       </div>
                     ))}
                   </div>
@@ -273,6 +295,39 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ id: 
 
         </div>
       </main>
+
+      {/* Lightbox Overlay */}
+      <AnimatePresence>
+        {lightboxUrl && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setLightboxUrl(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 backdrop-blur-sm cursor-zoom-out"
+          >
+            <button
+              onClick={() => setLightboxUrl(null)}
+              className="absolute top-6 right-6 text-white hover:text-orange-500 transition-colors p-2 bg-white/10 hover:bg-white/20 rounded-full cursor-pointer"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            <motion.div
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.95 }}
+              className="relative max-w-7xl max-h-[85vh] overflow-hidden flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={lightboxUrl}
+                alt="Full preview"
+                className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl border border-white/10"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Footer />
     </div>
