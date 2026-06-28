@@ -20,16 +20,6 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/services/all-services",
-        destination: "/services",
-        permanent: true,
-      },
-      {
-        source: "/services/all-services/:slug*",
-        destination: "/services",
-        permanent: true,
-      },
-      {
         source: "/calculator/construction-cost-estimator",
         destination: "/calculator/all-calculators/construction-cost-estimator",
         permanent: true,

@@ -606,7 +606,7 @@ export default function EducationPage() {
                 <div className="p-10 md:p-14 flex flex-col justify-center gap-6">
                   <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Also from Civil At Hand</p>
                   <Link
-                    href="/services"
+                    href="/services/all-services"
                     className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-md p-5 hover:border-orange-500/30 transition-all group"
                   >
                     <div className="w-10 h-10 bg-orange-500/10 rounded-md flex items-center justify-center group-hover:bg-orange-500 transition-all flex-shrink-0">

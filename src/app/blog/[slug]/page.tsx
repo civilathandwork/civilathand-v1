@@ -6,8 +6,8 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useProjects, BlogPost } from "@/context/ProjectContext";
 import { generateSlug } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, User, BookOpen, Clock, ChevronRight, Share2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, Calendar, User, BookOpen, Clock, ChevronRight, Share2, X } from "lucide-react";
 
 export default function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -17,6 +17,7 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
 
   const [shareUrl, setShareUrl] = React.useState("");
   const [copied, setCopied] = React.useState(false);
+  const [popupImageSrc, setPopupImageSrc] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
@@ -24,11 +25,50 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
     }
   }, []);
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setPopupImageSrc(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  React.useEffect(() => {
+    const style = document.createElement("style");
+    style.innerHTML = `
+      .prose-wix img {
+        cursor: zoom-in;
+        transition: transform 0.2s ease;
+      }
+      .prose-wix img:hover {
+        transform: scale(1.01);
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      try {
+        document.head.removeChild(style);
+      } catch (err) {
+        // Safe check in case it's already removed
+      }
+    };
+  }, []);
+
   const handleCopyLink = () => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
       navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleArticleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    if (target.tagName === "IMG") {
+      const src = (target as HTMLImageElement).src;
+      setPopupImageSrc(src);
     }
   };
 
@@ -242,16 +282,19 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
               </div>
 
               {/* Main Banner Image */}
-              <div className="aspect-video w-full rounded-xl overflow-hidden bg-slate-100 border border-slate-200/60 relative">
+              <div 
+                className="aspect-video w-full rounded-xl overflow-hidden bg-slate-100 border border-slate-200/60 relative cursor-zoom-in group hover:shadow-md transition-shadow duration-300"
+                onClick={() => setPopupImageSrc(post.image)}
+              >
                 <img 
                   src={post.image} 
                   alt={post.title} 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover group-hover:scale-[1.01] transition-transform duration-500"
                 />
               </div>
 
               {/* Post Content Body */}
-              <div className="prose prose-wix max-w-none text-justify text-base">
+              <div className="prose prose-wix max-w-none text-justify text-base" onClick={handleArticleClick}>
                 {post.content.includes("<p>") || 
                  post.content.includes("<h3>") || 
                  post.content.includes("<ul>") || 
@@ -408,6 +451,41 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
       </main>
 
       <Footer />
+
+      {/* Image Zoom Popup Modal */}
+      <AnimatePresence>
+        {popupImageSrc && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setPopupImageSrc(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 backdrop-blur-sm cursor-zoom-out"
+          >
+            <button
+              onClick={() => setPopupImageSrc(null)}
+              className="absolute top-6 right-6 text-white hover:text-orange-500 transition-colors p-2 rounded-full bg-white/5 hover:bg-white/10 cursor-pointer"
+              aria-label="Close image popup"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            <motion.div
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="relative max-w-5xl max-h-[85vh] overflow-hidden rounded-xl border border-white/10 shadow-premium-lg"
+              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the image itself
+            >
+              <img
+                src={popupImageSrc}
+                alt="Enlarged blog visual"
+                className="w-full h-full object-contain max-h-[85vh] select-none"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

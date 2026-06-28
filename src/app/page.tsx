@@ -254,7 +254,7 @@ export default function Home() {
       title: s.title,
       desc: s.desc,
       icon: IconComponent,
-      href: "#contact"
+      href: `/services/all-services/${s.id}`
     };
   });
 
@@ -527,8 +527,8 @@ export default function Home() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {services.map((service, idx) => {
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {services.slice(0, 2).map((service, idx) => {
                 const Icon = service.icon;
                 return (
                   <motion.div 
@@ -536,7 +536,7 @@ export default function Home() {
                     initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: (idx % 3) * 0.05 }}
+                    transition={{ duration: 0.4, delay: (idx % 2) * 0.05 }}
                     className="group border border-slate-200 hover:border-wix-dark rounded-md p-6 bg-white hover:bg-slate-50/50 transition-all duration-300 flex flex-col justify-between shadow-sm"
                   >
                     <div>
@@ -558,6 +558,16 @@ export default function Home() {
                   </motion.div>
                 );
               })}
+            </div>
+
+            <div className="text-center mt-12">
+              <Link
+                href="/services/all-services"
+                className="inline-flex items-center gap-2 rounded-md bg-wix-dark hover:bg-orange-500 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm"
+              >
+                View All Services
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         </section>
