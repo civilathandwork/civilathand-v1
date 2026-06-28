@@ -93,6 +93,8 @@ interface ProjectContextType {
   addProject: (project: Omit<Project, "id" | "dateStarted" | "progress" | "status">) => Promise<void>;
   updateProjectStatus: (id: string, status: Project["status"]) => Promise<void>;
   uploadDrawing: (file: Omit<DrawingFile, "id" | "uploadDate" | "status">) => Promise<void>;
+  updateDrawingStatus: (id: string, status: DrawingFile["status"]) => Promise<void>;
+  deleteDrawing: (id: string) => Promise<void>;
   payInvoice: (id: string) => Promise<void>;
   generateInvoice: (projectId: string, amount: number) => Promise<void>;
   addNotification: (title: string, message: string, type: Notification["type"], isAdmin: boolean) => Promise<void>;
@@ -724,6 +726,47 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
+  const updateDrawingStatus = async (id: string, status: DrawingFile["status"]) => {
+    try {
+      const targetDraw = drawings.find((d) => d.id === id);
+      if (!targetDraw) return;
+
+      const res = await fetch(`/api/drawings/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...targetDraw, status })
+      });
+      if (!res.ok) throw new Error("Failed to update drawing status in DB");
+      const updatedDraw: DrawingFile = await res.json();
+      setDrawings((prev) => prev.map((d) => d.id === id ? updatedDraw : d));
+
+      await addNotification(
+        "Drawing Status Updated",
+        `File "${updatedDraw.name}" status has been updated to "${status}".`,
+        "info",
+        false
+      );
+    } catch (err) {
+      console.error("Error updating drawing status:", err);
+      setDrawings((prev) =>
+        prev.map((d) => (d.id === id ? { ...d, status } : d))
+      );
+    }
+  };
+
+  const deleteDrawing = async (id: string) => {
+    try {
+      const res = await fetch(`/api/drawings/${id}`, {
+        method: "DELETE"
+      });
+      if (!res.ok) throw new Error("Failed to delete drawing in DB");
+      setDrawings((prev) => prev.filter((d) => d.id !== id));
+    } catch (err) {
+      console.error("Error deleting drawing:", err);
+      setDrawings((prev) => prev.filter((d) => d.id !== id));
+    }
+  };
+
   const payInvoice = async (id: string) => {
     try {
       const targetInv = invoices.find((i) => i.id === id);
@@ -1028,6 +1071,8 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         addProject,
         updateProjectStatus,
         uploadDrawing,
+        updateDrawingStatus,
+        deleteDrawing,
         payInvoice,
         generateInvoice,
         addNotification,
