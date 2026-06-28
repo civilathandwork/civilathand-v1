@@ -26,6 +26,12 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
   }, []);
 
   React.useEffect(() => {
+    if (post && post.id) {
+      fetch(`/api/blogs/${post.id}`, { method: "POST" }).catch(console.error);
+    }
+  }, [post]);
+
+  React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setPopupImageSrc(null);

@@ -49,7 +49,8 @@ import {
   Image as ImageIcon,
   Type,
   FileText,
-  Loader2
+  Loader2,
+  Eye
 } from "lucide-react";
 
 export const AdminView: React.FC = () => {
@@ -95,6 +96,9 @@ export const AdminView: React.FC = () => {
   const conversionRate = leads.length > 0
     ? ((leads.filter(l => l.status === "converted").length / leads.length) * 100).toFixed(0)
     : "35";
+
+  const totalBlogViews = blogs.reduce((acc, curr) => acc + ((curr as any).views || 0), 0);
+  const totalPortfolioViews = portfolio.reduce((acc, curr) => acc + ((curr as any).views || 0), 0);
 
   // Handle Converting Lead to Project
   const handleConvertLead = async (lead: Lead) => {
@@ -739,6 +743,71 @@ export const AdminView: React.FC = () => {
                   <span>Jun (₹12.0L)</span>
                 </div>
               </div>
+
+              {/* Content Engagement Overview Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                
+                {/* Blog Statistics */}
+                <div className="border border-slate-200 rounded-xl p-5 bg-white shadow-sm space-y-4">
+                  <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <h4 className="font-display font-extrabold text-sm text-navy-950 uppercase tracking-wider">
+                      Blog Articles Performance
+                    </h4>
+                    <span className="text-[10px] bg-blue-100 text-blue-700 px-2.5 py-1 rounded font-bold uppercase tracking-wider flex items-center gap-1">
+                      <Eye className="h-3.5 w-3.5" /> {totalBlogViews.toLocaleString()} Total Views
+                    </span>
+                  </div>
+                  <div className="space-y-2.5 max-h-56 overflow-y-auto pr-1">
+                    {[...blogs]
+                      .sort((a, b) => ((b as any).views || 0) - ((a as any).views || 0))
+                      .slice(0, 5)
+                      .map((post) => (
+                        <div key={post.id} className="flex justify-between items-center text-xs p-2 bg-slate-50 rounded-lg border border-slate-100">
+                          <div className="truncate font-semibold text-navy-950 max-w-[70%]" title={post.title}>
+                            {post.title}
+                          </div>
+                          <span className="text-[10px] font-bold text-slate-500 flex items-center gap-1 flex-shrink-0">
+                            <Eye className="h-3 w-3" /> {((post as any).views || 0)} views
+                          </span>
+                        </div>
+                      ))}
+                    {blogs.length === 0 && (
+                      <p className="text-[10px] text-slate-400 italic">No blog posts published yet.</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Portfolio Statistics */}
+                <div className="border border-slate-200 rounded-xl p-5 bg-white shadow-sm space-y-4">
+                  <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <h4 className="font-display font-extrabold text-sm text-navy-950 uppercase tracking-wider">
+                      Portfolio Case Studies
+                    </h4>
+                    <span className="text-[10px] bg-blue-100 text-blue-700 px-2.5 py-1 rounded font-bold uppercase tracking-wider flex items-center gap-1">
+                      <Eye className="h-3.5 w-3.5" /> {totalPortfolioViews.toLocaleString()} Total Views
+                    </span>
+                  </div>
+                  <div className="space-y-2.5 max-h-56 overflow-y-auto pr-1">
+                    {[...portfolio]
+                      .sort((a, b) => ((b as any).views || 0) - ((a as any).views || 0))
+                      .slice(0, 5)
+                      .map((item) => (
+                        <div key={item.id} className="flex justify-between items-center text-xs p-2 bg-slate-50 rounded-lg border border-slate-100">
+                          <div className="truncate font-semibold text-navy-950 max-w-[70%]" title={item.title}>
+                            {item.title}
+                          </div>
+                          <span className="text-[10px] font-bold text-slate-500 flex items-center gap-1 flex-shrink-0">
+                            <Eye className="h-3 w-3" /> {((item as any).views || 0)} views
+                          </span>
+                        </div>
+                      ))}
+                    {portfolio.length === 0 && (
+                      <p className="text-[10px] text-slate-400 italic">No portfolio projects published yet.</p>
+                    )}
+                  </div>
+                </div>
+
+              </div>
             </motion.div>
           )}
 
@@ -1192,6 +1261,9 @@ export const AdminView: React.FC = () => {
                             <span className={`text-[8px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wide ${post.status === "published" ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-600"
                               }`}>
                               {post.status}
+                            </span>
+                            <span className="text-[8px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded font-bold uppercase tracking-wide flex items-center gap-1">
+                              <Eye className="h-3 w-3" /> {(post as any).views || 0} views
                             </span>
                             <span className="text-[9px] text-navy-500 ml-auto font-medium">{post.date}</span>
                           </div>
@@ -2004,6 +2076,9 @@ export const AdminView: React.FC = () => {
                               item.status === "Completed" ? "bg-emerald-100 text-emerald-700" : "bg-orange-100 text-orange-700"
                             }`}>
                               {item.status}
+                            </span>
+                            <span className="text-[8px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded font-bold uppercase tracking-wide flex items-center gap-1">
+                              <Eye className="h-3 w-3" /> {(item as any).views || 0} views
                             </span>
                             <span className="text-[9px] text-navy-500 ml-auto font-bold">{item.area}</span>
                           </div>

@@ -83,6 +83,7 @@ export async function POST(request: Request) {
       challenges: Array.isArray(challenges) ? challenges : [],
       solutions: Array.isArray(solutions) ? solutions : [],
       gallery: Array.isArray(gallery) ? gallery : [],
+      views: 0,
     };
 
     await collection.insertOne(newPortfolioItem);

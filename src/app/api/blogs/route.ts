@@ -111,6 +111,7 @@ export async function POST(request: Request) {
       image: image || "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80",
       status: status || "draft",
       slug: generateSlug(title),
+      views: 0,
     };
 
     await collection.insertOne(newBlog);

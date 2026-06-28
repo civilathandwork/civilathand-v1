@@ -71,3 +71,33 @@ export async function DELETE(
     return NextResponse.json({ error: "Failed to delete portfolio item" }, { status: 500 });
   }
 }
+
+export async function POST(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+
+    const client = await clientPromise;
+    const db = client.db(dbName);
+    const collection = db.collection("portfolio");
+
+    // Atomic increment of the views field by 1
+    const result = await collection.findOneAndUpdate(
+      { id },
+      { $inc: { views: 1 } },
+      { returnDocument: "after" }
+    );
+
+    if (!result) {
+      return NextResponse.json({ error: "Portfolio item not found" }, { status: 404 });
+    }
+
+    const { _id, ...responseItem } = result as any;
+    return NextResponse.json(responseItem);
+  } catch (error) {
+    console.error("Error incrementing portfolio views:", error);
+    return NextResponse.json({ error: "Failed to increment views" }, { status: 500 });
+  }
+}

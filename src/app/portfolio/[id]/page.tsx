@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useState } from "react";
+import React, { use, useState, useEffect } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -27,6 +27,12 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ id: 
   const { portfolio, isLoaded } = useProjects();
   const project = portfolio.find((p) => p.id === id);
   const [lightboxUrl, setLightboxUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (project && project.id) {
+      fetch(`/api/portfolio/${project.id}`, { method: "POST" }).catch(console.error);
+    }
+  }, [project]);
 
   if (!isLoaded) {
     return (
