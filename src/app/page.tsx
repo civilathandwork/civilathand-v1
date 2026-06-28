@@ -798,7 +798,7 @@ export default function Home() {
                       </div>
                     </div>
                     <Link href={`/portfolio/${proj.id}`} className="inline-flex items-center gap-1.5 text-xs font-bold text-wix-dark hover:text-orange-500 uppercase tracking-widest transition-colors">
-                      View Project Case study <ArrowRight className="h-3.5 w-3.5" />
+                      View Project Details <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
                   </div>
                 </motion.div>

@@ -174,7 +174,7 @@ export default function PortfolioPage() {
                           href={`/portfolio/${project.id}`}
                           className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-900 hover:text-orange-500 uppercase tracking-widest transition-colors"
                         >
-                          View Case Study <ChevronRight className="h-4 w-4" />
+                          View Project Details <ChevronRight className="h-4 w-4" />
                         </Link>
                       </div>
                     </div>
