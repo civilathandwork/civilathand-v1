@@ -37,6 +37,7 @@ export interface DrawingFile {
   uploadDate: string;
   status: "Processed" | "Analyzing" | "Ready";
   serviceType: string;
+  url?: string;
 }
 
 export interface Invoice {

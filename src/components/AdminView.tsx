@@ -971,8 +971,33 @@ export const AdminView: React.FC = () => {
                     </div>
 
                     <div className="flex justify-between items-center text-[11px] bg-slate-50 p-3 rounded-lg border border-slate-100">
-                      <span className="text-navy-600">
-                        Files: {proj.drawings.length === 0 ? "No files attached" : proj.drawings.join(", ")}
+                      <span className="text-navy-600 flex flex-wrap gap-1 items-center">
+                        Files:{" "}
+                        {proj.drawings.length === 0 ? (
+                          <span>No files attached</span>
+                        ) : (
+                          proj.drawings.map((fname, fidx) => {
+                            const d = drawings.find((x) => x.name === fname);
+                            return (
+                              <React.Fragment key={fidx}>
+                                {fidx > 0 && ", "}
+                                {d?.url ? (
+                                  <a
+                                    href={d.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-orange-600 hover:text-orange-700 underline font-bold cursor-pointer inline-block"
+                                    title={`Open ${fname}`}
+                                  >
+                                    {fname}
+                                  </a>
+                                ) : (
+                                  <span>{fname}</span>
+                                )}
+                              </React.Fragment>
+                            );
+                          })
+                        )}
                       </span>
                       <span className="font-bold text-navy-950">
                         Progress: {proj.progress}%
@@ -1055,7 +1080,19 @@ export const AdminView: React.FC = () => {
                             <td className="p-4 font-semibold text-navy-950 max-w-xs truncate">
                               <div className="flex items-center gap-2">
                                 <FileText className="h-4 w-4 text-orange-500 flex-shrink-0" />
-                                <span className="truncate" title={draw.name}>{draw.name}</span>
+                                {draw.url ? (
+                                  <a
+                                    href={draw.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:text-orange-600 underline transition-colors truncate cursor-pointer font-bold"
+                                    title={`Click to open/download ${draw.name}`}
+                                  >
+                                    {draw.name}
+                                  </a>
+                                ) : (
+                                  <span className="truncate" title={draw.name}>{draw.name}</span>
+                                )}
                               </div>
                             </td>
                             <td className="p-4">

@@ -61,11 +61,29 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ slug: 
 
     if (files.length > 0) {
       for (const f of files) {
-        await uploadDrawing({
-          name: f.name,
-          size: (f.size / (1024 * 1024)).toFixed(1) + " MB",
-          serviceType: service.title
-        });
+        try {
+          // Upload the actual file content to /api/upload
+          const formData = new FormData();
+          formData.append("file", f);
+
+          const uploadRes = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!uploadRes.ok) throw new Error(`Failed to upload ${f.name}`);
+          const uploadData = await uploadRes.json();
+          const fileUrl = uploadData.url;
+
+          await uploadDrawing({
+            name: f.name,
+            size: (f.size / (1024 * 1024)).toFixed(1) + " MB",
+            serviceType: service.title,
+            url: fileUrl
+          });
+        } catch (uploadErr) {
+          console.error("Error uploading file in service page:", uploadErr);
+        }
       }
     }
 

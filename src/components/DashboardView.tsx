@@ -89,10 +89,24 @@ export const DashboardView: React.FC = () => {
     setUploading(true);
     try {
       for (const f of files) {
+        // Upload the actual file content to /api/upload
+        const formData = new FormData();
+        formData.append("file", f);
+
+        const uploadRes = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!uploadRes.ok) throw new Error(`Failed to upload ${f.name}`);
+        const uploadData = await uploadRes.json();
+        const fileUrl = uploadData.url;
+
         await uploadDrawing({
           name: f.name,
           size: (f.size / (1024 * 1024)).toFixed(1) + " MB",
-          serviceType
+          serviceType,
+          url: fileUrl
         });
       }
       setUploading(false);
@@ -102,6 +116,7 @@ export const DashboardView: React.FC = () => {
     } catch (err) {
       console.error("Error uploading drawings:", err);
       setUploading(false);
+      alert("Failed to upload drawings. Please try again.");
     }
   };
 
@@ -425,7 +440,19 @@ export const DashboardView: React.FC = () => {
                             <FileText className="h-5.5 w-5.5" />
                           </div>
                           <div>
-                            <p className="font-semibold text-navy-950">{draw.name}</p>
+                            {draw.url ? (
+                              <a
+                                href={draw.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-semibold text-navy-950 hover:text-orange-500 underline transition-colors cursor-pointer"
+                                title="Click to view/download file"
+                              >
+                                {draw.name}
+                              </a>
+                            ) : (
+                              <p className="font-semibold text-navy-950">{draw.name}</p>
+                            )}
                             <p className="text-[10px] text-navy-600">{draw.size} • Uploaded on {draw.uploadDate}</p>
                           </div>
                         </div>

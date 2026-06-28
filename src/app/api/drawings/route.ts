@@ -73,7 +73,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, size, serviceType } = body;
+    const { name, size, serviceType, url } = body;
 
     if (!name) {
       return NextResponse.json({ error: "File name is required" }, { status: 400 });
@@ -90,6 +90,7 @@ export async function POST(request: Request) {
       uploadDate: new Date().toISOString().split("T")[0],
       status: "Analyzing",
       serviceType: serviceType || "General Design",
+      url: url || "",
     };
 
     await collection.insertOne(newDrawing);
