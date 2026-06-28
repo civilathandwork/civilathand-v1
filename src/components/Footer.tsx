@@ -232,7 +232,7 @@ export const Footer: React.FC = () => {
             {/* Brand Info */}
             <div>
               <div className="flex items-center gap-2 mb-5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white overflow-hidden shadow-sm border border-slate-700">
+                <div className="flex h-14 w-14 items-center justify-center rounded-md bg-white overflow-hidden shadow-sm border border-slate-700">
                   <img src="/logo.jpg" alt="Civil At Hand Logo" className="h-full w-full object-cover" />
                 </div>
                 <span className="font-display text-lg font-extrabold tracking-tight text-white">
