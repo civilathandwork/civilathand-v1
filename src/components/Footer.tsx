@@ -228,7 +228,7 @@ export const Footer: React.FC = () => {
 
       <footer className="bg-wix-dark text-slate-100 pt-16 pb-8 border-t border-slate-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-12 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
             {/* Brand Info */}
             <div>
               <div className="flex items-center gap-2 mb-5">
@@ -264,11 +264,18 @@ export const Footer: React.FC = () => {
                 <li>
                   <Link href="/blog" className="hover:text-orange-500 transition-colors font-bold text-orange-500">Engineering Blog</Link>
                 </li>
-                 <li>
+              </ul>
+            </div>
+
+            {/* Helpful Links */}
+            <div>
+              <h3 className="font-display font-bold text-xs text-white uppercase tracking-widest mb-5">Helpful Links</h3>
+              <ul className="space-y-3 text-xs text-slate-400 font-medium">
+                <li>
                   <Link href="/about" className="hover:text-orange-500 transition-colors">About Us</Link>
                 </li>
-                 <li>
-                  <Link href="/contact" className="hover:text-orange-500 transition-colors">Contact US</Link>
+                <li>
+                  <Link href="/contact" className="hover:text-orange-500 transition-colors">Contact Us</Link>
                 </li>
               </ul>
             </div>
