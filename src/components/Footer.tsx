@@ -280,6 +280,12 @@ export const Footer: React.FC = () => {
                 <li>
                   <Link href="/faq" className="hover:text-orange-500 transition-colors">FAQ</Link>
                 </li>
+                <li>
+                  <Link href="/profile" className="hover:text-orange-500 transition-colors">Profile(Login/SignUp)</Link>
+                </li>
+                <li>
+                  <Link href="/dashboard" className="hover:text-orange-500 transition-colors">DashBoard</Link>
+                </li>
               </ul>
             </div>
 
