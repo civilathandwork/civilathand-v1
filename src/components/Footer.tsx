@@ -263,12 +263,6 @@ export const Footer: React.FC = () => {
                 <li>
                   <Link href="/blog" className="hover:text-orange-500 transition-colors font-bold text-orange-500">Engineering Blog</Link>
                 </li>
-                <li>
-                  <Link href="/about" className="hover:text-orange-500 transition-colors">About Us</Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-orange-500 transition-colors">Contact US</Link>
-                </li>
               </ul>
             </div>
 
@@ -276,6 +270,12 @@ export const Footer: React.FC = () => {
             <div>
               <h3 className="font-display font-bold text-xs text-white uppercase tracking-widest mb-5">Helpful Pages</h3>
               <ul className="space-y-3 text-xs text-slate-400 font-medium">
+                <li>
+                  <Link href="/about" className="hover:text-orange-500 transition-colors">About Us</Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="hover:text-orange-500 transition-colors">Contact US</Link>
+                </li>
                 <li>
                   <Link href="/faq" className="hover:text-orange-500 transition-colors">FAQ</Link>
                 </li>
