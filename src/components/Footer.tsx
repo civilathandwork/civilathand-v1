@@ -264,29 +264,20 @@ export const Footer: React.FC = () => {
                   <Link href="/blog" className="hover:text-orange-500 transition-colors font-bold text-orange-500">Engineering Blog</Link>
                 </li>
                 <li>
-                  <Link href="/faq" className="hover:text-orange-500 transition-colors">FAQ</Link>
+                  <Link href="/about" className="hover:text-orange-500 transition-colors">About Us</Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="hover:text-orange-500 transition-colors">Contact US</Link>
                 </li>
               </ul>
             </div>
 
-            {/* Legal Pages */}
+            {/* Helpful Pages */}
             <div>
-              <h3 className="font-display font-bold text-xs text-white uppercase tracking-widest mb-5">Legal Pages</h3>
+              <h3 className="font-display font-bold text-xs text-white uppercase tracking-widest mb-5">Helpful Pages</h3>
               <ul className="space-y-3 text-xs text-slate-400 font-medium">
                 <li>
-                  <Link href="/about" className="hover:text-orange-500 transition-colors">About Us</Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-orange-500 transition-colors">Contact Us</Link>
-                </li>
-                <li>
-                  <Link href="/privacy-policy" className="hover:text-orange-500 transition-colors">Privacy Policy</Link>
-                </li>
-                <li>
-                  <Link href="/terms-and-conditions" className="hover:text-orange-500 transition-colors">Terms & Conditions</Link>
-                </li>
-                <li>
-                  <Link href="/engineering-disclaimer" className="hover:text-orange-500 transition-colors">Engineering Disclaimer</Link>
+                  <Link href="/faq" className="hover:text-orange-500 transition-colors">FAQ</Link>
                 </li>
               </ul>
             </div>
