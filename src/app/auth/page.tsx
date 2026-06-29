@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, User, ArrowRight, ShieldCheck, AlertCircle, Loader } from "lucide-react";
+import Link from "next/link";
 
 export default function AuthPage() {
   const router = useRouter();
@@ -520,7 +521,10 @@ export default function AuthPage() {
 
         {/* Footer info text */}
         <p className="text-[10px] text-slate-500 text-center leading-relaxed max-w-xs mx-auto">
-          Authorized personnel access only. By accessing this platform you agree to our Terms & Conditions.
+          Authorized personnel access only. By accessing this platform you agree to our{" "}
+          <Link href="/terms-and-conditions" className="text-orange-500 hover:text-orange-600 underline font-semibold transition-colors">
+            Terms & Conditions
+          </Link>.
         </p>
 
       </div>

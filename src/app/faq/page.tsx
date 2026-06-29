@@ -27,7 +27,7 @@ const categories = [
       { q: "How is pricing determined for engineering services?", a: "Pricing depends on the scope, built-up area, structural complexity, and turnaround time required. We provide a fixed-price quote after reviewing your project drawings or brief. No hidden charges." },
       { q: "Do you offer payment in installments?", a: "For large projects, we offer a 50% advance and 50% on delivery model. Standard small projects are billed in full upfront. We currently accept bank transfer, UPI, and online payment methods." },
       { q: "Can we pay via online payment gateway?", a: "Yes. We are integrating a secure online payment system. Currently payments are accepted via UPI (PhonePe, Google Pay, Paytm), NEFT/RTGS bank transfer, and cheque for corporate clients." },
-      { q: "Is there a refund policy?", a: "If work has not commenced, we offer a full refund. Once work is in progress, a partial refund based on work completed may be issued at our discretion. Please refer to our Terms & Conditions for full details." },
+      { q: "Is there a refund policy?", a: <span>If work has not commenced, we offer a full refund. Once work is in progress, a partial refund based on work completed may be issued at our discretion. Please refer to our <Link href="/terms-and-conditions" className="text-orange-500 hover:text-orange-600 underline font-semibold">Terms & Conditions</Link> for full details.</span> },
     ],
   },
   {
