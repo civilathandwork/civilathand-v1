@@ -911,13 +911,13 @@ export default function Home() {
                   variants={heroItemVariants}
                   className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl uppercase"
                 >
-                  Eco-Conscious Structural Engineering
+                  Smarter Design for Sustainable Construction
                 </motion.h2>
                 <motion.p 
                   variants={heroItemVariants}
                   className="text-sm text-slate-300 leading-relaxed font-medium"
                 >
-                  We integrate carbon-footprint reduction, smart materials, energy-efficient HVAC schematics, and rainwater harvesting structures directly into our blueprint designs.
+                  At Civil At Hand, we provide engineering design solutions focused on sustainability, efficiency, and long-term performance. Our approach emphasizes optimized structural systems, reduced material wastage, energy-conscious planning, and sustainable infrastructure design.
                 </motion.p>
                 <motion.div 
                   variants={heroItemVariants}
@@ -925,19 +925,19 @@ export default function Home() {
                 >
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="h-4.5 w-4.5 text-emerald-400" />
-                    <span>Smart Concrete Recyclables</span>
+                    <span>Optimized RCC & Steel Structural Design</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="h-4.5 w-4.5 text-emerald-400" />
-                    <span>MEP Solar Grid Integrations</span>
+                    <span>BIM-Based MEP Coordination</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="h-4.5 w-4.5 text-emerald-400" />
-                    <span>LID Water Runoff Drainage</span>
+                    <span>Rainwater Harvesting Design</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="h-4.5 w-4.5 text-emerald-400" />
-                    <span>Optimized Steel Truss Weights</span>
+                    <span>Material Optimization</span>
                   </div>
                 </motion.div>
               </motion.div>
