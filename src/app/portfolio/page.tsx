@@ -42,7 +42,7 @@ export default function PortfolioPage() {
               animate={{ opacity: 1, y: 0 }}
               className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2"
             >
-              Our Work
+              Our Portfolio
             </motion.span>
             <motion.h1 
               initial={{ opacity: 0, y: -10 }}
@@ -58,7 +58,7 @@ export default function PortfolioPage() {
               transition={{ delay: 0.15 }}
               className="mt-3 text-sm text-slate-600 leading-relaxed font-medium"
             >
-              Browse our dynamic portfolio of structural designs, industrial fabrication setups, commercial complexes, and BIM coordinated pipelines.
+            Explore our portfolio of structural designs, commercial projects, industrial layouts, and BIM-coordinated engineering solutions delivered with precision and technical excellence.
             </motion.p>
           </div>
 
