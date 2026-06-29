@@ -502,12 +502,12 @@ export default function Home() {
               variants={scrollRevealVariants}
               className="text-center max-w-3xl mx-auto mb-16"
             >
-              <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Our Capabilities</span>
+              <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Our Expertise</span>
               <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
-                End-to-End Civil & Structural Services
+                Our Engineering & Design Services
               </h2>
               <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
-                Combining senior-level human expertise with automated design verification to deliver top-tier drawings, models, and estimations.
+                Civil At Hand provides end-to-end civil engineering services including structural design, architectural planning, BOQ estimation, BIM modelling, and construction consulting
               </p>
             </motion.div>
 
@@ -568,12 +568,12 @@ export default function Home() {
               variants={scrollRevealVariants}
               className="text-center max-w-3xl mx-auto mb-16"
             >
-              <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Automation & Takeoffs</span>
+              <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">IS-Code Engineering Standards</span>
               <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
-                IS-Code Civil Engineering Calculators
+                Professional Engineering Calculators
               </h2>
               <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
-                Calibrated to Indian Standard (IS) codes and CPWD Delhi Schedule of Rates (DSR) 2023. Select a tool to estimate materials, concrete volume, steel weights, brickwork, or run automated BOQ takeoff audits.
+                Accurate construction estimation starts here. Our calculators use codal standards, material factors, and practical site allowances to deliver precise engineering results
               </p>
             </motion.div>
 
