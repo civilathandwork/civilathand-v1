@@ -21,8 +21,9 @@ export async function POST(request: Request) {
     await mkdir(uploadDir, { recursive: true });
 
     // Generate unique name
-    const ext = path.extname(file.name) || ".png";
-    const baseName = path.basename(file.name, ext).replace(/[^a-zA-Z0-9]/g, "_");
+    const fileName = file.name || "drawing.pdf";
+    const ext = path.extname(fileName) || ".pdf";
+    const baseName = path.basename(fileName, ext).replace(/[^a-zA-Z0-9]/g, "_");
     const filename = `${Date.now()}-${baseName}${ext}`;
     const filePath = path.join(uploadDir, filename);
 
@@ -30,8 +31,8 @@ export async function POST(request: Request) {
 
     const fileUrl = `/uploads/${filename}`;
     return NextResponse.json({ url: fileUrl });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error uploading file:", error);
-    return NextResponse.json({ error: "Failed to upload file" }, { status: 500 });
+    return NextResponse.json({ error: `Failed to upload file: ${error.message || error}` }, { status: 500 });
   }
 }

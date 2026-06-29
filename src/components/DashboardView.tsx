@@ -98,7 +98,10 @@ export const DashboardView: React.FC = () => {
           body: formData,
         });
 
-        if (!uploadRes.ok) throw new Error(`Failed to upload ${f.name}`);
+        if (!uploadRes.ok) {
+          const errData = await uploadRes.json().catch(() => ({}));
+          throw new Error(errData.error || `Server responded with status ${uploadRes.status}`);
+        }
         const uploadData = await uploadRes.json();
         const fileUrl = uploadData.url;
 
@@ -113,10 +116,10 @@ export const DashboardView: React.FC = () => {
       setUploadSuccess(true);
       setFiles([]);
       setTimeout(() => setUploadSuccess(false), 3000);
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error uploading drawings:", err);
       setUploading(false);
-      alert("Failed to upload drawings. Please try again.");
+      alert(`Failed to upload drawings: ${err.message || err}`);
     }
   };
 

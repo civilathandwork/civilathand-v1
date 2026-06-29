@@ -71,7 +71,10 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ slug: 
             body: formData,
           });
 
-          if (!uploadRes.ok) throw new Error(`Failed to upload ${f.name}`);
+          if (!uploadRes.ok) {
+            const errData = await uploadRes.json().catch(() => ({}));
+            throw new Error(errData.error || `Server responded with status ${uploadRes.status}`);
+          }
           const uploadData = await uploadRes.json();
           const fileUrl = uploadData.url;
 
@@ -81,8 +84,9 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ slug: 
             serviceType: service.title,
             url: fileUrl
           });
-        } catch (uploadErr) {
+        } catch (uploadErr: any) {
           console.error("Error uploading file in service page:", uploadErr);
+          alert(`Drawing upload failed: ${uploadErr.message || uploadErr}`);
         }
       }
     }
