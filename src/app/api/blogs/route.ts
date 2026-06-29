@@ -52,27 +52,14 @@ export async function GET() {
     const client = await clientPromise;
     const db = client.db(dbName);
     const collection = db.collection("blogs");
-    const settingsCollection = db.collection("settings");
-
     const headers = {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
 
     if (!isSeededCached) {
-      // Atomic upsert — only inserts the seed flag if it doesn't already exist.
-      // This prevents a race condition where two simultaneous requests could both
-      // pass the findOne check and seed duplicate data.
-      const seedResult = await settingsCollection.findOneAndUpdate(
-        { key: "seeded" },
-        { $setOnInsert: { key: "seeded", value: true } },
-        { upsert: true, returnDocument: "before" }
-      );
-
-      if (!seedResult) {
-        // seedResult is null → the document didn't exist before → we just created it → seed now
+      const count = await collection.countDocuments();
+      if (count === 0) {
         await collection.insertMany(initialBlogs);
-        isSeededCached = true;
-        return NextResponse.json(initialBlogs, { headers });
       }
       isSeededCached = true;
     }

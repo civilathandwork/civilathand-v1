@@ -33,24 +33,14 @@ export async function GET() {
     const client = await clientPromise;
     const db = client.db(dbName);
     const collection = db.collection("chats");
-    const settingsCollection = db.collection("settings");
-
     const headers = {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
 
     if (!isSeededCached) {
-      // Atomic upsert — prevents race condition on simultaneous first requests
-      const seedResult = await settingsCollection.findOneAndUpdate(
-        { key: "chats_seeded" },
-        { $setOnInsert: { key: "chats_seeded", value: true } },
-        { upsert: true, returnDocument: "before" }
-      );
-
-      if (!seedResult) {
+      const count = await collection.countDocuments();
+      if (count === 0) {
         await collection.insertMany(initialChatMessages);
-        isSeededCached = true;
-        return NextResponse.json(initialChatMessages, { headers });
       }
       isSeededCached = true;
     }

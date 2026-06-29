@@ -12,22 +12,14 @@ export async function GET() {
     const client = await clientPromise;
     const db = client.db(dbName);
     const collection = db.collection("portfolio");
-    const settingsCollection = db.collection("settings");
 
     const headers = {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
 
-    // Atomic upsert for seeding portfolio
-    const seedResult = await settingsCollection.findOneAndUpdate(
-      { key: "portfolio_seeded" },
-      { $setOnInsert: { key: "portfolio_seeded", value: true } },
-      { upsert: true, returnDocument: "before" }
-    );
-
-    if (!seedResult) {
+    const count = await collection.countDocuments();
+    if (count === 0) {
       await collection.insertMany(initialPortfolio);
-      return NextResponse.json(initialPortfolio, { headers });
     }
 
     const projects = await collection.find({}).toArray();
