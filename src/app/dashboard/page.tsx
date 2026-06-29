@@ -50,6 +50,7 @@ export default function DashboardPage() {
               </h1>
               <p className="text-xs text-slate-300 mt-1">
                 Access your blueprints, monitor active engineering pipelines, and complete milestone billing.
+                Project Support :- project.civilathand@gmail.com
               </p>
             </div>
 
