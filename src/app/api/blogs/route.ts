@@ -47,14 +47,29 @@ const initialBlogs = [
 
 let isSeededCached = false;
 
+// Server-side in-memory cache for blogs to make loading instant
+let cachedBlogs: any[] | null = null;
+let cacheTimestamp = 0;
+const CACHE_TTL = 300000; // 5 minutes Cache TTL
+
+export function invalidateBlogsCache() {
+  cachedBlogs = null;
+}
+
 export async function GET() {
   try {
-    const client = await clientPromise;
-    const db = client.db(dbName);
-    const collection = db.collection("blogs");
+    const now = Date.now();
     const headers = {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     };
+
+    if (cachedBlogs && (now - cacheTimestamp < CACHE_TTL)) {
+      return NextResponse.json(cachedBlogs, { headers });
+    }
+
+    const client = await clientPromise;
+    const db = client.db(dbName);
+    const collection = db.collection("blogs");
 
     if (!isSeededCached) {
       const count = await collection.countDocuments();
@@ -67,6 +82,8 @@ export async function GET() {
     // Fetch all blogs
     const blogs = await collection.find({}).toArray();
     const formattedBlogs = blogs.map(({ _id, ...rest }) => rest);
+    cachedBlogs = formattedBlogs;
+    cacheTimestamp = now;
     return NextResponse.json(formattedBlogs, { headers });
   } catch (error) {
     console.error("Error in GET /api/blogs:", error);
@@ -104,6 +121,7 @@ export async function POST(request: Request) {
     };
 
     await collection.insertOne(newBlog);
+    invalidateBlogsCache();
 
     // Return without MongoDB's _id
     const { _id, ...responseBlog } = newBlog as any;

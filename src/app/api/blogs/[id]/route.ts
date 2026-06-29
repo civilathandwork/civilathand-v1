@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
+import { invalidateBlogsCache } from "../route";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +35,7 @@ export async function PUT(
     delete (updatedBlogData as any)._id;
 
     await collection.updateOne({ id }, { $set: updatedBlogData });
+    invalidateBlogsCache();
 
     const { _id, ...originalBlogWithoutId } = blog;
     return NextResponse.json({ ...originalBlogWithoutId, ...updatedBlogData });
@@ -55,6 +57,7 @@ export async function DELETE(
     const collection = db.collection("blogs");
 
     const deleteResult = await collection.deleteOne({ id });
+    invalidateBlogsCache();
 
     // If no document was deleted, return success anyway (idempotent delete)
     if (deleteResult.deletedCount === 0) {
@@ -98,6 +101,8 @@ export async function POST(
     if (!result) {
       return NextResponse.json({ error: "Blog post not found" }, { status: 404 });
     }
+
+    invalidateBlogsCache();
 
     const { _id, ...responseItem } = result as any;
     return NextResponse.json(responseItem);

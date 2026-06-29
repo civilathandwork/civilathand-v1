@@ -376,33 +376,82 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [isLoaded, setIsLoaded] = useState(false);
   const [blogsLoaded, setBlogsLoaded] = useState(false);
 
+  // Initialize all states from SWR local storage cache immediately on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const cachedLeads = localStorage.getItem("cah_leads");
+        if (cachedLeads) setLeads(JSON.parse(cachedLeads));
+
+        const cachedProjects = localStorage.getItem("cah_projects");
+        if (cachedProjects) setProjects(JSON.parse(cachedProjects));
+
+        const cachedDrawings = localStorage.getItem("cah_drawings");
+        if (cachedDrawings) setDrawings(JSON.parse(cachedDrawings));
+
+        const cachedInvoices = localStorage.getItem("cah_invoices");
+        if (cachedInvoices) setInvoices(JSON.parse(cachedInvoices));
+
+        const cachedNotifications = localStorage.getItem("cah_notifications");
+        if (cachedNotifications) setNotifications(JSON.parse(cachedNotifications));
+
+        const cachedChats = localStorage.getItem("cah_chats");
+        if (cachedChats) setChatMessages(JSON.parse(cachedChats));
+
+        const cachedBlogs = localStorage.getItem("cah_blogs");
+        if (cachedBlogs) {
+          setBlogs(JSON.parse(cachedBlogs));
+          setBlogsLoaded(true);
+        }
+
+        const cachedPortfolio = localStorage.getItem("cah_portfolio");
+        if (cachedPortfolio) setPortfolio(JSON.parse(cachedPortfolio));
+      } catch (e) {
+        console.error("Error reading initial SWR cache:", e);
+      }
+    }
+  }, []);
+
   // Load from database API
   useEffect(() => {
     if (typeof window !== "undefined") {
+
       const fetchLeads = fetch("/api/leads", { cache: "no-store" })
         .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch leads");
+          if (!res.ok) {
+            console.warn("Failed to fetch leads");
+            return null;
+          }
           return res.json();
         })
         .then((data) => {
-          setLeads(Array.isArray(data) ? data : initialLeads);
+          if (!data) return;
+          const leadsData = Array.isArray(data) ? data : initialLeads;
+          setLeads(leadsData);
+          localStorage.setItem("cah_leads", JSON.stringify(leadsData));
         })
         .catch((err) => {
           console.error("Failed to fetch leads, using fallback:", err);
-          setLeads(initialLeads);
+          if (leads.length === 0) setLeads(initialLeads);
         });
 
       const fetchBlogs = fetch("/api/blogs", { cache: "no-store" })
         .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch blogs");
+          if (!res.ok) {
+            console.warn("Failed to fetch blogs");
+            return null;
+          }
           return res.json();
         })
         .then((data) => {
-          setBlogs(Array.isArray(data) ? data : initialBlogs);
+          if (!data) return;
+          const blogsData = Array.isArray(data) ? data : initialBlogs;
+          setBlogs(blogsData);
+          localStorage.setItem("cah_blogs", JSON.stringify(blogsData));
         })
         .catch((err) => {
           console.error("Failed to fetch blogs, using fallback:", err);
-          setBlogs(initialBlogs);
+          if (blogs.length === 0) setBlogs(initialBlogs);
         })
         .finally(() => {
           setBlogsLoaded(true);
@@ -410,80 +459,116 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
       const fetchProjects = fetch("/api/projects", { cache: "no-store" })
         .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch projects");
+          if (!res.ok) {
+            console.warn("Failed to fetch projects");
+            return null;
+          }
           return res.json();
         })
         .then((data) => {
-          setProjects(Array.isArray(data) ? data : initialProjects);
+          if (!data) return;
+          const projectsData = Array.isArray(data) ? data : initialProjects;
+          setProjects(projectsData);
+          localStorage.setItem("cah_projects", JSON.stringify(projectsData));
         })
         .catch((err) => {
           console.error("Failed to fetch projects, using fallback:", err);
-          setProjects(initialProjects);
+          if (projects.length === 0) setProjects(initialProjects);
         });
 
       const fetchDrawings = fetch("/api/drawings", { cache: "no-store" })
         .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch drawings");
+          if (!res.ok) {
+            console.warn("Failed to fetch drawings");
+            return null;
+          }
           return res.json();
         })
         .then((data) => {
-          setDrawings(Array.isArray(data) ? data : initialDrawings);
+          if (!data) return;
+          const drawingsData = Array.isArray(data) ? data : initialDrawings;
+          setDrawings(drawingsData);
+          localStorage.setItem("cah_drawings", JSON.stringify(drawingsData));
         })
         .catch((err) => {
           console.error("Failed to fetch drawings, using fallback:", err);
-          setDrawings(initialDrawings);
+          if (drawings.length === 0) setDrawings(initialDrawings);
         });
 
       const fetchInvoices = fetch("/api/invoices", { cache: "no-store" })
         .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch invoices");
+          if (!res.ok) {
+            console.warn("Failed to fetch invoices");
+            return null;
+          }
           return res.json();
         })
         .then((data) => {
-          setInvoices(Array.isArray(data) ? data : initialInvoices);
+          if (!data) return;
+          const invoicesData = Array.isArray(data) ? data : initialInvoices;
+          setInvoices(invoicesData);
+          localStorage.setItem("cah_invoices", JSON.stringify(invoicesData));
         })
         .catch((err) => {
           console.error("Failed to fetch invoices, using fallback:", err);
-          setInvoices(initialInvoices);
+          if (invoices.length === 0) setInvoices(initialInvoices);
         });
 
       const fetchNotifications = fetch("/api/notifications", { cache: "no-store" })
         .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch notifications");
+          if (!res.ok) {
+            console.warn("Failed to fetch notifications");
+            return null;
+          }
           return res.json();
         })
         .then((data) => {
-          setNotifications(Array.isArray(data) ? data : initialNotifications);
+          if (!data) return;
+          const notifsData = Array.isArray(data) ? data : initialNotifications;
+          setNotifications(notifsData);
+          localStorage.setItem("cah_notifications", JSON.stringify(notifsData));
         })
         .catch((err) => {
           console.error("Failed to fetch notifications, using fallback:", err);
-          setNotifications(initialNotifications);
+          if (notifications.length === 0) setNotifications(initialNotifications);
         });
 
       const fetchChats = fetch("/api/support-messages", { cache: "no-store" })
         .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch chats");
+          if (!res.ok) {
+            console.warn("Failed to fetch chats");
+            return null;
+          }
           return res.json();
         })
         .then((data) => {
-          setChatMessages(Array.isArray(data) ? data : initialChatMessages);
+          if (!data) return;
+          const chatsData = Array.isArray(data) ? data : initialChatMessages;
+          setChatMessages(chatsData);
+          localStorage.setItem("cah_chats", JSON.stringify(chatsData));
         })
         .catch((err) => {
           console.error("Failed to fetch chats, using fallback:", err);
-          setChatMessages(initialChatMessages);
+          if (chatMessages.length === 0) setChatMessages(initialChatMessages);
         });
 
       const fetchPortfolio = fetch("/api/portfolio", { cache: "no-store" })
         .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch portfolio");
+          if (!res.ok) {
+            console.warn("Failed to fetch portfolio");
+            return null;
+          }
           return res.json();
         })
         .then((data) => {
-          setPortfolio(Array.isArray(data) ? data : fallbackPortfolio);
+          if (!data) return;
+          const portData = Array.isArray(data) ? data : fallbackPortfolio;
+          setPortfolio(portData);
+          localStorage.setItem("cah_portfolio", JSON.stringify(portData));
         })
         .catch((err) => {
           console.error("Failed to fetch portfolio, using fallback:", err);
-          setPortfolio(fallbackPortfolio);
+          if (portfolio.length === 0) setPortfolio(fallbackPortfolio);
         });
 
       Promise.all([
@@ -966,7 +1051,11 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       });
       if (!res.ok) throw new Error("Failed to add blog post");
       const newBlog = await res.json();
-      setBlogs((prev) => [newBlog, ...prev]);
+      setBlogs((prev) => {
+        const nextBlogs = [newBlog, ...prev];
+        localStorage.setItem("cah_blogs", JSON.stringify(nextBlogs));
+        return nextBlogs;
+      });
       await addNotification(
         "New Blog Post Created",
         `Blog post "${newBlog.title}" is now available.`,
@@ -989,9 +1078,11 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       });
       if (!res.ok) throw new Error("Failed to update blog post");
       const updatedBlog = await res.json();
-      setBlogs((prev) =>
-        prev.map((b) => (b.id === id ? updatedBlog : b))
-      );
+      setBlogs((prev) => {
+        const nextBlogs = prev.map((b) => (b.id === id ? updatedBlog : b));
+        localStorage.setItem("cah_blogs", JSON.stringify(nextBlogs));
+        return nextBlogs;
+      });
     } catch (error) {
       console.error("Error updating blog post:", error);
     }
@@ -1003,7 +1094,11 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Failed to delete blog post");
-      setBlogs((prev) => prev.filter((b) => b.id !== id));
+      setBlogs((prev) => {
+        const nextBlogs = prev.filter((b) => b.id !== id);
+        localStorage.setItem("cah_blogs", JSON.stringify(nextBlogs));
+        return nextBlogs;
+      });
     } catch (error) {
       console.error("Error deleting blog post:", error);
     }
