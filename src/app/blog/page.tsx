@@ -52,7 +52,7 @@ export default function BlogListingPage() {
               transition={{ delay: 0.1 }}
               className="mt-3 text-sm text-slate-600 leading-relaxed"
             >
-              Chartered structural blueprints, BIM modeling updates, AI calculations workflows, and construction material standards logs.
+              Read the latest blogs on structural engineering, construction technology, civil engineering software, design methods, project planning, and industry updates.
             </motion.p>
           </div>
 
