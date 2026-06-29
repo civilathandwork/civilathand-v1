@@ -430,32 +430,33 @@ export default function Home() {
               </div>
 
               {/* Animated Statistics */}
-              <div className="lg:col-span-5 grid grid-cols-2 gap-4">
-                {[
-                  { value: IS, suffix: "", label: "CODE COMPLIANT", desc: "Safe, Accurate & Standard-Based Designs" },
-                  { value: PAN, suffix: "+", label: "INDIA
-SERVICES", desc: "Online Engineering Solutions Across India" },
-                  { value: 100, suffix: "%", label: "Commitment", desc: "Quality, Accuracy & Professional Service" },
-                  { value: "FAST", suffix: " DELIVERY", label: "On-Time", desc: "Project Execution" },
-                ].map((stat, idx) => (
-                  <motion.div 
-                    key={idx}
-                    variants={heroItemVariants}
-                    whileHover={{ scale: 1.02 }}
-                    className="bg-white/5 backdrop-blur-sm p-5 rounded-md border border-white/10 flex flex-col justify-between shadow-sm transition-all duration-300 hover:border-orange-500/50"
-                  >
-                    <div>
-                      <p className="text-2xl font-extrabold font-display text-orange-500 tracking-tight">
-                        <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-                      </p>
-                      <p className="text-xs font-bold mt-1 text-white uppercase tracking-wider">{stat.label}</p>
-                    </div>
-                    <p className="text-[10px] text-slate-400 mt-3">{stat.desc}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
+<div className="lg:col-span-5 grid grid-cols-2 gap-4">
+  {[
+    { value: "IS", suffix: "", label: "CODE COMPLIANT", desc: "Safe, Accurate & Standard-Based Designs" },
+    { value: "PAN", suffix: "+", label: "INDIA SERVICES", desc: "Online Engineering Solutions Across India" },
+    { value: 100, suffix: "%", label: "Commitment", desc: "Quality, Accuracy & Professional Service" },
+    { value: "FAST", suffix: " DELIVERY", label: "On-Time", desc: "Project Execution" },
+  ].map((stat, idx) => (
+    <motion.div 
+      key={idx}
+      variants={heroItemVariants}
+      whileHover={{ scale: 1.02 }}
+      className="bg-white/5 backdrop-blur-sm p-5 rounded-md border border-white/10 flex flex-col justify-between shadow-sm transition-all duration-300 hover:border-orange-500/50"
+    >
+      <div>
+        <p className="text-2xl font-extrabold font-display text-orange-500 tracking-tight">
+          {typeof stat.value === 'number' ? (
+            <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+          ) : (
+            <span>{stat.value}{stat.suffix}</span>
+          )}
+        </p>
+        <p className="text-xs font-bold mt-1 text-white uppercase tracking-wider">{stat.label}</p>
+      </div>
+      <p className="text-[10px] text-slate-400 mt-3">{stat.desc}</p>
+    </motion.div>
+  ))}
+</div>
         </section>
 
         {/* SECTION 2: TRUST SECTION */}
