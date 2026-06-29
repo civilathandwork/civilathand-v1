@@ -400,8 +400,12 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
         const cachedBlogs = localStorage.getItem("cah_blogs");
         if (cachedBlogs) {
-          setBlogs(JSON.parse(cachedBlogs));
-          setBlogsLoaded(true);
+          if (cachedBlogs.includes("data:image/")) {
+            localStorage.removeItem("cah_blogs");
+          } else {
+            setBlogs(JSON.parse(cachedBlogs));
+            setBlogsLoaded(true);
+          }
         }
 
         const cachedPortfolio = localStorage.getItem("cah_portfolio");
