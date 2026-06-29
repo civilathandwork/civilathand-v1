@@ -25,8 +25,8 @@ export default function AdminPage() {
 
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const correctUser = process.env.NEXT_PUBLIC_ADMIN_USER || "admin";
-    const correctPass = process.env.NEXT_PUBLIC_ADMIN_PASS || "cahadmin123";
+    const correctUser = process.env.NEXT_PUBLIC_ADMIN_USER || "civilathand.in@admin.2026";
+    const correctPass = process.env.NEXT_PUBLIC_ADMIN_PASS || "CivilAtHand@P@$$2026";
 
     if (adminUser === correctUser && adminPass === correctPass) {
       sessionStorage.setItem("cah_admin_authenticated", "true");
