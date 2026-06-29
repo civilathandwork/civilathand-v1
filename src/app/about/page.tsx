@@ -21,6 +21,12 @@ import {
   FileText,
   Layers,
   Star,
+  Target,
+  Eye,
+  Heart,
+  BookOpen,
+  Zap,
+  Clock,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -122,13 +128,263 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* WHO WE ARE + TIMELINE */}
+        {/* COMPANY STORY - NEW SECTION */}
+        <section className="py-20 md:py-28 bg-white border-b border-slate-100">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div>
+                <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Our Story</span>
+                <h2 className="font-display text-3xl md:text-4xl font-extrabold text-wix-dark uppercase leading-tight mb-6">
+                  How <span className="text-orange-500">Civil At Hand</span> Was Born
+                </h2>
+                <div className="space-y-4 text-sm text-slate-600 font-medium leading-relaxed">
+                  <p>
+                    Civil At Hand was founded in 2024 by a team of experienced civil engineers who recognized a critical gap in the Indian construction industry: <strong>the lack of fast, accurate, and code-compliant engineering design services</strong> accessible to architects, developers, and contractors.
+                  </p>
+                  <p>
+                    What started as a small structural detailing studio in Haryana has evolved into a full-spectrum engineering consultancy with a digital-first approach. Our founders—licensed structural engineers with years of experience in high-rise residential, commercial, and infrastructure projects—decided to build a firm that combines <strong>technical excellence with operational speed</strong>.
+                  </p>
+                  <p>
+                    Today, Civil At Hand serves clients across India, the Middle East, and Southeast Asia, delivering everything from structural design and BOQ estimation to BIM LOD 400 coordination and AI-powered quantity takeoffs.
+                  </p>
+                </div>
+              </div>
+              <div className="relative">
+                <div className="bg-wix-gray rounded-md p-8 border border-slate-200">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-orange-500 rounded-md flex items-center justify-center">
+                      <Heart className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Founded With Passion</p>
+                      <p className="text-sm font-extrabold text-wix-dark uppercase">2024 — Haryana, India</p>
+                    </div>
+                  </div>
+                  <blockquote className="border-l-4 border-orange-500 pl-5 py-2">
+                    <p className="font-display text-base font-extrabold text-wix-dark uppercase leading-snug">
+                      "We built Civil At Hand because we believed that engineering design should be both <span className="text-orange-500">structurally perfect</span> and <span className="text-orange-500">delivered on time</span>."
+                    </p>
+                    <p className="text-xs text-slate-400 font-medium mt-2">— Founders, Civil At Hand</p>
+                  </blockquote>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* MISSION, VISION, WHY STARTED - NEW SECTION */}
         <section className="py-20 md:py-28 bg-wix-gray border-b border-slate-200">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Our Purpose</span>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold text-wix-dark uppercase leading-tight">
+                Mission. Vision. <span className="text-orange-500">Why We Exist.</span>
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-white border border-slate-200 rounded-md p-8 hover:border-orange-500/40 transition-all shadow-sm">
+                <div className="w-14 h-14 bg-orange-500/10 rounded-md flex items-center justify-center mb-6">
+                  <Target className="h-7 w-7 text-orange-500" />
+                </div>
+                <h3 className="font-display font-extrabold text-lg text-wix-dark uppercase mb-3">Mission</h3>
+                <p className="text-sm text-slate-600 leading-relaxed font-medium">
+                  To deliver <strong>precision civil engineering solutions</strong> that are structurally sound, code-compliant, and delivered at the speed of modern construction. We empower architects, developers, and contractors with <strong>AI-powered design tools, licensed engineering oversight, and seamless digital delivery</strong>.
+                </p>
+              </div>
+
+              <div className="bg-white border border-slate-200 rounded-md p-8 hover:border-orange-500/40 transition-all shadow-sm">
+                <div className="w-14 h-14 bg-orange-500/10 rounded-md flex items-center justify-center mb-6">
+                  <Eye className="h-7 w-7 text-orange-500" />
+                </div>
+                <h3 className="font-display font-extrabold text-lg text-wix-dark uppercase mb-3">Vision</h3>
+                <p className="text-sm text-slate-600 leading-relaxed font-medium">
+                  To become <strong>India's most trusted remote engineering consultancy</strong>, known for technical accuracy, IS-code compliance, and rapid turnaround. We envision a future where every construction project—from residential villas to industrial complexes—has access to <strong>world-class engineering design</strong> regardless of location.
+                </p>
+              </div>
+
+              <div className="bg-white border border-slate-200 rounded-md p-8 hover:border-orange-500/40 transition-all shadow-sm">
+                <div className="w-14 h-14 bg-orange-500/10 rounded-md flex items-center justify-center mb-6">
+                  <Zap className="h-7 w-7 text-orange-500" />
+                </div>
+                <h3 className="font-display font-extrabold text-lg text-wix-dark uppercase mb-3">Why We Started</h3>
+                <p className="text-sm text-slate-600 leading-relaxed font-medium">
+                  We started Civil At Hand because we saw <strong>too many projects delayed</strong> by slow engineering reviews, <strong>too many errors</strong> caused by manual calculations, and <strong>too many firms struggling</strong> to find reliable, code-compliant engineering partners. We built a solution that is <strong>fast, accurate, and accessible</strong> to everyone.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* OUR TEAM - ENHANCED SECTION */}
+        <section className="py-20 md:py-28 bg-white border-b border-slate-100">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Our People</span>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold text-wix-dark uppercase leading-tight">
+                Meet the <span className="text-orange-500">Team</span>
+              </h2>
+              <p className="mt-4 text-sm text-slate-500 font-medium">
+                Our multidisciplinary team brings together 15+ engineering specialists covering
+                structural design, quantity surveying, BIM coordination, drafting, and project management.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Team Roles */}
+              <div className="space-y-4">
+                {[
+                  { role: "Structural Engineers", skills: ["RCC Design", "Steel Structure", "Foundation Design", "IS 456 / IS 800"], color: "bg-orange-500", count: "6 Engineers" },
+                  { role: "BIM Specialists", skills: ["Revit Modelling", "LOD 400", "Clash Detection", "4D Scheduling"], color: "bg-slate-800", count: "4 Specialists" },
+                  { role: "Quantity Surveyors", skills: ["BOQ Preparation", "CPWD DSR 2023", "Rate Analysis", "Cost Planning"], color: "bg-orange-400", count: "3 Surveyors" },
+                  { role: "CAD & Drafting Team", skills: ["AutoCAD", "PDF to DWG", "Shop Drawings", "Rebar Detailing"], color: "bg-slate-600", count: "5 Drafters" },
+                ].map((team) => (
+                  <div key={team.role} className="bg-white border border-slate-200 rounded-md p-5 flex items-start gap-4 hover:border-orange-500/40 transition-all shadow-sm">
+                    <div className={`w-1 self-stretch rounded-full ${team.color} flex-shrink-0`} />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-xs font-extrabold text-wix-dark font-display uppercase tracking-wide">{team.role}</p>
+                        <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full">{team.count}</span>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {team.skills.map((sk) => (
+                          <span key={sk} className="text-[10px] font-bold text-slate-500 bg-wix-gray border border-slate-200 px-2.5 py-1 rounded-full uppercase tracking-wide">
+                            {sk}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Experience & Leadership */}
+              <div className="space-y-6">
+                <div className="bg-wix-dark rounded-md p-8 text-white">
+                  <h3 className="font-display font-extrabold text-lg text-white uppercase mb-4">Leadership Team</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-orange-500/20 rounded-md flex items-center justify-center">
+                        <Users className="h-6 w-6 text-orange-400" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-extrabold text-white uppercase">Founders</p>
+                        <p className="text-xs text-slate-400">Licensed Structural Engineers, IIT Alumni</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-orange-500/20 rounded-md flex items-center justify-center">
+                        <Award className="h-6 w-6 text-orange-400" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-extrabold text-white uppercase">Technical Advisory Board</p>
+                        <p className="text-xs text-slate-400">15+ Years Industry Experience</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-orange-500/20 rounded-md flex items-center justify-center">
+                        <Globe className="h-6 w-6 text-orange-400" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-extrabold text-white uppercase">Global Delivery Team</p>
+                        <p className="text-xs text-slate-400">Remote-first, Pan-India + International</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-wix-gray border border-slate-200 rounded-md p-6">
+                  <h3 className="font-display font-extrabold text-sm text-wix-dark uppercase mb-4">Team Experience</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-white border border-slate-200 rounded-md p-4 text-center">
+                      <p className="font-display text-2xl font-extrabold text-orange-500">50+</p>
+                      <p className="text-[10px] font-bold text-wix-dark uppercase tracking-widest">Combined Years</p>
+                    </div>
+                    <div className="bg-white border border-slate-200 rounded-md p-4 text-center">
+                      <p className="font-display text-2xl font-extrabold text-orange-500">100+</p>
+                      <p className="text-[10px] font-bold text-wix-dark uppercase tracking-widest">Projects Executed</p>
+                    </div>
+                    <div className="bg-white border border-slate-200 rounded-md p-4 text-center">
+                      <p className="font-display text-2xl font-extrabold text-orange-500">10+</p>
+                      <p className="text-[10px] font-bold text-wix-dark uppercase tracking-widest">Cities Served</p>
+                    </div>
+                    <div className="bg-white border border-slate-200 rounded-md p-4 text-center">
+                      <p className="font-display text-2xl font-extrabold text-orange-500">6</p>
+                      <p className="text-[10px] font-bold text-wix-dark uppercase tracking-widest">Core Disciplines</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* EXPERIENCE & CERTIFICATIONS - NEW SECTION */}
+        <section className="py-20 md:py-28 bg-wix-gray border-b border-slate-200">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Credentials</span>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold text-wix-dark uppercase leading-tight">
+                Experience & <span className="text-orange-500">Certifications</span>
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              {/* Experience Timeline */}
+              <div>
+                <h3 className="font-display font-extrabold text-lg text-wix-dark uppercase mb-6">Our Experience</h3>
+                <div className="space-y-4">
+                  {[
+                    { title: "Residential High-Rise", clients: "3+ Projects", desc: "Structural design for 15-30 story towers in Delhi NCR, Mumbai, and Bangalore." },
+                    { title: "Commercial Complexes", clients: "5+ Projects", desc: "BIM coordination and structural detailing for malls, office parks, and mixed-use developments." },
+                    { title: "Industrial Structures", clients: "4+ Projects", desc: "PEB sheds, warehouses, and factory buildings with steel and RCC structural systems." },
+                    { title: "Infrastructure Projects", clients: "2+ Projects", desc: "Bridge foundations, retaining walls, and water treatment plant structures." },
+                  ].map((exp) => (
+                    <div key={exp.title} className="bg-white border border-slate-200 rounded-md p-5 hover:border-orange-500/40 transition-all shadow-sm">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-sm font-extrabold text-wix-dark font-display uppercase">{exp.title}</p>
+                        <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-3 py-1 rounded-full">{exp.clients}</span>
+                      </div>
+                      <p className="text-xs text-slate-500 font-medium">{exp.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Certifications & Standards */}
+              <div>
+                <h3 className="font-display font-extrabold text-lg text-wix-dark uppercase mb-6">Certifications & Standards</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    { name: "IS 456:2000", desc: "Plain and Reinforced Concrete Code" },
+                    { name: "IS 800:2007", desc: "General Construction in Steel" },
+                    { name: "IS 1786:2008", desc: "High Strength Deformed Steel Bars" },
+                    { name: "IS 1077:1992", desc: "Common Burnt Clay Bricks" },
+                    { name: "CPWD DSR 2023", desc: "Delhi Schedule of Rates" },
+                    { name: "BIM LOD 400", desc: "Building Information Modeling" },
+                    { name: "NBC 2016", desc: "National Building Code" },
+                    { name: "ISO 9001:2015", desc: "Quality Management System" },
+                  ].map((cert) => (
+                    <div key={cert.name} className="bg-white border border-slate-200 rounded-md p-5 hover:border-orange-500/40 transition-all shadow-sm">
+                      <div className="flex items-center gap-2 mb-2">
+                        <CheckCircle2 className="h-4 w-4 text-orange-500" />
+                        <p className="text-xs font-extrabold text-wix-dark uppercase">{cert.name}</p>
+                      </div>
+                      <p className="text-[10px] text-slate-500 font-medium">{cert.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* WHO WE ARE + TIMELINE (EXISTING) */}
+        <section className="py-20 md:py-28 bg-white border-b border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
               <div>
-                <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Our Story</span>
+                <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Our Evolution</span>
                 <h2 className="font-display text-3xl md:text-4xl font-extrabold text-wix-dark uppercase leading-tight mb-6">
                   From a Drafting Studio<br />to a <span className="text-orange-500">Full-Spectrum</span> Engineering Firm
                 </h2>
@@ -184,7 +440,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* WHAT WE DO */}
+        {/* WHAT WE DO (EXISTING) */}
         <section className="py-20 md:py-28 bg-white border-b border-slate-100">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-14">
@@ -217,7 +473,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* WHY CIVIL AT HAND */}
+        {/* WHY CIVIL AT HAND (EXISTING) */}
         <section className="py-20 md:py-28 bg-wix-dark relative overflow-hidden">
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:20px_20px]" />
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
@@ -241,65 +497,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* OUR TEAM */}
-        <section className="py-20 md:py-28 bg-wix-gray border-b border-slate-200">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Our People</span>
-                <h2 className="font-display text-3xl md:text-4xl font-extrabold text-wix-dark uppercase leading-tight mb-6">
-                  Engineers Who <span className="text-orange-500">Build With You</span>
-                </h2>
-                <p className="text-sm text-slate-600 font-medium leading-relaxed mb-6">
-                  Our multidisciplinary team brings together 15+ engineering specialists covering
-                  structural design, quantity surveying, BIM coordination, drafting, and project management.
-                </p>
-                <p className="text-sm text-slate-600 font-medium leading-relaxed mb-8">
-                  We work as an extension of your team not as a vendor. Every engineer assigned to
-                  your project understands your drawings, your codes, and your deadlines.
-                </p>
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { num: "15+", label: "Engineering Specialists" },
-                    { num: "6", label: "Core Disciplines" },
-                    { num: "IS/CPWD", label: "Code Standards" },
-                    { num: "Pan India", label: "+ Global Clients" },
-                  ].map((t) => (
-                    <div key={t.label} className="bg-white border border-slate-200 rounded-md p-5">
-                      <p className="font-display text-2xl font-extrabold text-orange-500 mb-1">{t.num}</p>
-                      <p className="text-[10px] font-bold text-wix-dark uppercase tracking-widest">{t.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                {[
-                  { role: "Structural Engineers", skills: ["RCC Design", "Steel Structure", "Foundation Design", "IS 456 / IS 800"], color: "bg-orange-500" },
-                  { role: "BIM Specialists", skills: ["Revit Modelling", "LOD 400", "Clash Detection", "4D Scheduling"], color: "bg-slate-800" },
-                  { role: "Quantity Surveyors", skills: ["BOQ Preparation", "CPWD DSR 2023", "Rate Analysis", "Cost Planning"], color: "bg-orange-400" },
-                  { role: "CAD and Drafting Team", skills: ["AutoCAD", "PDF to DWG", "Shop Drawings", "Rebar Detailing"], color: "bg-slate-600" },
-                ].map((team) => (
-                  <div key={team.role} className="bg-white border border-slate-200 rounded-md p-5 flex items-start gap-4">
-                    <div className={`w-1 self-stretch rounded-full ${team.color} flex-shrink-0`} />
-                    <div>
-                      <p className="text-xs font-extrabold text-wix-dark font-display uppercase tracking-wide mb-2">{team.role}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {team.skills.map((sk) => (
-                          <span key={sk} className="text-[10px] font-bold text-slate-500 bg-wix-gray border border-slate-200 px-2.5 py-1 rounded-full uppercase tracking-wide">
-                            {sk}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* COMPLIANCE STRIP */}
+        {/* COMPLIANCE STRIP (EXISTING) */}
         <section className="py-10 bg-white border-b border-slate-100">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex flex-wrap items-center justify-center gap-6">
@@ -314,7 +512,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* CONTACT CTA */}
+        {/* CONTACT CTA (EXISTING) */}
         <section className="py-20 md:py-24 bg-wix-gray">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="bg-wix-dark rounded-md overflow-hidden">
