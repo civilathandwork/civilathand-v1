@@ -120,7 +120,7 @@ export default function CalculatorsHubPage() {
               transition={{ delay: 0.15 }}
               className="mt-3 text-sm text-slate-600 leading-relaxed font-medium"
             >
-              Select from our suite of professional estimators. All algorithms are calibrated to Indian Standard (IS) codes and CPWD DSR guidelines, including standard material dry-volume factors and site wastage allowances.
+              Accurate construction estimation starts here. Our calculators use codal standards, material factors, and practical site allowances to deliver precise engineering results.
             </motion.p>
           </div>
 
