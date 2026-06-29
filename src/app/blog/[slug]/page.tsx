@@ -455,8 +455,27 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
               {/* Share Article Widget */}
               <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-premium space-y-4">
                 <h4 className="font-display font-extrabold text-xs text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-2">
-                  Share Article
+                  Appreciate & Share
                 </h4>
+
+                {/* Like Button Row inside Card */}
+                <div className="flex items-center justify-between gap-2 border-b border-slate-50 pb-3">
+                  <button
+                    onClick={handleLikeClick}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[10px] font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                      liked 
+                        ? "bg-rose-50 border-rose-100 text-rose-600 shadow-sm" 
+                        : "bg-white border-slate-200 hover:border-rose-200 hover:bg-rose-50/20 text-slate-700 hover:text-rose-600"
+                    }`}
+                  >
+                    <Heart className={`h-3.5 w-3.5 transition-transform duration-300 ${liked ? "fill-rose-500 stroke-rose-500 scale-110" : ""}`} />
+                    <span>{likesCount} {likesCount === 1 ? "Like" : "Likes"}</span>
+                  </button>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                    {sharesCount} {sharesCount === 1 ? "Share" : "Shares"}
+                  </span>
+                </div>
+
                 <div className="flex flex-wrap items-center gap-2">
                   {shareLinks.map((share, index) => {
                     if (share.action) {
