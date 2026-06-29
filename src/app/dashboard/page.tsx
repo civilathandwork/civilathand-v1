@@ -52,8 +52,14 @@ export default function DashboardPage() {
                 Access your blueprints, monitor active engineering pipelines, and complete milestone billing.
               </p>
               <p className="text-xs text-slate-300 mt-1">
-               Project Email :- Project.civilathand@gmail.com
-              </p>
+  Project Email :-{" "}
+  <a
+    href="mailto:Project.civilathand@gmail.com"
+    className="text-blue-400 hover:text-blue-300 underline"
+  >
+    Project.civilathand@gmail.com
+  </a>
+</p>
             </div>
 
             {/* Quick stats widgets */}
