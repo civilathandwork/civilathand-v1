@@ -391,18 +391,18 @@ export default function Home() {
                     <>
                       <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
                         <Link
-                          href="/auth?mode=signup"
+                          href="/auth"
                           className="inline-block rounded-md bg-orange-500 hover:bg-orange-600 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest shadow-sm shadow-orange-glow"
                         >
-                          Create Account
+                          Get Consultancy
                         </Link>
                       </motion.div>
                       <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
                         <Link
-                          href="/auth?mode=signin"
+                          href="/auth"
                           className="inline-block rounded-md border border-slate-500 hover:border-white hover:bg-white/10 px-7 py-4 text-xs font-bold text-white transition-all duration-300 uppercase tracking-widest"
                         >
-                          Sign In
+                          Explore Services
                         </Link>
                       </motion.div>
                     </>
