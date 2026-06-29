@@ -112,6 +112,8 @@ export async function POST(request: Request) {
       status: status || "draft",
       slug: generateSlug(title),
       views: 0,
+      likes: 0,
+      shares: 0,
     };
 
     await collection.insertOne(newBlog);

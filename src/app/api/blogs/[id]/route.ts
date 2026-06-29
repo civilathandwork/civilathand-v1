@@ -74,15 +74,24 @@ export async function POST(
 ) {
   try {
     const { id } = await params;
+    const body = await request.json().catch(() => ({}));
+    const action = body.action || "view";
 
     const client = await clientPromise;
     const db = client.db(dbName);
     const collection = db.collection("blogs");
 
-    // Atomic increment of the views field by 1
+    let updateDoc = { $inc: { views: 1 } };
+    if (action === "like") {
+      updateDoc = { $inc: { likes: 1 } };
+    } else if (action === "share") {
+      updateDoc = { $inc: { shares: 1 } };
+    }
+
+    // Atomic increment of the specified field
     const result = await collection.findOneAndUpdate(
       { id },
-      { $inc: { views: 1 } },
+      updateDoc,
       { returnDocument: "after" }
     );
 
@@ -93,7 +102,7 @@ export async function POST(
     const { _id, ...responseItem } = result as any;
     return NextResponse.json(responseItem);
   } catch (error) {
-    console.error("Error incrementing blog views:", error);
-    return NextResponse.json({ error: "Failed to increment views" }, { status: 500 });
+    console.error("Error updating blog actions:", error);
+    return NextResponse.json({ error: "Failed to update action count" }, { status: 500 });
   }
 }

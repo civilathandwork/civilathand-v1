@@ -7,7 +7,7 @@ import { Footer } from "@/components/Footer";
 import { useProjects, BlogPost } from "@/context/ProjectContext";
 import { generateSlug } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Calendar, User, BookOpen, Clock, ChevronRight, Share2, X } from "lucide-react";
+import { ArrowLeft, Calendar, User, BookOpen, Clock, ChevronRight, Share2, X, Heart } from "lucide-react";
 
 export default function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -18,6 +18,24 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
   const [shareUrl, setShareUrl] = React.useState("");
   const [copied, setCopied] = React.useState(false);
   const [popupImageSrc, setPopupImageSrc] = React.useState<string | null>(null);
+
+  const [liked, setLiked] = React.useState(false);
+  const [likesCount, setLikesCount] = React.useState(0);
+  const [sharesCount, setSharesCount] = React.useState(0);
+
+  React.useEffect(() => {
+    if (post) {
+      setLikesCount((post as any).likes || 0);
+      setSharesCount((post as any).shares || 0);
+      
+      if (typeof window !== "undefined") {
+        const likedBlogs = JSON.parse(localStorage.getItem("liked_blogs") || "[]");
+        if (likedBlogs.includes(post.id)) {
+          setLiked(true);
+        }
+      }
+    }
+  }, [post]);
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
@@ -62,11 +80,49 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
     };
   }, []);
 
+  const handleLikeClick = async () => {
+    if (!post || liked) return;
+
+    try {
+      setLiked(true);
+      setLikesCount(prev => prev + 1);
+
+      if (typeof window !== "undefined") {
+        const likedBlogs = JSON.parse(localStorage.getItem("liked_blogs") || "[]");
+        likedBlogs.push(post.id);
+        localStorage.setItem("liked_blogs", JSON.stringify(likedBlogs));
+      }
+
+      await fetch(`/api/blogs/${post.id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "like" })
+      });
+    } catch (err) {
+      console.error("Error liking post:", err);
+    }
+  };
+
+  const handleShareClick = async () => {
+    if (!post) return;
+    try {
+      setSharesCount(prev => prev + 1);
+      await fetch(`/api/blogs/${post.id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "share" })
+      });
+    } catch (err) {
+      console.error("Error sharing post:", err);
+    }
+  };
+
   const handleCopyLink = () => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
       navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+      handleShareClick();
     }
   };
 
@@ -316,13 +372,29 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
                 )}
               </div>
 
-              {/* Share Article Section */}
+              {/* Share & Like Article Section */}
               <div className="border-t border-slate-100 pt-6 mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="flex items-center gap-2 text-slate-500">
-                  <Share2 className="h-4 w-4 text-orange-500" />
-                  <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">Share this article</span>
+                <div className="flex items-center gap-4">
+                  {/* Like Button */}
+                  <button
+                    onClick={handleLikeClick}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                      liked 
+                        ? "bg-rose-50 border-rose-200 text-rose-600 shadow-sm" 
+                        : "bg-white border-slate-200 hover:border-rose-200 hover:bg-rose-50/20 text-slate-700 hover:text-rose-600"
+                    }`}
+                  >
+                    <Heart className={`h-4.5 w-4.5 transition-transform duration-300 ${liked ? "fill-rose-500 stroke-rose-500 scale-110" : ""}`} />
+                    <span>{likesCount} {likesCount === 1 ? "Like" : "Likes"}</span>
+                  </button>
+
+                  <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                    {sharesCount} {sharesCount === 1 ? "Share" : "Shares"}
+                  </div>
                 </div>
+
                 <div className="flex items-center gap-2">
+                  <span className="text-[10px] text-slate-450 font-extrabold uppercase tracking-wider mr-1">Share:</span>
                   {shareLinks.map((share, index) => {
                     if (share.action) {
                       return (
@@ -347,6 +419,7 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
                         href={share.url}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={handleShareClick}
                         className={`h-9 w-9 rounded-lg border border-slate-200/80 flex items-center justify-center transition-all duration-300 relative group ${share.color}`}
                         title={share.tooltip}
                       >
@@ -409,6 +482,7 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
                         href={share.url}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={handleShareClick}
                         className={`h-9 w-9 rounded-lg border border-slate-200/80 flex items-center justify-center transition-all duration-300 relative group ${share.color}`}
                         title={share.tooltip}
                       >

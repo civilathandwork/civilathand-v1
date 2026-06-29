@@ -50,7 +50,9 @@ import {
   Type,
   FileText,
   Loader2,
-  Eye
+  Eye,
+  Heart,
+  Share2
 } from "lucide-react";
 
 export const AdminView: React.FC = () => {
@@ -99,6 +101,8 @@ export const AdminView: React.FC = () => {
 
   const totalBlogViews = blogs.reduce((acc, curr) => acc + ((curr as any).views || 0), 0);
   const totalPortfolioViews = portfolio.reduce((acc, curr) => acc + ((curr as any).views || 0), 0);
+  const totalBlogLikes = blogs.reduce((acc, curr) => acc + ((curr as any).likes || 0), 0);
+  const totalBlogShares = blogs.reduce((acc, curr) => acc + ((curr as any).shares || 0), 0);
 
   // Handle Converting Lead to Project
   const handleConvertLead = async (lead: Lead) => {
@@ -749,26 +753,42 @@ export const AdminView: React.FC = () => {
                 
                 {/* Blog Statistics */}
                 <div className="border border-slate-200 rounded-xl p-5 bg-white shadow-sm space-y-4">
-                  <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                  <div className="flex flex-col sm:flex-row justify-between sm:items-center border-b border-slate-100 pb-3 gap-2">
                     <h4 className="font-display font-extrabold text-sm text-navy-950 uppercase tracking-wider">
                       Blog Articles Performance
                     </h4>
-                    <span className="text-[10px] bg-blue-100 text-blue-700 px-2.5 py-1 rounded font-bold uppercase tracking-wider flex items-center gap-1">
-                      <Eye className="h-3.5 w-3.5" /> {totalBlogViews.toLocaleString()} Total Views
-                    </span>
+                    <div className="flex items-center gap-2 flex-wrap text-[9px] font-bold uppercase">
+                      <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded flex items-center gap-1" title="Total Blog Views">
+                        <Eye className="h-3 w-3" /> {totalBlogViews.toLocaleString()}
+                      </span>
+                      <span className="bg-rose-100 text-rose-700 px-2 py-0.5 rounded flex items-center gap-1" title="Total Blog Likes">
+                        <Heart className="h-3 w-3 fill-rose-500 stroke-rose-750" /> {totalBlogLikes.toLocaleString()}
+                      </span>
+                      <span className="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded flex items-center gap-1" title="Total Blog Shares">
+                        <Share2 className="h-3 w-3" /> {totalBlogShares.toLocaleString()}
+                      </span>
+                    </div>
                   </div>
                   <div className="space-y-2.5 max-h-56 overflow-y-auto pr-1">
                     {[...blogs]
                       .sort((a, b) => ((b as any).views || 0) - ((a as any).views || 0))
                       .slice(0, 5)
                       .map((post) => (
-                        <div key={post.id} className="flex justify-between items-center text-xs p-2 bg-slate-50 rounded-lg border border-slate-100">
-                          <div className="truncate font-semibold text-navy-950 max-w-[70%]" title={post.title}>
+                        <div key={post.id} className="flex justify-between items-center text-xs p-2 bg-slate-50 rounded-lg border border-slate-100 gap-2">
+                          <div className="truncate font-semibold text-navy-950 max-w-[50%]" title={post.title}>
                             {post.title}
                           </div>
-                          <span className="text-[10px] font-bold text-slate-500 flex items-center gap-1 flex-shrink-0">
-                            <Eye className="h-3 w-3" /> {((post as any).views || 0)} views
-                          </span>
+                          <div className="flex items-center gap-2 flex-shrink-0 text-[9px] text-slate-500 font-bold">
+                            <span className="flex items-center gap-0.5" title="Views">
+                              <Eye className="h-2.5 w-2.5 text-blue-500" /> {((post as any).views || 0)}
+                            </span>
+                            <span className="flex items-center gap-0.5" title="Likes">
+                              <Heart className="h-2.5 w-2.5 fill-rose-500 stroke-rose-500" /> {((post as any).likes || 0)}
+                            </span>
+                            <span className="flex items-center gap-0.5" title="Shares">
+                              <Share2 className="h-2.5 w-2.5 text-indigo-500" /> {((post as any).shares || 0)}
+                            </span>
+                          </div>
                         </div>
                       ))}
                     {blogs.length === 0 && (
@@ -1301,6 +1321,12 @@ export const AdminView: React.FC = () => {
                             </span>
                             <span className="text-[8px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded font-bold uppercase tracking-wide flex items-center gap-1">
                               <Eye className="h-3 w-3" /> {(post as any).views || 0} views
+                            </span>
+                            <span className="text-[8px] bg-rose-50 text-rose-700 px-1.5 py-0.5 rounded font-bold uppercase tracking-wide flex items-center gap-1">
+                              <Heart className="h-3 w-3 fill-rose-500 stroke-rose-500" /> {(post as any).likes || 0} likes
+                            </span>
+                            <span className="text-[8px] bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded font-bold uppercase tracking-wide flex items-center gap-1">
+                              <Share2 className="h-3 w-3" /> {(post as any).shares || 0} shares
                             </span>
                             <span className="text-[9px] text-navy-500 ml-auto font-medium">{post.date}</span>
                           </div>
