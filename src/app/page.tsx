@@ -630,111 +630,114 @@ export default function Home() {
 
 
 
-       {/* SECTION 6: CONCEPT TO COMMISSIONING INTERACTIVE LIFECYCLE */}
-        {/* <section className="py-24 bg-wix-cream border-y border-slate-200">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={scrollRevealVariants}
-              className="text-center max-w-3xl mx-auto mb-16"
-            >
-              <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Service Lifecycle</span>
-              <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
-                Concept to Commissioning: Engineering Pipeline
-              </h2>
-              <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed">
-                Click through the 6 stages of our integrated engineering and construction verification workflow to see our rigorous standards and deliverable sets.
-              </p>
-            </motion.div>
+        {/* SECTION 6: CONCEPT TO COMMISSIONING INTERACTIVE LIFECYCLE - HIDDEN FROM HOME PAGE */}
+        {false && (
+          <section className="py-24 bg-wix-cream border-y border-slate-200">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <motion.div 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={scrollRevealVariants}
+                className="text-center max-w-3xl mx-auto mb-16"
+              >
+                <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Service Lifecycle</span>
+                <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
+                  Concept to Commissioning: Engineering Pipeline
+                </h2>
+                <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                  Click through the 6 stages of our integrated engineering and construction verification workflow to see our rigorous standards and deliverable sets.
+                </p>
+              </motion.div>
 
-            {/* Interactive Step Timeline Headers */}
-            <div className="grid grid-cols-2 md:grid-cols-6 gap-2 mb-10">
-              {lifecycleSteps.map((step, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveLifecycleStep(idx)}
-                  className={`p-4 rounded-md border text-left transition-all duration-300 ${
-                    activeLifecycleStep === idx 
-                      ? "bg-wix-dark border-wix-dark text-white shadow-sm" 
-                      : "bg-white border-slate-200 text-wix-dark hover:bg-slate-50"
-                  }`}
-                  suppressHydrationWarning
-                >
-                  <span className={`block font-display text-xs font-extrabold uppercase tracking-wider ${
-                    activeLifecycleStep === idx ? "text-orange-400" : "text-orange-600"
-                  }`}>
-                    Phase {step.phase}
-                  </span>
-                  <span className="block text-xs font-extrabold mt-1 truncate">{step.title}</span>
-                </button>
-              ))}
-            </div>
+              {/* Interactive Step Timeline Headers */}
+              <div className="grid grid-cols-2 md:grid-cols-6 gap-2 mb-10">
+                {lifecycleSteps.map((step, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveLifecycleStep(idx)}
+                    className={`p-4 rounded-md border text-left transition-all duration-300 ${
+                      activeLifecycleStep === idx 
+                        ? "bg-wix-dark border-wix-dark text-white shadow-sm" 
+                        : "bg-white border-slate-200 text-wix-dark hover:bg-slate-50"
+                    }`}
+                    suppressHydrationWarning
+                  >
+                    <span className={`block font-display text-xs font-extrabold uppercase tracking-wider ${
+                      activeLifecycleStep === idx ? "text-orange-400" : "text-orange-600"
+                    }`}>
+                      Phase {step.phase}
+                    </span>
+                    <span className="block text-xs font-extrabold mt-1 truncate">{step.title}</span>
+                  </button>
+                ))}
+              </div>
 
-            {/* Interactive Details Card */}
-            <div className="bg-white border border-slate-200 rounded-md p-6 md:p-10 shadow-sm min-h-[350px] flex flex-col justify-between relative overflow-hidden">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeLifecycleStep}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.25 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start"
-                >
-                  {/* Left Column: Description & Statistics */}
-                  <div className="lg:col-span-7 space-y-5">
-                    <div className="flex items-center gap-4">
-                      <span className="font-display font-black text-4xl text-orange-500/20 select-none">{lifecycleSteps[activeLifecycleStep].phase}</span>
-                      <div>
-                        <span className="text-[10px] text-orange-600 uppercase font-bold tracking-widest block">
-                          {lifecycleSteps[activeLifecycleStep].subtitle}
-                        </span>
-                        <h3 className="font-display font-extrabold text-xl text-wix-dark mt-0.5 uppercase tracking-wide">
-                          {lifecycleSteps[activeLifecycleStep].title}
-                        </h3>
+              {/* Interactive Details Card */}
+              <div className="bg-white border border-slate-200 rounded-md p-6 md:p-10 shadow-sm min-h-[350px] flex flex-col justify-between relative overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeLifecycleStep}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.25 }}
+                    className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start"
+                  >
+                    {/* Left Column: Description & Statistics */}
+                    <div className="lg:col-span-7 space-y-5">
+                      <div className="flex items-center gap-4">
+                        <span className="font-display font-black text-4xl text-orange-500/20 select-none">{lifecycleSteps[activeLifecycleStep].phase}</span>
+                        <div>
+                          <span className="text-[10px] text-orange-600 uppercase font-bold tracking-widest block">
+                            {lifecycleSteps[activeLifecycleStep].subtitle}
+                          </span>
+                          <h3 className="font-display font-extrabold text-xl text-wix-dark mt-0.5 uppercase tracking-wide">
+                            {lifecycleSteps[activeLifecycleStep].title}
+                          </h3>
+                        </div>
                       </div>
-                    </div>
-                    <p className="text-xs text-slate-500 leading-relaxed font-medium">
-                      {lifecycleSteps[activeLifecycleStep].desc}
-                    </p>
-                    <div className="inline-flex items-center gap-2 bg-orange-50 text-orange-600 border border-orange-100 px-3 py-1.5 rounded-md text-xs font-bold shadow-sm">
-                      <CheckCircle2 className="h-4.5 w-4.5" />
-                      <span>{lifecycleSteps[activeLifecycleStep].stat}</span>
-                    </div>
-                  </div>
-
-                  {/* Right Column: Compliance and Deliverables */}
-                  <div className="lg:col-span-5 space-y-4">
-                    {/* Compliance Box */}
-                    <div className="bg-wix-cream border border-slate-200/80 p-4 rounded-md space-y-2">
-                      <span className="text-[10px] text-wix-dark font-bold uppercase tracking-widest block">Compliance Codes & Standards</span>
-                      <p className="text-xs text-slate-600 font-bold italic">
-                        {lifecycleSteps[activeLifecycleStep].codes}
+                      <p className="text-xs text-slate-500 leading-relaxed font-medium">
+                        {lifecycleSteps[activeLifecycleStep].desc}
                       </p>
-                    </div>
-
-                    {/* Deliverables Checklist */}
-                    <div className="space-y-2.5">
-                      <span className="text-[10px] text-wix-dark font-bold uppercase tracking-widest block">Released Deliverables:</span>
-                      <div className="space-y-2">
-                        {lifecycleSteps[activeLifecycleStep].deliverables.map((item, dIdx) => (
-                          <div key={dIdx} className="flex items-center gap-2.5 text-xs text-slate-600">
-                            <div className="h-5 w-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0 border border-emerald-100">
-                              <CheckCircle2 className="h-3.5 w-3.5" />
-                            </div>
-                            <span className="font-bold text-slate-700">{item}</span>
-                          </div>
-                        ))}
+                      <div className="inline-flex items-center gap-2 bg-orange-50 text-orange-600 border border-orange-100 px-3 py-1.5 rounded-md text-xs font-bold shadow-sm">
+                        <CheckCircle2 className="h-4.5 w-4.5" />
+                        <span>{lifecycleSteps[activeLifecycleStep].stat}</span>
                       </div>
                     </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+
+                    {/* Right Column: Compliance and Deliverables */}
+                    <div className="lg:col-span-5 space-y-4">
+                      {/* Compliance Box */}
+                      <div className="bg-wix-cream border border-slate-200/80 p-4 rounded-md space-y-2">
+                        <span className="text-[10px] text-wix-dark font-bold uppercase tracking-widest block">Compliance Codes & Standards</span>
+                        <p className="text-xs text-slate-600 font-bold italic">
+                          {lifecycleSteps[activeLifecycleStep].codes}
+                        </p>
+                      </div>
+
+                      {/* Deliverables Checklist */}
+                      <div className="space-y-2.5">
+                        <span className="text-[10px] text-wix-dark font-bold uppercase tracking-widest block">Released Deliverables:</span>
+                        <div className="space-y-2">
+                          {lifecycleSteps[activeLifecycleStep].deliverables.map((item, dIdx) => (
+                            <div key={dIdx} className="flex items-center gap-2.5 text-xs text-slate-600">
+                              <div className="h-5 w-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0 border border-emerald-100">
+                                <CheckCircle2 className="h-3.5 w-3.5" />
+                              </div>
+                              <span className="font-bold text-slate-700">{item}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
-          </div>
-        </section> */}
+          </section>
+        )}
+
         {/* SECTION 7: PROJECT PORTFOLIO */}
         <section id="portfolio" className="py-24 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -1282,5 +1285,3 @@ const FileTextIcon = (props: any) => (
     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
   </svg>
 );
-
-
