@@ -630,7 +630,7 @@ export default function Home() {
 
 
 
-        {/* SECTION 6: CONCEPT TO COMMISSIONING INTERACTIVE LIFECYCLE */}
+      {/*  {/* SECTION 6: CONCEPT TO COMMISSIONING INTERACTIVE LIFECYCLE */}
         <section className="py-24 bg-wix-cream border-y border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div 
@@ -734,8 +734,7 @@ export default function Home() {
               </AnimatePresence>
             </div>
           </div>
-        </section>
-
+        </section> */}
         {/* SECTION 7: PROJECT PORTFOLIO */}
         <section id="portfolio" className="py-24 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
