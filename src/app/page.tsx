@@ -367,14 +367,14 @@ export default function Home() {
                   className="inline-flex items-center gap-1.5 rounded-md bg-white/5 border border-white/10 px-3.5 py-1.5 text-xs font-bold text-orange-400 shadow-sm uppercase tracking-widest"
                 >
                   <Cpu className="h-3.5 w-3.5" />
-                  <span>Next-Gen Engineering Technology</span>
+                  <span>Trusted Civil Engineering Solutions</span>
                 </motion.div>
                 
                 <motion.h1 
                   variants={heroItemVariants}
                   className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-tight uppercase"
                 >
-                  Engineering Excellence <span className="block text-orange-500 mt-2 font-black">Powered by Automation</span>
+                  COMPLETE CIVIL ENGINEERING <span className="block text-orange-500 mt-2 font-black">DESIGN & CONSULTANCY</span>
                 </motion.h1>
                 
                 <motion.p 
@@ -432,10 +432,8 @@ export default function Home() {
               {/* Animated Statistics */}
               <div className="lg:col-span-5 grid grid-cols-2 gap-4">
                 {[
-                  { value: IS Codal Provision, suffix: "+", label: "IS CODE
-COMPLIANT", desc: "Safe, Accurate & Standard-Based Designs" },
-                  { value: PAN INDIA
-SERVICES, suffix: "+", label: "Happy Clients", desc: "Online Engineering Solutions Across India" },
+                  { value: 21, suffix: "+", label: "Projects Completed", desc: "Residential & Commercial Solutions" },
+                  { value: 11, suffix: "+", label: "Happy Clients", desc: "Trusted by Homeowners & Businesses" },
                   { value: 100, suffix: "%", label: "Commitment", desc: "Quality, Accuracy & Professional Service" },
                   { value: "FAST", suffix: " DELIVERY", label: "On-Time", desc: "Project Execution" },
                 ].map((stat, idx) => (
