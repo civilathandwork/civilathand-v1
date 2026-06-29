@@ -165,13 +165,25 @@ export default function TestSeriesPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {exams.map((e) => (
-                <div key={e.name} className="bg-white border border-slate-200 rounded-md p-6 hover:border-orange-400 hover:shadow-md transition-all">
+                <div key={e.name} className="bg-white border border-slate-200 rounded-md p-6 hover:border-orange-400 hover:shadow-md transition-all flex flex-col">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-2 h-2 rounded-full bg-orange-500" />
                     <p className="font-display text-sm font-extrabold text-wix-dark uppercase tracking-wide">{e.name}</p>
                   </div>
                   <p className="text-xs text-slate-500 font-medium mb-1">{e.desc}</p>
-                  <p className="text-[10px] font-bold text-orange-500 uppercase tracking-widest">{e.papers}</p>
+                  <p className="text-[10px] font-bold text-orange-500 uppercase tracking-widest mb-3">{e.papers}</p>
+                  {e.name === "GATE CE" ? (
+                    <Link
+                      href="/education/test-series/gate-pyq"
+                      className="mt-auto inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 text-[10px] uppercase tracking-widest rounded-md transition-all w-fit"
+                    >
+                      <BookOpen className="h-3.5 w-3.5" /> Solve PYQ — Free
+                    </Link>
+                  ) : (
+                    <span className="mt-auto inline-flex items-center gap-1.5 border border-slate-200 text-slate-400 font-bold px-4 py-2 text-[10px] uppercase tracking-widest rounded-md w-fit cursor-not-allowed">
+                      <Lock className="h-3 w-3" /> Coming Soon
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
