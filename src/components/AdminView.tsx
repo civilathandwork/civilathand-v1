@@ -1500,7 +1500,7 @@ export const AdminView: React.FC = () => {
                                    </div>
                                  )}
                                  <input
-                                   type="url"
+                                   type="text"
                                    value={blogImage}
                                    onChange={(e) => setBlogImage(e.target.value)}
                                    placeholder="https://images.unsplash.com/photo-..."
@@ -1773,8 +1773,9 @@ export const AdminView: React.FC = () => {
                                        {showImageMenu && (
                                          <div className="absolute right-0 mt-1.5 p-3.5 bg-white border border-slate-200 rounded-xl shadow-premium-lg z-25 flex flex-col gap-3.5 animate-fadeIn select-none w-56">
                                            <div className="space-y-1.5">
-                                             <label className="block text-[9px] font-bold text-navy-950 uppercase tracking-wider">Upload from Device</label>
+                                             <label htmlFor="editorImageUploadInput" className="block text-[9px] font-bold text-navy-950 uppercase tracking-wider cursor-pointer hover:text-orange-500 transition-colors">Upload from Device</label>
                                              <input
+                                               id="editorImageUploadInput"
                                                type="file"
                                                accept="image/*"
                                                disabled={isUploading}
@@ -1789,7 +1790,7 @@ export const AdminView: React.FC = () => {
                                              <label className="block text-[9px] font-bold text-navy-950 uppercase tracking-wider">Insert from URL</label>
                                              <div className="flex gap-1.5">
                                                <input
-                                                 type="url"
+                                                 type="text"
                                                  placeholder="https://example.com/image.png"
                                                  value={urlInput}
                                                  onChange={(e) => setUrlInput(e.target.value)}
