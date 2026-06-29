@@ -25,33 +25,20 @@ export async function POST(request: Request) {
     const baseName = path.basename(fileName, ext).replace(/[^a-zA-Z0-9]/g, "_");
     const filename = `${Date.now()}-${baseName}${ext}`;
 
-    // Try local filesystem first (for local dev speed)
-    try {
-      const uploadDir = path.join(process.cwd(), "public", "uploads");
-      await mkdir(uploadDir, { recursive: true });
-      const filePath = path.join(uploadDir, filename);
-      await writeFile(filePath, buffer);
-      
-      const fileUrl = `/uploads/${filename}`;
-      return NextResponse.json({ url: fileUrl });
-    } catch (fsError: any) {
-      console.warn("Local filesystem write failed, falling back to MongoDB storage:", fsError);
+    // Save to MongoDB uploaded_files collection to guarantee accessibility in both local dev and production/Vercel
+    const client = await clientPromise;
+    const db = client.db(dbName);
+    const filesCollection = db.collection("uploaded_files");
 
-      // Save to MongoDB uploaded_files collection
-      const client = await clientPromise;
-      const db = client.db(dbName);
-      const filesCollection = db.collection("uploaded_files");
+    await filesCollection.insertOne({
+      filename,
+      contentType: file.type || "application/octet-stream",
+      data: buffer.toString("base64"),
+      createdAt: new Date()
+    });
 
-      await filesCollection.insertOne({
-        filename,
-        contentType: file.type || "application/octet-stream",
-        data: buffer.toString("base64"),
-        createdAt: new Date()
-      });
-
-      const fileUrl = `/api/uploads/${filename}`;
-      return NextResponse.json({ url: fileUrl });
-    }
+    const fileUrl = `/api/uploads/${filename}`;
+    return NextResponse.json({ url: fileUrl });
   } catch (error: any) {
     console.error("Error uploading file:", error);
     return NextResponse.json({ error: `Failed to upload file: ${error.message || error}` }, { status: 500 });
