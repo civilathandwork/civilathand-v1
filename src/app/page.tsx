@@ -445,11 +445,7 @@ export default function Home() {
     >
       <div>
         <p className="text-2xl font-extrabold font-display text-orange-500 tracking-tight">
-          {typeof stat.value === 'number' ? (
-            <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-          ) : (
-            <span>{stat.value}{stat.suffix}</span>
-          )}
+          <AnimatedCounter value={stat.value} suffix={stat.suffix} />
         </p>
         <p className="text-xs font-bold mt-1 text-white uppercase tracking-wider">{stat.label}</p>
       </div>
