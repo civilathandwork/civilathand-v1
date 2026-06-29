@@ -630,8 +630,8 @@ export default function Home() {
 
 
 
-      {/*  {/* SECTION 6: CONCEPT TO COMMISSIONING INTERACTIVE LIFECYCLE */}
-        <section className="py-24 bg-wix-cream border-y border-slate-200">
+       {/* SECTION 6: CONCEPT TO COMMISSIONING INTERACTIVE LIFECYCLE */}
+        {/* <section className="py-24 bg-wix-cream border-y border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial="hidden"
