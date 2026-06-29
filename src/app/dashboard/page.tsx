@@ -54,10 +54,10 @@ export default function DashboardPage() {
               <p className="text-xs text-slate-300 mt-1">
   Project Support Email :-{" "}
   <a
-    href="mailto:Project.civilathand@gmail.com"
+    href="mailto:project.civilathand@gmail.com"
     className="text-blue-400 hover:text-blue-300 underline"
   >
-    Project.civilathand@gmail.com
+    project.civilathand@gmail.com
   </a>
 </p>
             </div>
