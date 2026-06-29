@@ -8,6 +8,49 @@ import { Mail, Lock, User, ArrowRight, ShieldCheck, AlertCircle, Loader } from "
 export default function AuthPage() {
   const router = useRouter();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const handleGoogleCallback = async (accessToken: string) => {
+    setLoading(true);
+    setErrorMsg(null);
+    setSuccessMsg("Verifying Google account...");
+
+    try {
+      const userinfoRes = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`);
+      if (!userinfoRes.ok) throw new Error("Failed to fetch user profile from Google");
+      const userinfo = await userinfoRes.json();
+
+      const { name, email } = userinfo;
+      if (!email) throw new Error("No email returned from Google user info");
+
+      const res = await fetch("/api/auth/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name || "Google User",
+          email,
+          isGoogle: true
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Authentication failed.");
+      }
+
+      setSuccessMsg("Signed in with Google successfully!");
+      localStorage.setItem("cah_user", JSON.stringify(data));
+      window.dispatchEvent(new Event("storage"));
+      
+      // Clear URL hash fragment
+      window.history.replaceState(null, "", window.location.pathname);
+      
+      setTimeout(() => {
+        router.replace("/");
+      }, 1000);
+    } catch (err: any) {
+      setErrorMsg(err.message || "Google authentication failed. Please try standard sign in.");
+      setLoading(false);
+    }
+  };
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
@@ -15,6 +58,15 @@ export default function AuthPage() {
       const modeParam = params.get("mode");
       if (modeParam === "signup" || modeParam === "signin") {
         setMode(modeParam as any);
+      }
+
+      const hash = window.location.hash;
+      if (hash && hash.includes("access_token=")) {
+        const hashParams = new URLSearchParams(hash.substring(1));
+        const accessToken = hashParams.get("access_token");
+        if (accessToken) {
+          handleGoogleCallback(accessToken);
+        }
       }
     }
   }, []);
@@ -29,10 +81,27 @@ export default function AuthPage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = async () => {
     setLoading(true);
     setErrorMsg(null);
     setSuccessMsg(null);
+
+    try {
+      const configRes = await fetch("/api/auth/google-config");
+      const config = await configRes.json();
+      
+      if (config.clientId) {
+        // Real Google Authentication using OAuth2 implicit flow
+        const clientId = config.clientId;
+        const redirectUri = window.location.origin + "/auth";
+        const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${encodeURIComponent("https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email")}`;
+        
+        window.location.href = oauthUrl;
+        return;
+      }
+    } catch (configErr) {
+      console.warn("Failed to check Google client configuration, using fallback mock provider", configErr);
+    }
 
     const width = 500;
     const height = 600;
@@ -62,57 +131,54 @@ export default function AuthPage() {
                 align-items: center;
                 justify-content: center;
                 height: 100vh;
-                color: #202124;
               }
               .card {
                 width: 380px;
+                padding: 40px;
                 border: 1px solid #dadce0;
                 border-radius: 8px;
-                padding: 40px;
-                box-sizing: border-box;
                 text-align: center;
               }
               .logo {
-                width: 75px;
+                width: 74px;
                 height: 24px;
                 margin-bottom: 16px;
               }
               h1 {
                 font-size: 24px;
                 font-weight: 400;
+                color: #202124;
                 margin: 0 0 8px 0;
               }
               p {
                 font-size: 16px;
-                color: #5f6368;
+                color: #202124;
                 margin: 0 0 24px 0;
               }
               .user-option {
                 display: flex;
                 align-items: center;
-                padding: 12px;
-                border: 1px solid #dadce0;
-                border-radius: 4px;
+                padding: 12px 16px;
+                border-top: 1px solid #dadce0;
+                border-bottom: 1px solid #dadce0;
                 cursor: pointer;
-                transition: background-color 0.2s;
                 text-align: left;
-                margin-bottom: 16px;
+                transition: background-color 0.2s;
               }
               .user-option:hover {
-                background-color: #f8f9fa;
+                background-color: #f7f8f9;
               }
               .avatar {
                 width: 32px;
                 height: 32px;
                 border-radius: 50%;
-                background-color: #4285F4;
+                background-color: #1a73e8;
                 color: #ffffff;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-weight: 700;
+                font-weight: 500;
                 margin-right: 12px;
-                font-size: 16px;
               }
               .user-info {
                 flex-grow: 1;
@@ -120,10 +186,11 @@ export default function AuthPage() {
               .user-name {
                 font-size: 14px;
                 font-weight: 500;
+                color: #3c4043;
               }
               .user-email {
                 font-size: 12px;
-                color: #5f6368;
+                color: #70757a;
               }
             </style>
           </head>
