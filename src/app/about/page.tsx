@@ -1,10 +1,9 @@
 import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { motion } from "framer-motion";  // 👈 ADD THIS HERE
+import { motion } from "framer-motion";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { motion } from "framer-motion";
 import {
   ArrowRight,
   CheckCircle2,
@@ -27,10 +26,7 @@ import {
   Eye,
   Heart,
   Zap,
-  Clock,
   Briefcase,
-  Code2,
-  PenTool,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -70,10 +66,8 @@ export default function AboutPage() {
       <Header />
 
       <main className="flex-grow">
-
         {/* HERO BANNER - Centered like Homepage */}
         <section className="relative min-h-[70vh] flex items-center justify-center bg-wix-dark text-white overflow-hidden">
-          {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
             <img 
               src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80&w=1600" 
@@ -128,14 +122,14 @@ export default function AboutPage() {
         {/* STATS BANNER */}
         <section className="py-8 bg-white border-b border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-x divide-slate-200">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
                 { value: "15+", label: "Projects Delivered", sub: "Residential, Commercial, Industrial" },
                 { value: "10+", label: "Clients Served", sub: "Architects, Developers, EPC Firms" },
                 { value: "2+", label: "Years of Expertise", sub: "Since 2024 — Fast Growth" },
                 { value: "24-72h", label: "Turnaround Time", sub: "Standard Project Delivery" },
               ].map((s, idx) => (
-                <div key={idx} className="px-6 text-center">
+                <div key={idx} className="px-6 text-center border-r border-slate-200 last:border-r-0">
                   <p className="font-display text-3xl font-extrabold text-orange-500 mb-1">{s.value}</p>
                   <p className="text-[10px] font-bold text-wix-dark uppercase tracking-widest mb-1">{s.label}</p>
                   <p className="text-[9px] text-slate-400 font-medium">{s.sub}</p>
@@ -590,7 +584,6 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
-
       </main>
 
       <Footer />
