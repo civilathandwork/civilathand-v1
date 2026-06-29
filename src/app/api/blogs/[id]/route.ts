@@ -81,7 +81,7 @@ export async function POST(
     const db = client.db(dbName);
     const collection = db.collection("blogs");
 
-    let updateDoc = { $inc: { views: 1 } };
+    let updateDoc: any = { $inc: { views: 1 } };
     if (action === "like") {
       updateDoc = { $inc: { likes: 1 } };
     } else if (action === "share") {
