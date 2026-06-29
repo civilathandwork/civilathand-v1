@@ -432,8 +432,10 @@ export default function Home() {
               {/* Animated Statistics */}
               <div className="lg:col-span-5 grid grid-cols-2 gap-4">
                 {[
-                  { value: 21, suffix: "+", label: "Projects Completed", desc: "Residential & Commercial Solutions" },
-                  { value: 11, suffix: "+", label: "Happy Clients", desc: "Trusted by Homeowners & Businesses" },
+                  { value: IS Codal Provision, suffix: "+", label: "IS CODE
+COMPLIANT", desc: "Safe, Accurate & Standard-Based Designs" },
+                  { value: PAN INDIA
+SERVICES, suffix: "+", label: "Happy Clients", desc: "Online Engineering Solutions Across India" },
                   { value: 100, suffix: "%", label: "Commitment", desc: "Quality, Accuracy & Professional Service" },
                   { value: "FAST", suffix: " DELIVERY", label: "On-Time", desc: "Project Execution" },
                 ].map((stat, idx) => (
