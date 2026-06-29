@@ -49,8 +49,7 @@ export default function DashboardPage() {
                 Welcome Back, <span className="text-orange-500">{user ? user.name : "Guest"}</span>
               </h1>
               <p className="text-xs text-slate-300 mt-1">
-                Access your blueprints, monitor active engineering pipelines, and complete milestone billing.
-                Project Support :- project.civilathand@gmail.com
+                Access your blueprints, monitor active engineering pipelines, and complete milestone billing. / Project Support :- project.civilathand@gmail.com
               </p>
             </div>
 
