@@ -60,7 +60,7 @@ export default function ServicesHubPage() {
               animate={{ opacity: 1, y: 0 }}
               className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2"
             >
-              Our Capabilities
+              Our Expertise
             </motion.span>
             <motion.h1 
               initial={{ opacity: 0, y: -10 }}
@@ -76,7 +76,7 @@ export default function ServicesHubPage() {
               transition={{ delay: 0.15 }}
               className="mt-3 text-sm text-slate-600 leading-relaxed font-medium"
             >
-              Civil At Hand provides a complete suite of engineering capabilities. We combine advanced software analysis and BIM coordination with senior engineering oversight to deliver highly optimized drawings, cost estimations, and structural blueprints.
+              Civil At Hand provides end-to-end civil engineering services including structural design, architectural planning, BOQ estimation, BIM modelling, and construction consulting.
             </motion.p>
           </div>
 
