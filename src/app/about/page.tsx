@@ -24,9 +24,11 @@ import {
   Target,
   Eye,
   Heart,
-  BookOpen,
   Zap,
   Clock,
+  Briefcase,
+  Code2,
+  PenTool,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -37,7 +39,7 @@ export const metadata: Metadata = {
 
 const milestones = [
   { year: "2024", title: "Founded", desc: "Started as a structural detailing studio serving local architects in Haryana, India." },
-  { year: "2026", title: "Digital Tools", desc: "Released proprietary AI-powered calculation engines — concrete, steel, brick, cost estimation, and BOQ takeoff." },
+  { year: "2025", title: "Digital Tools Launched", desc: "Released proprietary AI-powered calculation engines — concrete, steel, brick, cost estimation, and BOQ takeoff." },
   { year: "2026", title: "Global Delivery", desc: "Expanded to serve clients across India, Middle East, and Southeast Asia through a remote-first model." },
   { year: "2026", title: "Education Vertical", desc: "Launched Civil At Hand Education — offering courses, test series, and mentorship for civil engineering aspirants." },
 ];
@@ -57,7 +59,7 @@ const whyUs = [
   { icon: Award, label: "Licensed Engineers", desc: "All structural outputs signed off by licensed, experienced civil engineers." },
   { icon: Users, label: "Client First", desc: "Milestone-based updates, transparent communication, dedicated support on every project." },
   { icon: TrendingUp, label: "24-72 Hr Delivery", desc: "Standard projects delivered in 1-3 business days with full technical accuracy." },
-  { icon: Star, label: "21+ Projects", desc: "Trusted by 11+ clients across residential, commercial, and infrastructure sectors." },
+  { icon: Star, label: "15+ Projects", desc: "Trusted by 10+ clients across residential, commercial, and infrastructure sectors." },
 ];
 
 export default function AboutPage() {
@@ -67,68 +69,81 @@ export default function AboutPage() {
 
       <main className="flex-grow">
 
-        {/* IDENTITY HERO */}
-        <section className="relative bg-wix-dark overflow-hidden">
-          <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:20px_20px]" />
-          <div className="absolute top-0 left-0 right-0 h-1 bg-orange-500" />
+        {/* HERO BANNER - Centered like Homepage */}
+        <section className="relative min-h-[70vh] flex items-center justify-center bg-wix-dark text-white overflow-hidden">
+          {/* Background Image with Overlay */}
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80&w=1600" 
+              alt="Civil Engineering" 
+              className="w-full h-full object-cover opacity-30"
+            />
+            <div className="absolute inset-0 bg-wix-dark/70"></div>
+          </div>
 
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 rounded-full px-4 py-1.5 mb-6">
-                  <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-                  <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest">
-                    Civil At Hand - Est. 2024
-                  </span>
-                </div>
-                <h1 className="font-display text-5xl md:text-6xl font-extrabold text-white uppercase leading-tight tracking-tight">
-                  India's Precision<br />
-                  <span className="text-orange-500">Engineering</span><br />
-                  Consultancy
-                </h1>
-                <p className="mt-6 text-sm text-slate-400 font-medium leading-relaxed max-w-lg">
-                  We are a team of licensed structural engineers, BIM specialists, and quantity surveyors
-                  delivering IS-code compliant engineering services to architects, developers, and infrastructure
-                  firms across India and globally.
-                </p>
-                <div className="mt-10 flex flex-wrap gap-3">
-                  <Link
-                    href="/services/all-services"
-                    className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-3 text-[11px] uppercase tracking-widest rounded-md transition-all"
-                  >
-                    Our Services <ArrowRight className="h-4 w-4" />
-                  </Link>
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center gap-2 border border-white/20 hover:border-white text-white font-bold px-6 py-3 text-[11px] uppercase tracking-widest rounded-md transition-all"
-                  >
-                    Start a Project
-                  </Link>
-                </div>
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="space-y-6"
+            >
+              <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 rounded-full px-4 py-1.5 mb-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest">
+                  Civil At Hand — Est. 2024
+                </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { value: "21+", label: "Projects Delivered", sub: "Across India and globally" },
-                  { value: "11+", label: "Clients Served", sub: "Architects, developers, EPC" },
-                  { value: "2+", label: "Years of Expertise", sub: "Since 2024" },
-                  { value: "24-72h", label: "Turnaround Time", sub: "Standard projects" },
-                ].map((s) => (
-                  <div
-                    key={s.label}
-                    className="bg-white/5 border border-white/10 rounded-md p-6 hover:border-orange-500/40 transition-all"
-                  >
-                    <p className="font-display text-3xl font-extrabold text-white mb-1">{s.value}</p>
-                    <p className="text-[11px] font-bold text-orange-400 uppercase tracking-wider mb-1">{s.label}</p>
-                    <p className="text-[10px] text-slate-500 font-medium">{s.sub}</p>
-                  </div>
-                ))}
+              <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-extrabold uppercase leading-tight tracking-tight">
+                About <span className="text-orange-500">Civil At Hand</span>
+              </h1>
+
+              <p className="text-sm md:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed font-medium">
+                India's premier civil engineering consultancy — delivering IS-code compliant structural design, 
+                BOQ estimation, BIM coordination, and AI-powered quantity surveying to architects, developers, 
+                and contractors across India and globally.
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-4 pt-4">
+                <Link
+                  href="/services/all-services"
+                  className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-4 text-[11px] uppercase tracking-widest rounded-md transition-all"
+                >
+                  Explore Services <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 border border-white/20 hover:border-white text-white font-bold px-8 py-4 text-[11px] uppercase tracking-widest rounded-md transition-all"
+                >
+                  Start a Project
+                </Link>
               </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* STATS BANNER */}
+        <section className="py-8 bg-white border-b border-slate-200">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-x divide-slate-200">
+              {[
+                { value: "15+", label: "Projects Delivered", sub: "Residential, Commercial, Industrial" },
+                { value: "10+", label: "Clients Served", sub: "Architects, Developers, EPC Firms" },
+                { value: "2+", label: "Years of Expertise", sub: "Since 2024 — Fast Growth" },
+                { value: "24-72h", label: "Turnaround Time", sub: "Standard Project Delivery" },
+              ].map((s, idx) => (
+                <div key={idx} className="px-6 text-center">
+                  <p className="font-display text-3xl font-extrabold text-orange-500 mb-1">{s.value}</p>
+                  <p className="text-[10px] font-bold text-wix-dark uppercase tracking-widest mb-1">{s.label}</p>
+                  <p className="text-[9px] text-slate-400 font-medium">{s.sub}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* COMPANY STORY - NEW SECTION */}
+        {/* COMPANY STORY */}
         <section className="py-20 md:py-28 bg-white border-b border-slate-100">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -142,18 +157,29 @@ export default function AboutPage() {
                     Civil At Hand was founded in 2024 by a team of experienced civil engineers who recognized a critical gap in the Indian construction industry: <strong>the lack of fast, accurate, and code-compliant engineering design services</strong> accessible to architects, developers, and contractors.
                   </p>
                   <p>
-                    What started as a small structural detailing studio in Haryana has evolved into a full-spectrum engineering consultancy with a digital-first approach. Our founders—licensed structural engineers with years of experience in high-rise residential, commercial, and infrastructure projects—decided to build a firm that combines <strong>technical excellence with operational speed</strong>.
+                    What started as a small structural detailing studio in Haryana has evolved into a full-spectrum engineering consultancy with a digital-first approach. Our founders—licensed structural engineers with years of experience in residential, commercial, and infrastructure projects—decided to build a firm that combines <strong>technical excellence with operational speed</strong>.
                   </p>
                   <p>
                     Today, Civil At Hand serves clients across India, the Middle East, and Southeast Asia, delivering everything from structural design and BOQ estimation to BIM LOD 400 coordination and AI-powered quantity takeoffs.
                   </p>
+                  <div className="flex flex-wrap gap-3 mt-4">
+                    <span className="text-[10px] font-bold bg-orange-50 text-orange-600 px-3 py-1.5 rounded-full border border-orange-100">
+                      🚀 Founded 2024
+                    </span>
+                    <span className="text-[10px] font-bold bg-slate-50 text-slate-600 px-3 py-1.5 rounded-full border border-slate-200">
+                      📍 Haryana, India
+                    </span>
+                    <span className="text-[10px] font-bold bg-blue-50 text-blue-600 px-3 py-1.5 rounded-full border border-blue-100">
+                      🌐 Global Delivery
+                    </span>
+                  </div>
                 </div>
               </div>
               <div className="relative">
                 <div className="bg-wix-gray rounded-md p-8 border border-slate-200">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-orange-500 rounded-md flex items-center justify-center">
-                      <Heart className="h-6 w-6 text-white" />
+                    <div className="w-14 h-14 bg-orange-500 rounded-md flex items-center justify-center">
+                      <Heart className="h-7 w-7 text-white" />
                     </div>
                     <div>
                       <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Founded With Passion</p>
@@ -166,13 +192,21 @@ export default function AboutPage() {
                     </p>
                     <p className="text-xs text-slate-400 font-medium mt-2">— Founders, Civil At Hand</p>
                   </blockquote>
+                  <div className="mt-6 pt-6 border-t border-slate-200 flex items-center gap-4">
+                    <div className="flex -space-x-2">
+                      <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-[10px] font-bold text-white border-2 border-white">AK</div>
+                      <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-[10px] font-bold text-white border-2 border-white">RS</div>
+                      <div className="w-8 h-8 rounded-full bg-slate-500 flex items-center justify-center text-[10px] font-bold text-white border-2 border-white">PM</div>
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Founding Team</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* MISSION, VISION, WHY STARTED - NEW SECTION */}
+        {/* MISSION, VISION, WHY WE STARTED */}
         <section className="py-20 md:py-28 bg-wix-gray border-b border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-14">
@@ -182,29 +216,29 @@ export default function AboutPage() {
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white border border-slate-200 rounded-md p-8 hover:border-orange-500/40 transition-all shadow-sm">
-                <div className="w-14 h-14 bg-orange-500/10 rounded-md flex items-center justify-center mb-6">
-                  <Target className="h-7 w-7 text-orange-500" />
+              <div className="bg-white border border-slate-200 rounded-md p-8 hover:border-orange-500/40 transition-all shadow-sm group">
+                <div className="w-14 h-14 bg-orange-500/10 rounded-md flex items-center justify-center mb-6 group-hover:bg-orange-500 transition-all">
+                  <Target className="h-7 w-7 text-orange-500 group-hover:text-white transition-colors" />
                 </div>
-                <h3 className="font-display font-extrabold text-lg text-wix-dark uppercase mb-3">Mission</h3>
+                <h3 className="font-display font-extrabold text-lg text-wix-dark uppercase mb-3">Our Mission</h3>
                 <p className="text-sm text-slate-600 leading-relaxed font-medium">
                   To deliver <strong>precision civil engineering solutions</strong> that are structurally sound, code-compliant, and delivered at the speed of modern construction. We empower architects, developers, and contractors with <strong>AI-powered design tools, licensed engineering oversight, and seamless digital delivery</strong>.
                 </p>
               </div>
 
-              <div className="bg-white border border-slate-200 rounded-md p-8 hover:border-orange-500/40 transition-all shadow-sm">
-                <div className="w-14 h-14 bg-orange-500/10 rounded-md flex items-center justify-center mb-6">
-                  <Eye className="h-7 w-7 text-orange-500" />
+              <div className="bg-white border border-slate-200 rounded-md p-8 hover:border-orange-500/40 transition-all shadow-sm group">
+                <div className="w-14 h-14 bg-orange-500/10 rounded-md flex items-center justify-center mb-6 group-hover:bg-orange-500 transition-all">
+                  <Eye className="h-7 w-7 text-orange-500 group-hover:text-white transition-colors" />
                 </div>
-                <h3 className="font-display font-extrabold text-lg text-wix-dark uppercase mb-3">Vision</h3>
+                <h3 className="font-display font-extrabold text-lg text-wix-dark uppercase mb-3">Our Vision</h3>
                 <p className="text-sm text-slate-600 leading-relaxed font-medium">
                   To become <strong>India's most trusted remote engineering consultancy</strong>, known for technical accuracy, IS-code compliance, and rapid turnaround. We envision a future where every construction project—from residential villas to industrial complexes—has access to <strong>world-class engineering design</strong> regardless of location.
                 </p>
               </div>
 
-              <div className="bg-white border border-slate-200 rounded-md p-8 hover:border-orange-500/40 transition-all shadow-sm">
-                <div className="w-14 h-14 bg-orange-500/10 rounded-md flex items-center justify-center mb-6">
-                  <Zap className="h-7 w-7 text-orange-500" />
+              <div className="bg-white border border-slate-200 rounded-md p-8 hover:border-orange-500/40 transition-all shadow-sm group">
+                <div className="w-14 h-14 bg-orange-500/10 rounded-md flex items-center justify-center mb-6 group-hover:bg-orange-500 transition-all">
+                  <Zap className="h-7 w-7 text-orange-500 group-hover:text-white transition-colors" />
                 </div>
                 <h3 className="font-display font-extrabold text-lg text-wix-dark uppercase mb-3">Why We Started</h3>
                 <p className="text-sm text-slate-600 leading-relaxed font-medium">
@@ -215,7 +249,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* OUR TEAM - ENHANCED SECTION */}
+        {/* OUR TEAM */}
         <section className="py-20 md:py-28 bg-white border-b border-slate-100">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-14">
@@ -224,8 +258,9 @@ export default function AboutPage() {
                 Meet the <span className="text-orange-500">Team</span>
               </h2>
               <p className="mt-4 text-sm text-slate-500 font-medium">
-                Our multidisciplinary team brings together 15+ engineering specialists covering
+                Our multidisciplinary team brings together 12+ engineering specialists covering
                 structural design, quantity surveying, BIM coordination, drafting, and project management.
+                We work as an extension of your team — not as a vendor.
               </p>
             </div>
 
@@ -233,10 +268,10 @@ export default function AboutPage() {
               {/* Team Roles */}
               <div className="space-y-4">
                 {[
-                  { role: "Structural Engineers", skills: ["RCC Design", "Steel Structure", "Foundation Design", "IS 456 / IS 800"], color: "bg-orange-500", count: "6 Engineers" },
-                  { role: "BIM Specialists", skills: ["Revit Modelling", "LOD 400", "Clash Detection", "4D Scheduling"], color: "bg-slate-800", count: "4 Specialists" },
-                  { role: "Quantity Surveyors", skills: ["BOQ Preparation", "CPWD DSR 2023", "Rate Analysis", "Cost Planning"], color: "bg-orange-400", count: "3 Surveyors" },
-                  { role: "CAD & Drafting Team", skills: ["AutoCAD", "PDF to DWG", "Shop Drawings", "Rebar Detailing"], color: "bg-slate-600", count: "5 Drafters" },
+                  { role: "Structural Engineers", skills: ["RCC Design", "Steel Structure", "Foundation Design", "IS 456 / IS 800"], color: "bg-orange-500", count: "4 Engineers" },
+                  { role: "BIM Specialists", skills: ["Revit Modelling", "LOD 300-400", "Clash Detection", "Coordination"], color: "bg-slate-800", count: "3 Specialists" },
+                  { role: "Quantity Surveyors", skills: ["BOQ Preparation", "Rate Analysis", "Cost Planning", "Material Takeoff"], color: "bg-orange-400", count: "2 Surveyors" },
+                  { role: "CAD & Drafting Team", skills: ["AutoCAD", "PDF to DWG", "Shop Drawings", "Rebar Detailing"], color: "bg-slate-600", count: "3 Drafters" },
                 ].map((team) => (
                   <div key={team.role} className="bg-white border border-slate-200 rounded-md p-5 flex items-start gap-4 hover:border-orange-500/40 transition-all shadow-sm">
                     <div className={`w-1 self-stretch rounded-full ${team.color} flex-shrink-0`} />
@@ -257,7 +292,7 @@ export default function AboutPage() {
                 ))}
               </div>
 
-              {/* Experience & Leadership */}
+              {/* Leadership & Experience */}
               <div className="space-y-6">
                 <div className="bg-wix-dark rounded-md p-8 text-white">
                   <h3 className="font-display font-extrabold text-lg text-white uppercase mb-4">Leadership Team</h3>
@@ -268,16 +303,16 @@ export default function AboutPage() {
                       </div>
                       <div>
                         <p className="text-sm font-extrabold text-white uppercase">Founders</p>
-                        <p className="text-xs text-slate-400">Licensed Structural Engineers, IIT Alumni</p>
+                        <p className="text-xs text-slate-400">Licensed Structural Engineers</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 bg-orange-500/20 rounded-md flex items-center justify-center">
-                        <Award className="h-6 w-6 text-orange-400" />
+                        <Briefcase className="h-6 w-6 text-orange-400" />
                       </div>
                       <div>
-                        <p className="text-sm font-extrabold text-white uppercase">Technical Advisory Board</p>
-                        <p className="text-xs text-slate-400">15+ Years Industry Experience</p>
+                        <p className="text-sm font-extrabold text-white uppercase">Technical Team</p>
+                        <p className="text-xs text-slate-400">15+ Years Combined Experience</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
@@ -296,11 +331,11 @@ export default function AboutPage() {
                   <h3 className="font-display font-extrabold text-sm text-wix-dark uppercase mb-4">Team Experience</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-white border border-slate-200 rounded-md p-4 text-center">
-                      <p className="font-display text-2xl font-extrabold text-orange-500">50+</p>
+                      <p className="font-display text-2xl font-extrabold text-orange-500">15+</p>
                       <p className="text-[10px] font-bold text-wix-dark uppercase tracking-widest">Combined Years</p>
                     </div>
                     <div className="bg-white border border-slate-200 rounded-md p-4 text-center">
-                      <p className="font-display text-2xl font-extrabold text-orange-500">100+</p>
+                      <p className="font-display text-2xl font-extrabold text-orange-500">15+</p>
                       <p className="text-[10px] font-bold text-wix-dark uppercase tracking-widest">Projects Executed</p>
                     </div>
                     <div className="bg-white border border-slate-200 rounded-md p-4 text-center">
@@ -318,71 +353,116 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* EXPERIENCE & CERTIFICATIONS - NEW SECTION */}
+        {/* EXPERIENCE & PROJECT TYPES */}
         <section className="py-20 md:py-28 bg-wix-gray border-b border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Credentials</span>
+              <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Our Experience</span>
               <h2 className="font-display text-3xl md:text-4xl font-extrabold text-wix-dark uppercase leading-tight">
-                Experience & <span className="text-orange-500">Certifications</span>
+                Projects We've <span className="text-orange-500">Delivered</span>
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* Experience Timeline */}
-              <div>
-                <h3 className="font-display font-extrabold text-lg text-wix-dark uppercase mb-6">Our Experience</h3>
-                <div className="space-y-4">
-                  {[
-                    { title: "Residential High-Rise", clients: "3+ Projects", desc: "Structural design for 15-30 story towers in Delhi NCR, Mumbai, and Bangalore." },
-                    { title: "Commercial Complexes", clients: "5+ Projects", desc: "BIM coordination and structural detailing for malls, office parks, and mixed-use developments." },
-                    { title: "Industrial Structures", clients: "4+ Projects", desc: "PEB sheds, warehouses, and factory buildings with steel and RCC structural systems." },
-                    { title: "Infrastructure Projects", clients: "2+ Projects", desc: "Bridge foundations, retaining walls, and water treatment plant structures." },
-                  ].map((exp) => (
-                    <div key={exp.title} className="bg-white border border-slate-200 rounded-md p-5 hover:border-orange-500/40 transition-all shadow-sm">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-sm font-extrabold text-wix-dark font-display uppercase">{exp.title}</p>
-                        <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-3 py-1 rounded-full">{exp.clients}</span>
-                      </div>
-                      <p className="text-xs text-slate-500 font-medium">{exp.desc}</p>
-                    </div>
-                  ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { title: "Residential Projects", count: "6+", desc: "Structural design for villas, apartments, and high-rise towers across India." },
+                { title: "Commercial Complexes", count: "4+", desc: "BIM coordination and structural detailing for malls, offices, and mixed-use." },
+                { title: "Industrial Structures", count: "3+", desc: "PEB sheds, warehouses, and factory buildings with steel and RCC systems." },
+                { title: "Infrastructure Projects", count: "2+", desc: "Bridge foundations, retaining walls, and water treatment plant structures." },
+              ].map((exp) => (
+                <div key={exp.title} className="bg-white border border-slate-200 rounded-md p-6 hover:border-orange-500/40 transition-all shadow-sm group">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-extrabold text-wix-dark font-display uppercase">{exp.title}</h3>
+                    <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-3 py-1 rounded-full">{exp.count}</span>
+                  </div>
+                  <p className="text-xs text-slate-500 font-medium">{exp.desc}</p>
                 </div>
-              </div>
-
-              {/* Certifications & Standards */}
-              <div>
-                <h3 className="font-display font-extrabold text-lg text-wix-dark uppercase mb-6">Certifications & Standards</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { name: "IS 456:2000", desc: "Plain and Reinforced Concrete Code" },
-                    { name: "IS 800:2007", desc: "General Construction in Steel" },
-                    { name: "IS 1786:2008", desc: "High Strength Deformed Steel Bars" },
-                    { name: "IS 1077:1992", desc: "Common Burnt Clay Bricks" },
-                    { name: "CPWD DSR 2023", desc: "Delhi Schedule of Rates" },
-                    { name: "BIM LOD 400", desc: "Building Information Modeling" },
-                    { name: "NBC 2016", desc: "National Building Code" },
-                    { name: "ISO 9001:2015", desc: "Quality Management System" },
-                  ].map((cert) => (
-                    <div key={cert.name} className="bg-white border border-slate-200 rounded-md p-5 hover:border-orange-500/40 transition-all shadow-sm">
-                      <div className="flex items-center gap-2 mb-2">
-                        <CheckCircle2 className="h-4 w-4 text-orange-500" />
-                        <p className="text-xs font-extrabold text-wix-dark uppercase">{cert.name}</p>
-                      </div>
-                      <p className="text-[10px] text-slate-500 font-medium">{cert.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* WHO WE ARE + TIMELINE (EXISTING) */}
+        {/* STANDARDS & CODES WE FOLLOW */}
+        <section className="py-16 bg-white border-b border-slate-100">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Our Standards</span>
+              <h2 className="font-display text-2xl md:text-3xl font-extrabold text-wix-dark uppercase leading-tight">
+                Codes & Standards We <span className="text-orange-500">Follow</span>
+              </h2>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {["IS 456:2000", "IS 800:2007", "IS 1786:2008", "IS 1077:1992", "CPWD DSR 2023", "BIM LOD 400", "NBC 2016", "IS 1893", "IS 6403"].map((std) => (
+                <div key={std} className="bg-white border border-slate-200 rounded-full px-4 py-2 flex items-center gap-2 text-[11px] font-bold text-wix-dark hover:border-orange-500/40 transition-all shadow-sm">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-orange-500" />
+                  {std}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* WHAT WE DO */}
+        <section className="py-20 md:py-28 bg-white border-b border-slate-100">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Our Capabilities</span>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold text-wix-dark uppercase leading-tight">
+                Six Disciplines. <span className="text-orange-500">One Team.</span>
+              </h2>
+              <p className="mt-4 text-sm text-slate-500 font-medium">
+                Every service is delivered by specialists not generalists ensuring
+                the technical accuracy your project demands.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200 border border-slate-200 rounded-md overflow-hidden">
+              {services.map((s) => (
+                <div key={s.title} className="bg-white p-8 hover:bg-wix-gray transition-all group">
+                  <div className="w-10 h-10 bg-orange-500/10 rounded-md flex items-center justify-center mb-5 group-hover:bg-orange-500 transition-all">
+                    <s.icon className="h-5 w-5 text-orange-500 group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="font-display font-extrabold text-sm text-wix-dark uppercase tracking-wide mb-2">{s.title}</h3>
+                  <p className="text-xs text-slate-500 leading-relaxed font-medium">{s.desc}</p>
+                  <Link
+                    href="/services/all-services"
+                    className="inline-flex items-center gap-1 text-[10px] font-bold text-orange-500 uppercase tracking-widest mt-4 hover:gap-2 transition-all"
+                  >
+                    Learn More <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* WHY CIVIL AT HAND */}
+        <section className="py-20 md:py-28 bg-wix-dark relative overflow-hidden">
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:20px_20px]" />
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest block mb-3">Why Choose Us</span>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold text-white uppercase leading-tight">
+                The Standard We Hold <span className="text-orange-500">On Every Project</span>
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {whyUs.map((w) => (
+                <div key={w.label} className="bg-white/5 border border-white/10 rounded-md p-7 hover:border-orange-500/40 transition-all group">
+                  <div className="w-10 h-10 bg-orange-500/10 rounded-md flex items-center justify-center mb-5 group-hover:bg-orange-500 transition-all">
+                    <w.icon className="h-5 w-5 text-orange-400 group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="font-display font-extrabold text-sm text-white uppercase tracking-wide mb-2">{w.label}</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed font-medium">{w.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* JOURNEY TIMELINE */}
         <section className="py-20 md:py-28 bg-white border-b border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-
               <div>
                 <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Our Evolution</span>
                 <h2 className="font-display text-3xl md:text-4xl font-extrabold text-wix-dark uppercase leading-tight mb-6">
@@ -401,9 +481,8 @@ export default function AboutPage() {
                     operating from a digital-first, remote-capable environment.
                   </p>
                   <p>
-                    We have worked on high-rise residential towers, industrial sheds, government
-                    infrastructure, commercial complexes, and villa communities across India, the
-                    Middle East, and Southeast Asia. Every project receives the same standard:
+                    We have worked on residential towers, industrial sheds, commercial complexes,
+                    and villa communities across India. Every project receives the same standard:
                     IS code compliance, CPWD rate alignment, and engineer-reviewed deliverables.
                   </p>
                 </div>
@@ -440,79 +519,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* WHAT WE DO (EXISTING) */}
-        <section className="py-20 md:py-28 bg-white border-b border-slate-100">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest block mb-3">Our Capabilities</span>
-              <h2 className="font-display text-3xl md:text-4xl font-extrabold text-wix-dark uppercase leading-tight">
-                Six Disciplines. <span className="text-orange-500">One Team.</span>
-              </h2>
-              <p className="mt-4 text-sm text-slate-500 font-medium">
-                Every service is delivered by specialists not generalists ensuring
-                the technical accuracy your project demands.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200 border border-slate-200 rounded-md overflow-hidden">
-              {services.map((s) => (
-                <div key={s.title} className="bg-white p-8 hover:bg-wix-gray transition-all group">
-                  <div className="w-10 h-10 bg-orange-500/10 rounded-md flex items-center justify-center mb-5 group-hover:bg-orange-500 transition-all">
-                    <s.icon className="h-5 w-5 text-orange-500 group-hover:text-white transition-colors" />
-                  </div>
-                  <h3 className="font-display font-extrabold text-sm text-wix-dark uppercase tracking-wide mb-2">{s.title}</h3>
-                  <p className="text-xs text-slate-500 leading-relaxed font-medium">{s.desc}</p>
-                  <Link
-                    href="/services/all-services"
-                    className="inline-flex items-center gap-1 text-[10px] font-bold text-orange-500 uppercase tracking-widest mt-4 hover:gap-2 transition-all"
-                  >
-                    Learn More <ArrowRight className="h-3 w-3" />
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* WHY CIVIL AT HAND (EXISTING) */}
-        <section className="py-20 md:py-28 bg-wix-dark relative overflow-hidden">
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:20px_20px]" />
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest block mb-3">Why Choose Us</span>
-              <h2 className="font-display text-3xl md:text-4xl font-extrabold text-white uppercase leading-tight">
-                The Standard We Hold <span className="text-orange-500">On Every Project</span>
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {whyUs.map((w) => (
-                <div key={w.label} className="bg-white/5 border border-white/10 rounded-md p-7 hover:border-orange-500/40 transition-all group">
-                  <div className="w-10 h-10 bg-orange-500/10 rounded-md flex items-center justify-center mb-5 group-hover:bg-orange-500 transition-all">
-                    <w.icon className="h-5 w-5 text-orange-400 group-hover:text-white transition-colors" />
-                  </div>
-                  <h3 className="font-display font-extrabold text-sm text-white uppercase tracking-wide mb-2">{w.label}</h3>
-                  <p className="text-xs text-slate-400 leading-relaxed font-medium">{w.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* COMPLIANCE STRIP (EXISTING) */}
-        <section className="py-10 bg-white border-b border-slate-100">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-wrap items-center justify-center gap-6">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Our standards:</span>
-              {["IS 456:2000", "IS 800:2007", "IS 1786:2008", "IS 1077:1992", "CPWD DSR 2023", "BIM LOD 400", "NBC 2016"].map((std) => (
-                <div key={std} className="flex items-center gap-2 text-[11px] font-bold text-wix-dark">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-orange-500" />
-                  {std}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CONTACT CTA (EXISTING) */}
+        {/* CONTACT CTA */}
         <section className="py-20 md:py-24 bg-wix-gray">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="bg-wix-dark rounded-md overflow-hidden">
