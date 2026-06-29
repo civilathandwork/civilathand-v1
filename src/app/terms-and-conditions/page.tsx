@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -26,9 +26,9 @@ export default function TermsAndConditionsPage() {
             </h1>
             <div className="mt-4 flex items-center justify-center gap-3 text-xs font-medium text-slate-400">
               <span>Civil At Hand Group</span>
-              <span>ΓÇó</span>
+              <span>•</span>
               <span>civilathand.in</span>
-              <span>ΓÇó</span>
+              <span>•</span>
               <span className="text-white">Effective Date: June 10, 2026</span>
             </div>
           </div>
