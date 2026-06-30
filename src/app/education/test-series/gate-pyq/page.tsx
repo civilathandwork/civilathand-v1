@@ -40,7 +40,7 @@ export default function GatePYQPage() {
             <div className="flex flex-col md:flex-row md:items-center gap-6">
               <div className="flex-1">
                 <div className="inline-flex items-center gap-2 bg-white/10 text-white/90 text-xs font-bold px-3 py-1.5 rounded-full mb-3 uppercase tracking-wider">
-                  <Zap size={12} /> IES Master GATE PYQ 2026 · 1987–2025 · 39 Years
+                  <Zap size={12} /> \ Civil At Hand Education
                 </div>
                 <h1 className="text-2xl md:text-3xl font-bold text-white mb-3">
                   GATE CE — Previous Year Questions
@@ -54,7 +54,7 @@ export default function GatePYQPage() {
               <div className="grid grid-cols-3 gap-3 flex-shrink-0">
                 {[
                   { icon: BookOpen, val: "1000+", label: "Questions" },
-                  { icon: Trophy, val: "39 Yrs", label: "1987–2025" },
+                  { icon: Trophy, val: "40 Yrs", label: "1987–2025" },
                   { icon: Target, val: "16", label: "Subjects" },
                 ].map(({ icon: Icon, val, label }) => (
                   <div key={label} className="bg-white/10 rounded-lg p-3 text-center">
