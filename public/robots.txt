@@ -1,0 +1,16 @@
+# ============================================================
+# PLACE THIS FILE AT:  public/robots.txt
+# Live at: https://www.civilathand.in/robots.txt
+# ============================================================
+
+User-agent: *
+Allow: /
+
+# Keep private/app pages out of Google
+Disallow: /auth
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /cah-expert-control
+
+# Sitemap location
+Sitemap: https://www.civilathand.in/sitemap.xml
