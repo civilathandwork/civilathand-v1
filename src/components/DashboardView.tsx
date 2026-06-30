@@ -6,8 +6,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Briefcase, UploadCloud, CreditCard, MessageSquare, Send, Activity,
   MapPin, Calendar, FileText, Loader2, CheckCircle2, ChevronRight,
-  LayoutDashboard, FolderKanban, Wallet, FileStack, ShieldCheck, LifeBuoy,
+  LayoutDashboard, FolderKanban, Wallet, FileStack, ShieldCheck, LifeBuoy, Mail,
 } from "lucide-react";
+
+// ── Support inbox the "Email Support" button opens (change to your email) ──
+const SUPPORT_EMAIL = "info.civilathand@zohomail.in";
 
 export const DashboardView: React.FC = () => {
   const {
@@ -140,6 +143,12 @@ export const DashboardView: React.FC = () => {
   const initials = (user?.name || "Client")
     .split(" ").filter(Boolean).map((w: string) => w[0]).slice(0, 2).join("").toUpperCase();
 
+  // Opens the visitor's email app addressed to our support inbox (with a prefilled message).
+  const supportMailto =
+    `mailto:${SUPPORT_EMAIL}` +
+    `?subject=${encodeURIComponent("Support Request — Civil At Hand")}` +
+    `&body=${encodeURIComponent(`Hello Civil At Hand team,\n\nI need help with my project.\n\nRegards,\n${user?.name || ""}`)}`;
+
   const accentMap: Record<string, { bg: string; text: string; bar: string }> = {
     orange: { bg: "bg-orange-500/10", text: "text-orange-500", bar: "bg-orange-500" },
     sky: { bg: "bg-sky-500/10", text: "text-sky-600", bar: "bg-sky-500" },
@@ -261,21 +270,27 @@ export const DashboardView: React.FC = () => {
             </div>
           </div>
 
-          {/* Support mini-card */}
-          <div className="hidden lg:block rounded-2xl bg-navy-950 p-5 text-center shadow-premium relative overflow-hidden">
+          {/* Support mini-card — opens the visitor's email app to our inbox */}
+          <div className="hidden lg:block rounded-2xl bg-navy-950 p-6 shadow-premium relative overflow-hidden">
             <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:18px_18px]" />
-            <div className="relative z-10">
-              <div className="w-10 h-10 rounded-xl bg-orange-500/15 flex items-center justify-center mx-auto mb-3">
-                <LifeBuoy className="h-5 w-5 text-orange-500" />
+            <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-orange-500/10 blur-2xl" />
+            <div className="relative z-10 text-center">
+              <div className="w-12 h-12 rounded-2xl bg-orange-500/15 flex items-center justify-center mx-auto mb-3">
+                <LifeBuoy className="h-6 w-6 text-orange-500" />
               </div>
-              <p className="text-white text-xs font-bold">Need help?</p>
-              <p className="text-slate-400 text-[10px] leading-relaxed mt-1 mb-3">Talk to our support engineers about your designs.</p>
-              <button
-                onClick={() => setActiveTab("chat")}
-                className="w-full bg-orange-500 hover:bg-orange-600 text-white text-[11px] font-bold uppercase tracking-wider py-2 rounded-lg transition-colors"
+              <p className="text-white text-sm font-extrabold font-display">Need a hand?</p>
+              <p className="text-slate-400 text-[11px] leading-relaxed mt-1.5 mb-2.5">
+                Reach our engineering desk directly for anything about your projects, drawings or invoices.
+              </p>
+              <p className="text-emerald-400 text-[10px] font-semibold inline-flex items-center gap-1.5 mb-4">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" /> Typically replies within a few hours
+              </p>
+              <a
+                href={supportMailto}
+                className="w-full inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white text-[11px] font-bold uppercase tracking-wider py-2.5 rounded-xl transition-all hover:shadow-orange-glow"
               >
-                Open Support
-              </button>
+                <Mail className="h-3.5 w-3.5" /> Email Support
+              </a>
             </div>
           </div>
         </div>
