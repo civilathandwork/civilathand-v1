@@ -4,7 +4,6 @@
 // ============================================================
 // This file contains sample PYQ questions for all 16 subjects.
 // Each subject has 10 real GATE questions extracted from the
-// IES Master GATE PYQ 2026 book (1987-2025).
 // TO ADD MORE: append to the array for that subject below.
 // ============================================================
 
@@ -18,7 +17,7 @@ export interface GateQuestion {
   year: string;         // e.g. "GATE-2019 SHIFT-I"
   question: string;     // HTML allowed (sub, sup, etc.)
   options: string[];    // array of 4 options for MCQ/MSQ; empty [] for NAT
-  correct: number;      // 0-based index into options; for NAT use natAnswer
+  correct: number | number[]; // Index or array of indices for MSQ
   natAnswer?: string;   // for NAT questions
   solution: string;     // HTML allowed
 }
