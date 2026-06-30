@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Briefcase, UploadCloud, CreditCard, MessageSquare, Send, Activity,
   MapPin, Calendar, FileText, Loader2, CheckCircle2, ChevronRight,
-  LayoutDashboard, FolderKanban, Wallet, FileStack, ShieldCheck,
+  LayoutDashboard, FolderKanban, Wallet, FileStack, ShieldCheck, LifeBuoy,
 } from "lucide-react";
 
 export const DashboardView: React.FC = () => {
@@ -136,29 +136,44 @@ export const DashboardView: React.FC = () => {
     setChatInput("");
   };
 
-  const navItems = [
-    { id: "projects", title: "Project Tracking", icon: Activity },
-    { id: "upload", title: "Upload Drawings", icon: UploadCloud },
-    { id: "payments", title: "Invoices & Payments", icon: CreditCard },
-    { id: "chat", title: "Support Chat", icon: MessageSquare },
-  ];
+  // ── Presentation helpers (no data logic) ─────────────────────
+  const initials = (user?.name || "Client")
+    .split(" ").filter(Boolean).map((w: string) => w[0]).slice(0, 2).join("").toUpperCase();
+
+  const accentMap: Record<string, { bg: string; text: string; bar: string }> = {
+    orange: { bg: "bg-orange-500/10", text: "text-orange-500", bar: "bg-orange-500" },
+    sky: { bg: "bg-sky-500/10", text: "text-sky-600", bar: "bg-sky-500" },
+    emerald: { bg: "bg-emerald-500/10", text: "text-emerald-600", bar: "bg-emerald-500" },
+    amber: { bg: "bg-amber-500/10", text: "text-amber-600", bar: "bg-amber-500" },
+  };
 
   const stats = [
-    { label: "Active Projects", value: userProjects.length, icon: FolderKanban },
-    { label: "Open Requests", value: userLeads.length, icon: FileStack },
-    { label: "Drawings", value: userDrawings.length, icon: FileText },
-    { label: "Pending Dues", value: `₹${totalDue.toLocaleString("en-IN")}`, icon: Wallet },
+    { label: "Active Projects", value: userProjects.length, icon: FolderKanban, accent: "orange" },
+    { label: "Open Requests", value: userLeads.length, icon: FileStack, accent: "sky" },
+    { label: "Drawings", value: userDrawings.length, icon: FileText, accent: "emerald" },
+    { label: "Pending Dues", value: `₹${totalDue.toLocaleString("en-IN")}`, icon: Wallet, accent: "amber" },
+  ];
+
+  const navItems = [
+    { id: "projects", title: "Project Tracking", icon: Activity, count: userProjects.length + userLeads.length, alert: false },
+    { id: "upload", title: "Upload Drawings", icon: UploadCloud, count: userDrawings.length, alert: false },
+    { id: "payments", title: "Invoices & Payments", icon: CreditCard, count: pendingInvoices.length, alert: true },
+    { id: "chat", title: "Support Chat", icon: MessageSquare, count: 0, alert: false },
   ];
 
   return (
     <div className="space-y-6">
       {/* ───────── WELCOME HEADER ───────── */}
-      <div className="bg-navy-950 rounded-2xl px-6 py-6 md:px-8 md:py-7 shadow-premium relative overflow-hidden">
+      <div
+        className="rounded-2xl px-6 py-6 md:px-8 md:py-7 shadow-premium relative overflow-hidden"
+        style={{ background: "linear-gradient(135deg, #0a192f 0%, #0f2244 55%, #172a45 100%)" }}
+      >
         <div className="absolute top-0 left-0 right-0 h-1 bg-orange-500" />
+        <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:20px_20px]" />
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative z-10">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-orange-500/15 flex items-center justify-center flex-shrink-0">
-              <LayoutDashboard className="h-6 w-6 text-orange-500" />
+            <div className="w-13 h-13 min-w-13 rounded-2xl bg-orange-500 flex items-center justify-center font-display font-extrabold text-white text-lg shadow-orange-glow" style={{ width: 52, height: 52 }}>
+              {initials}
             </div>
             <div>
               <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest">Client Portal</span>
@@ -166,53 +181,101 @@ export const DashboardView: React.FC = () => {
                 Welcome{user?.name ? `, ${user.name.split(" ")[0]}` : " back"}
               </h2>
               <p className="text-[11px] text-slate-400 font-medium mt-0.5">
-                Track projects, upload drawings, manage invoices and reach support — all in one place.
+                Your projects, drawings, invoices and support — all in one secure place.
               </p>
             </div>
           </div>
-          <div className="hidden sm:flex items-center gap-2 text-[10px] font-bold text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full">
-            <ShieldCheck className="h-3.5 w-3.5" /> Secure Session
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-300 bg-emerald-500/10 border border-emerald-500/25 px-3 py-1.5 rounded-full">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" /> All systems normal
+            </span>
+            <span className="hidden md:inline-flex items-center gap-1.5 text-[10px] font-bold text-slate-300 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">
+              <ShieldCheck className="h-3.5 w-3.5 text-orange-400" /> Secure Session
+            </span>
           </div>
         </div>
       </div>
 
       {/* ───────── SUMMARY STAT CARDS ───────── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((s) => (
-          <div key={s.label} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-premium flex items-center gap-4">
-            <div className="w-11 h-11 rounded-xl bg-orange-500/10 flex items-center justify-center flex-shrink-0">
-              <s.icon className="h-5 w-5 text-orange-500" />
-            </div>
-            <div className="min-w-0">
-              <div className="font-display font-extrabold text-xl md:text-2xl text-navy-950 truncate">{s.value}</div>
-              <div className="text-[10px] font-bold text-navy-600 uppercase tracking-wider">{s.label}</div>
-            </div>
-          </div>
-        ))}
+        {stats.map((s, i) => {
+          const a = accentMap[s.accent];
+          return (
+            <motion.div
+              key={s.label}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
+              className="group bg-white rounded-2xl border border-slate-200 p-5 shadow-premium hover:shadow-premium-lg hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden"
+            >
+              <div className={`absolute bottom-0 left-0 h-1 w-0 group-hover:w-full ${a.bar} transition-all duration-500`} />
+              <div className="flex items-center gap-4">
+                <div className={`w-12 h-12 rounded-xl ${a.bg} flex items-center justify-center flex-shrink-0`}>
+                  <s.icon className={`h-5 w-5 ${a.text}`} />
+                </div>
+                <div className="min-w-0">
+                  <div className="font-display font-extrabold text-xl md:text-2xl text-navy-950 truncate leading-none">{s.value}</div>
+                  <div className="text-[10px] font-bold text-navy-600 uppercase tracking-wider mt-1.5">{s.label}</div>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
 
       {/* ───────── MAIN GRID ───────── */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Sidebar Navigation */}
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-3 space-y-3">
           <div className="bg-white rounded-2xl border border-slate-200 p-3 shadow-premium">
             <p className="px-3 pt-2 pb-3 text-[10px] font-bold text-navy-600 uppercase tracking-widest">Menu</p>
             <div className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-visible gap-2 scrollbar-none">
-              {navItems.map((btn) => (
-                <motion.button
-                  key={btn.id}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setActiveTab(btn.id as any)}
-                  className={`flex-shrink-0 flex items-center gap-3 w-full px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 ${
-                    activeTab === btn.id
-                      ? "bg-navy-950 text-white shadow-premium"
-                      : "bg-transparent text-navy-700 hover:bg-slate-50 border border-transparent hover:border-slate-200"
-                  }`}
-                >
-                  <btn.icon className={`h-4 w-4 ${activeTab === btn.id ? "text-orange-400" : "text-orange-500"}`} />
-                  <span className="whitespace-nowrap">{btn.title}</span>
-                </motion.button>
-              ))}
+              {navItems.map((btn) => {
+                const isActive = activeTab === btn.id;
+                return (
+                  <motion.button
+                    key={btn.id}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setActiveTab(btn.id as any)}
+                    className={`group relative flex-shrink-0 flex items-center gap-3 w-full pl-4 pr-3 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 ${
+                      isActive
+                        ? "bg-navy-950 text-white shadow-premium"
+                        : "bg-transparent text-navy-700 hover:bg-slate-50 border border-transparent hover:border-slate-200"
+                    }`}
+                  >
+                    {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-r bg-orange-500" />}
+                    <btn.icon className={`h-4 w-4 ${isActive ? "text-orange-400" : "text-orange-500"}`} />
+                    <span className="whitespace-nowrap flex-1 text-left">{btn.title}</span>
+                    {btn.count > 0 && (
+                      <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-md min-w-5 text-center ${
+                        btn.alert
+                          ? "bg-amber-500 text-white"
+                          : isActive ? "bg-white/15 text-white" : "bg-slate-100 text-navy-700"
+                      }`}>
+                        {btn.count}
+                      </span>
+                    )}
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Support mini-card */}
+          <div className="hidden lg:block rounded-2xl bg-navy-950 p-5 text-center shadow-premium relative overflow-hidden">
+            <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:18px_18px]" />
+            <div className="relative z-10">
+              <div className="w-10 h-10 rounded-xl bg-orange-500/15 flex items-center justify-center mx-auto mb-3">
+                <LifeBuoy className="h-5 w-5 text-orange-500" />
+              </div>
+              <p className="text-white text-xs font-bold">Need help?</p>
+              <p className="text-slate-400 text-[10px] leading-relaxed mt-1 mb-3">Talk to our support engineers about your designs.</p>
+              <button
+                onClick={() => setActiveTab("chat")}
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white text-[11px] font-bold uppercase tracking-wider py-2 rounded-lg transition-colors"
+              >
+                Open Support
+              </button>
             </div>
           </div>
         </div>
@@ -232,13 +295,18 @@ export const DashboardView: React.FC = () => {
                 className="flex-grow space-y-8"
               >
                 <div className="flex items-center gap-3 border-b border-slate-100 pb-5">
-                  <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center flex-shrink-0">
                     <Activity className="h-5 w-5 text-orange-500" />
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <h3 className="font-display font-extrabold text-xl text-navy-950">Active Projects</h3>
                     <p className="text-xs text-navy-600 mt-0.5">Real-time status and execution progress of your designs.</p>
                   </div>
+                  {(userProjects.length + userLeads.length) > 0 && (
+                    <span className="text-[10px] font-bold text-navy-700 bg-slate-100 px-2.5 py-1 rounded-full">
+                      {userProjects.length + userLeads.length} total
+                    </span>
+                  )}
                 </div>
 
                 {userProjects.length === 0 && userLeads.length === 0 ? (
@@ -335,7 +403,7 @@ export const DashboardView: React.FC = () => {
                               initial={{ width: 0 }}
                               animate={{ width: `${project.progress}%` }}
                               transition={{ duration: 0.8, ease: "easeOut" }}
-                              className="bg-orange-500 h-2 rounded-full shadow-orange-glow"
+                              className="bg-gradient-to-r from-orange-500 to-orange-400 h-2 rounded-full shadow-orange-glow"
                             ></motion.div>
                           </div>
                         </div>
@@ -383,7 +451,7 @@ export const DashboardView: React.FC = () => {
                 className="flex-grow space-y-8"
               >
                 <div className="flex items-center gap-3 border-b border-slate-100 pb-5">
-                  <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center flex-shrink-0">
                     <UploadCloud className="h-5 w-5 text-orange-500" />
                   </div>
                   <div>
@@ -540,13 +608,18 @@ export const DashboardView: React.FC = () => {
                 className="flex-grow space-y-8"
               >
                 <div className="flex items-center gap-3 border-b border-slate-100 pb-5">
-                  <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center flex-shrink-0">
                     <CreditCard className="h-5 w-5 text-orange-500" />
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <h3 className="font-display font-extrabold text-xl text-navy-950">Invoices &amp; Quotations</h3>
                     <p className="text-xs text-navy-600 mt-0.5">Review estimations, download receipts and complete milestone payments.</p>
                   </div>
+                  {totalDue > 0 && (
+                    <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-full">
+                      ₹{totalDue.toLocaleString("en-IN")} due
+                    </span>
+                  )}
                 </div>
 
                 <div className="space-y-4">
@@ -563,7 +636,7 @@ export const DashboardView: React.FC = () => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.25, delay: idx * 0.05 }}
-                        className="border border-slate-200 rounded-2xl p-5 bg-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:shadow-sm transition-shadow text-xs"
+                        className="border border-slate-200 rounded-2xl p-5 bg-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:shadow-md transition-all text-xs"
                       >
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
