@@ -26,7 +26,6 @@ import {
   Leaf, 
   Compass, 
   ArrowRight,
-  Star,
   Calculator,
   FlaskConical,
   Weight,
@@ -79,11 +78,13 @@ const AnimatedCounter: React.FC<{ value: number | string; suffix?: string; durat
 };
 
 const testimonials = [
-  { name: "Anand Sen", role: "CEO, Sen & Co. Builders", review: "Civil At Hand completely revolutionized our quantity takeoff process. Their AI BOQ tool reduced our estimation turnaround from 5 days to just 3 hours, with absolute structural precision.", rating: 5, image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150" },
-  { name: "Meera Deshmukh", role: "Principal Architect, Atelier M", review: "The integration between the client dashboard and their structural engineers is seamless. I uploaded my floor plan PDFs, received CAD conversions, and coordinated the column schedules in real-time.", rating: 5, image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150" },
-  { name: "Suresh Pillai", role: "VP Projects, InfraCorp Ltd.", review: "Their BIM LOD 400 modeling saved us lakhs in onsite clash resolution. The site supervision audits and digital checklists kept our steel fabrication perfectly aligned with drawings.", rating: 5, image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150" },
-  { name: "Rahul Mehta", role: "Project Director, Mehta Infrastructure Pvt. Ltd.", review: "We were struggling with delays in estimation and BOQ preparation. Civil At Hand provided a smart and reliable solution that improved both speed and accuracy. Their services have added real value to our workflow.", rating: 5, image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=150" },
-  { name: "Priya Sharma", role: "Senior Civil Engineer, UrbanEdge Consultants", review: "Civil At Hand has become a trusted partner for our estimation and drafting requirements. Their technical expertise, quick delivery, and attention to detail are truly impressive. Highly recommended for civil engineering professionals and firms.", rating: 5, image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" }
+  // Civil At Hand promises (real, honest — NOT fake reviews).
+  // When you have REAL client reviews, replace each item with:
+  //   { name: "Client Name", role: "Company / City", review: "their words", rating: 5, image: "/logo.jpg" }
+  { name: "IS-Code Compliant", role: "Our Engineering Standard", review: "Every structural design, drawing and BOQ is prepared and checked against the relevant IS codes (IS 456, IS 800, IS 1893) before it reaches you.", rating: 5, image: "/logo.jpg" },
+  { name: "Direct Engineer Access", role: "How We Work", review: "You speak directly with the engineers working on your project. Share your PDFs or drawings on WhatsApp and get clear, fast answers.", rating: 5, image: "/logo.jpg" },
+  { name: "Transparent Pricing", role: "No Hidden Charges", review: "Clear, milestone-based pricing is agreed before we begin. You always know exactly what you are paying for and when.", rating: 5, image: "/logo.jpg" },
+  { name: "Fast Turnaround", role: "24-48 Hour Delivery", review: "Drawings, BOQs and PDF-to-CAD conversions are delivered quickly, without ever compromising on IS-code accuracy.", rating: 5, image: "/logo.jpg" },
 ];
 
 interface CalcHubCard {
@@ -432,10 +433,10 @@ export default function Home() {
               {/* Animated Statistics */}
               <div className="lg:col-span-5 grid grid-cols-2 gap-4">
                 {[
-                  { value: "IS", suffix: "", label: "CODE COMPLIANT", desc: "Safe, Accurate & Standard-Based Designs" },
-                  { value: "PAN", suffix: "+", label: "INDIA SERVICES", desc: "Online Engineering Solutions Across India" },
-                  { value: 100, suffix: "%", label: "Commitment", desc: "Quality, Accuracy & Professional Service" },
-                  { value: "FAST", suffix: " DELIVERY", label: "On-Time", desc: "Project Execution" },
+                  { value: "IS", suffix: "", label: "CODE COMPLIANT", desc: "Checked to IS 456, IS 800 & IS 1893" },
+                  { value: "PAN", suffix: "+", label: "INDIA SERVICES", desc: "Online engineering delivery across India" },
+                  { value: "24-48", suffix: " HR", label: "FAST TURNAROUND", desc: "Quick drawing & BOQ delivery" },
+                  { value: "100%", suffix: "", label: "TRANSPARENT", desc: "Clear milestone-based pricing" },
                 ].map((stat, idx) => (
                   <motion.div 
                     key={idx}
@@ -816,9 +817,9 @@ export default function Home() {
               variants={scrollRevealVariants}
               className="text-center mb-16"
             >
-              <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Testimonials</span>
+              <span className="text-xs font-extrabold text-orange-600 uppercase tracking-widest block mb-2">Why Choose Us</span>
               <h2 className="font-display text-3xl font-extrabold tracking-tight text-wix-dark sm:text-4xl uppercase">
-                What Our Clients Say
+                Built On Standards &amp; Trust
               </h2>
             </motion.div>
 
@@ -845,10 +846,10 @@ export default function Home() {
                     className="w-24 h-24 rounded-md object-cover border border-slate-200 shadow-sm"
                   />
                   <div className="space-y-4 flex-grow text-center md:text-left">
-                    <div className="flex justify-center md:justify-start gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
-                      ))}
+                    <div className="flex justify-center md:justify-start">
+                      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-2.5 py-1 rounded-full uppercase tracking-widest">
+                        <ShieldCheck className="h-3 w-3" /> Civil At Hand Promise
+                      </span>
                     </div>
                     <p className="text-wix-dark text-sm md:text-base leading-relaxed italic font-medium">
                       "{testimonials[activeTestimonial].review}"
@@ -945,8 +946,8 @@ export default function Home() {
               {/* Graphic cards */}
               <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  { title: "Carbon Auditing", val: 18, suffix: "%", desc: "Embedded carbon load in footings" },
-                  { title: "Water Savings", val: 30, suffix: "%", desc: "Rainwater structures designed" },
+                  { title: "Structural Efficiency", val: "Optimized", suffix: "", desc: "Material-efficient RCC & steel design" },
+                  { title: "Water Conscious", val: "Rainwater", suffix: "", desc: "Harvesting & reuse design on request" },
                 ].map((item, idx) => (
                   <motion.div 
                     key={idx}
@@ -958,7 +959,7 @@ export default function Home() {
                   >
                     <span className="block text-[10px] uppercase font-bold text-slate-400 tracking-widest">{item.title}</span>
                     <p className="text-4xl font-extrabold font-display text-emerald-400 my-2">
-                      -<AnimatedCounter value={item.val} suffix={item.suffix} />
+                      <AnimatedCounter value={item.val} suffix={item.suffix} />
                     </p>
                     <p className="text-[11px] text-slate-300 font-medium">{item.desc}</p>
                   </motion.div>
