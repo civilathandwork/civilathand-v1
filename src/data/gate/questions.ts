@@ -28,85 +28,18 @@ export const GATE_QUESTIONS: Record<string, GateQuestion[]> = {
   // ─────────────────────────────────────────────
   // 1. ENGINEERING MECHANICS
   // ─────────────────────────────────────────────
+  // ─────────────────────────────────────────────
+  // 1. ENGINEERING MECHANICS  (Unit-1 of the IES Master GATE PYQ book)
+  //    14 real questions: Engineering Mechanics chapter (1–9)
+  //    + Free Vibrations of undamped SDOF system (10–14).
+  //    Answers verified against the book's ANSWER KEY. Solutions are original.
+  //
+  //    HOW TO USE: replace your ENTIRE  "eng-mech": [ ... ],  block
+  //    (from  "eng-mech": [  up to its closing  ],  ) with this one.
+  // ─────────────────────────────────────────────
   "eng-mech": [
     {
-      id: 1, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2021 SHIFT-II",
-      question: "For the lateral deflection profile of the columns as shown in figure, the natural frequency of the system for horizontal oscillation is: (δ = PL³/12EI, where L is effective length, E is Young's modulus, I is area moment of inertia)",
-      options: ["(a) (2/L)√(EI/m) rad/s", "(b) 2√(6EI/mL³) rad/s", "(c) (1/L)√(2EI/m) rad/s", "(d) 6√(EI/mL³) rad/s"],
-      correct: 1,
-      solution: "For a column fixed at base and free at top, lateral stiffness k = 3EI/L³. For two such columns in parallel, k_total = 6EI/L³. Natural frequency ω = √(k/m) = √(6EI/mL³) = 2√(6EI/4mL³) = 2√(6EI/mL³)/2. The standard result gives ω = 2√(6EI/mL³) rad/s."
-    },
-    {
-      id: 2, type: "MCQ", marks: 1, neg: "1/3", year: "GATE-2020 SHIFT-I",
-      question: "A rigid homogeneous uniform block of mass 1 kg, height h = 0.4 m and width b = 0.1 m is resting on a surface. A horizontal force F is applied at the top of the block. If the coefficient of friction between the block and surface is 0.4, the block will:",
-      options: ["(a) Slide before tipping", "(b) Tip before sliding", "(c) Slide and tip simultaneously", "(d) Neither slide nor tip"],
-      correct: 0,
-      solution: "For sliding: F = μmg = 0.4 × 1 × 10 = 4 N. For tipping: F × h = mg × b/2 → F = mgb/(2h) = 1×10×0.1/(2×0.4) = 1/0.8 = 1.25 N. Since force for tipping (1.25 N) < force for sliding (4 N), the block will TIP before sliding. Wait — rechecking: Answer is (b) Tip before sliding. The block tips at lower force."
-    },
-    {
-      id: 3, type: "MCQ", marks: 1, neg: "1/3", year: "GATE-2019",
-      question: "A particle of mass 2 kg is travelling with a velocity of 1.5 m/s. If a force of 10 N is applied in the direction of motion for 2 seconds, the kinetic energy (in Joules) at the end of 2 seconds is:",
-      options: ["(a) 30.5 J", "(b) 62.5 J", "(c) 90.25 J", "(d) 120.5 J"],
-      correct: 1,
-      solution: "Acceleration a = F/m = 10/2 = 5 m/s². Final velocity v = u + at = 1.5 + 5×2 = 11.5 m/s. KE = ½mv² = ½ × 2 × 11.5² = 11.5² = 132.25 J. Recalculating: v = 1.5 + 10 = 11.5, KE = ½×2×132.25 = 132.25 J. Answer nearest: (b) 62.5 J considering correct GATE data."
-    },
-    {
-      id: 4, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2018",
-      question: "A simply supported beam AB of length 5 m has a concentrated load of 50 kN at 2 m from A. The reaction at support B is:",
-      options: ["(a) 20 kN", "(b) 25 kN", "(c) 30 kN", "(d) 35 kN"],
-      correct: 0,
-      solution: "Taking moments about A: R_B × 5 = 50 × 2 → R_B = 100/5 = 20 kN. Answer: (a) 20 kN."
-    },
-    {
-      id: 5, type: "MCQ", marks: 1, neg: "1/3", year: "GATE-2017",
-      question: "A block of mass 5 kg rests on a horizontal surface with a coefficient of static friction 0.4. The minimum force (in N) required to just start the motion of the block at an angle θ = 30° to the horizontal is:",
-      options: ["(a) 14.56 N", "(b) 17.25 N", "(c) 19.62 N", "(d) 22.14 N"],
-      correct: 0,
-      solution: "For force at angle θ: N = mg - F sinθ, F cosθ = μN. F cosθ = μ(mg - F sinθ). F(cosθ + μ sinθ) = μmg. F = μmg/(cosθ + μ sinθ) = 0.4×5×9.81/(cos30° + 0.4 sin30°) = 19.62/(0.866 + 0.2) = 19.62/1.066 = 18.4 N ≈ 17.25 N using g=9.8."
-    },
-    {
-      id: 6, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2016",
-      question: "The truss shown has members of equal length and cross-section. All joints are pin connected. The force in member EF (in kN) is:",
-      options: ["(a) 0 (zero-force member)", "(b) +10 kN (tension)", "(c) −10 kN (compression)", "(d) +20 kN (tension)"],
-      correct: 0,
-      solution: "By inspection using method of sections or zero-force member rules: Member EF is a zero-force member. In a truss, if only two non-collinear members meet at an unloaded joint, both are zero-force members. EF carries zero force."
-    },
-    {
-      id: 7, type: "MCQ", marks: 1, neg: "1/3", year: "GATE-2015",
-      question: "The Lami's theorem is applicable when a body is in equilibrium under how many concurrent forces?",
-      options: ["(a) Two forces", "(b) Three forces", "(c) Four forces", "(d) Any number of forces"],
-      correct: 1,
-      solution: "Lami's theorem states that if three concurrent coplanar forces are in equilibrium, then each force is proportional to the sine of the angle between the other two. It is specifically applicable for THREE concurrent forces only."
-    },
-    {
-      id: 8, type: "MCQ", marks: 1, neg: "1/3", year: "GATE-2014",
-      question: "A car travels at a constant speed of 36 km/h along a circular path of radius 100 m. The centripetal acceleration (in m/s²) of the car is:",
-      options: ["(a) 0.1 m/s²", "(b) 0.5 m/s²", "(c) 1.0 m/s²", "(d) 1.8 m/s²"],
-      correct: 0,
-      solution: "v = 36 km/h = 36×(1000/3600) = 10 m/s. Centripetal acceleration a_c = v²/r = 100/100 = 1.0 m/s². Answer: (c) 1.0 m/s²."
-    },
-    {
-      id: 9, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2013",
-      question: "The moment of inertia of a thin uniform circular disc of mass M and radius R about a diameter is:",
-      options: ["(a) MR²/4", "(b) MR²/2", "(c) MR²", "(d) 2MR²"],
-      correct: 0,
-      solution: "Moment of inertia of disc about axis through center perpendicular to plane = MR²/2. By perpendicular axis theorem: I_x + I_y = I_z. Since I_x = I_y (by symmetry), 2I_diameter = MR²/2. I_diameter = MR²/4. Answer: (a) MR²/4."
-    },
-    {
-      id: 10, type: "MCQ", marks: 1, neg: "1/3", year: "GATE-2012",
-      question: "A body of mass m is projected vertically upward with an initial velocity v₀. If air resistance is neglected, the velocity of the body when it returns to the starting point is:",
-      options: ["(a) v₀/2", "(b) v₀", "(c) 2v₀", "(d) Zero"],
-      correct: 1,
-      solution: "By conservation of energy (no air resistance), all kinetic energy at launch converts to potential energy at top, then back to kinetic energy on return. v_return = v₀. Answer: (b) v₀. The speed is identical but direction is reversed."
-    },
-    // ─────────────────────────────────────────────
-    // ADDED FROM IES MASTER GATE PYQ BOOK — UNIT 1 (pages 7–16)
-    // Engineering Mechanics chapter (Q1–Q9) + Free Vibrations chapter (Q1–Q4).
-    // Answers verified against the book's ANSWER KEY. Solutions are original.
-    // Paste these AFTER the id:10 question (before the closing "]," of "eng-mech").
-    // ─────────────────────────────────────────────
-    {
-      id: 11, type: "MCQ", marks: 1, neg: "1/3", year: "GATE-2016 SHIFT-II",
+      id: 1, type: "MCQ", marks: 1, neg: "1/3", year: "GATE-2016 SHIFT-II",
       question: "An assembly is made of a rigid L-shaped arm A–B–C, pinned to a wall at end A and supported by an elastic rope C–D at end C (members are weightless). The vertical member AB has length L (A at top, B at bottom) and the horizontal member BC has length L (B to C). The rope CD runs upward from C at 45° to a support D. Under a downward concentrated load P at C, the tension developed in the rope is:",
       options: ["(a) 3P/√2", "(b) P/√2", "(c) 3P/8", "(d) √2·P"],
       correct: 1,
@@ -114,16 +47,16 @@ export const GATE_QUESTIONS: Record<string, GateQuestion[]> = {
     },
     {
       // NOTE: This is an MSQ — the correct answers are BOTH (a) and (c).
-      // Your schema stores a single index; if your runner supports multiple
+      // The schema stores a single index; if your runner supports multiple
       // correct answers, mark (a) and (c). Otherwise leave as-is.
-      id: 12, type: "MSQ", marks: 2, neg: "0", year: "GATE-2016 SHIFT-II",
+      id: 2, type: "MSQ", marks: 2, neg: "0", year: "GATE-2016 SHIFT-II",
       question: "A horizontal force P (kN) is applied at the top of a homogeneous block of weight 25 kN (width 1 m, height 2 m) resting on a floor with coefficient of friction 0.3. Which of the following statement(s) is/are correct?",
       options: ["(a) The motion of the body will occur by overturning", "(b) Sliding of the body never occurs", "(c) No motion occurs for P ≤ 6 kN", "(d) The motion of the body will occur by sliding only"],
       correct: 0,
       solution: "Sliding needs P = μW = 0.3×25 = 7.5 kN. Overturning about the leading edge needs P×2 = W×(1/2) → P = 6.25 kN. Since tipping (6.25 kN) happens before sliding (7.5 kN): for P<6.25 no motion; for 6.25≤P<7.5 it overturns; for P>7.5 it both slides and overturns. Hence (a) and (c) are correct."
     },
     {
-      id: 13, type: "NAT", marks: 2, neg: "0", year: "GATE-2022 SHIFT-II",
+      id: 3, type: "NAT", marks: 2, neg: "0", year: "GATE-2022 SHIFT-II",
       question: "A uniform rod KJ of weight w = 10 kN rests against a frictionless vertical wall at its upper end K and on a rough horizontal floor at its lower end J. The vertical height of K is a = 4 m and the horizontal distance of J from the wall is b = 3 m. The minimum coefficient of static friction required at J to hold the rod in equilibrium is ____ (round to three decimal places).",
       options: [],
       correct: 0,
@@ -131,42 +64,42 @@ export const GATE_QUESTIONS: Record<string, GateQuestion[]> = {
       solution: "Floor normal N_J = w = 10 kN. Taking moments about K with the rod geometry: 10×1.5 + μN_J×4 − N_J×3 = 0 → μ = (10×3 − 10×1.5)/(10×4) = 0.375."
     },
     {
-      id: 14, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2021 SHIFT-I",
+      id: 4, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2021 SHIFT-I",
       question: "A wedge M (wedge angle 30°) drives a block N upward when a horizontal force P is applied. Block N is guided by frictionless vertical and top surfaces and carries a load Q. The coefficient of friction along the inclined wedge–block interface is 0.2; all other surfaces are frictionless and weights are negligible. The limiting force to just move N upward is P = αQ. The value of α (one decimal place) is:",
       options: ["(a) 2.0", "(b) 0.5", "(c) 0.9", "(d) 0.6"],
       correct: 2,
       solution: "On block N: N₂sin60° − 0.2·N₂sin30° = Q → Q = 0.766·N₂. On wedge M: P = 0.2·N₂cos30° + N₂cos60° = 0.67·N₂ = 0.67×(Q/0.766) = 0.875Q ≈ 0.9Q. So α ≈ 0.9."
     },
     {
-      id: 15, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2020 SHIFT-I",
+      id: 5, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2020 SHIFT-I",
       question: "A rigid weightless platform PQRS slides freely only in the vertical direction, held by a weightless inclined two-force member OJ (pinned at O and J) and four frictionless rollers (which give only horizontal reactions). A block of weight W = 90 kN rests on the platform. Member OJ has a 3 (vertical) : 4 (horizontal) slope. The magnitude of the horizontal component of the reaction at pin O is (in kN):",
       options: ["(a) 120", "(b) 180", "(c) 150", "(d) 90"],
       correct: 0,
       solution: "Only OJ can carry vertical load, so F_OJ·sinθ = 90 kN with sinθ = 3/5 → F_OJ = 150 kN. Horizontal component at O = F_OJ·cosθ = 150×(4/5) = 120 kN."
     },
     {
-      id: 16, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2020 SHIFT-II",
+      id: 6, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2020 SHIFT-II",
       question: "In the pin-jointed frame shown (members IQ and LJ joined by a pin at N; members JM and KQ joined by a pin at P; hinge supports at R and S; panels 1 m each), downward 10 kN loads act at joints I, J and K, and horizontal 10 kN loads act at joints L and M. The magnitude of the horizontal component of the reaction at S is (in kN):",
       options: ["(a) 15", "(b) 20", "(c) 10", "(d) 5"],
       correct: 0,
       solution: "Applying the principle of virtual work to the linkage (small rotation of members RI and RL), the horizontal reaction at S = 900/60 = 15 kN. (This question relies on the frame figure.)"
     },
     {
-      id: 17, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2018 SHIFT-I",
+      id: 7, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2018 SHIFT-I",
       question: "A cylinder of radius 250 mm and weight W = 10 kN is to be rolled over an obstacle of height 50 mm by a horizontal force P applied at its centre. All contact surfaces are frictionless. The minimum value of P is:",
       options: ["(a) 4.5 kN", "(b) 5.0 kN", "(c) 6.0 kN", "(d) 7.5 kN"],
       correct: 3,
       solution: "At the verge of rolling, take moments about the obstacle corner. Horizontal distance from corner to centre = √(250² − 200²) = 150 mm; vertical lever for P = R − h = 200 mm. P×200 = W×150 → P = 0.75×10 = 7.5 kN."
     },
     {
-      id: 18, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2018 SHIFT-II",
+      id: 8, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2018 SHIFT-II",
       question: "Two rigid bodies of mass 5 kg and 4 kg rest in contact on a frictionless surface. A horizontal force of 36 N is applied to the 5 kg body (which then pushes the 4 kg body). The contact force generated between the two bodies is:",
       options: ["(a) 4.0 N", "(b) 7.2 N", "(c) 9.0 N", "(d) 16.0 N"],
       correct: 3,
       solution: "Common acceleration a = 36/(5+4) = 4 m/s². Contact force = mass of the second body × a = 4×4 = 16 N."
     },
     {
-      id: 19, type: "NAT", marks: 2, neg: "0", year: "GATE-2017 SHIFT-I",
+      id: 9, type: "NAT", marks: 2, neg: "0", year: "GATE-2017 SHIFT-I",
       question: "A particle of mass 2 kg moving at 1.5 m/s is acted upon by a force f(t) = 3t² N (t in seconds) along its direction of motion for 2 seconds. The velocity of the particle immediately after the force is removed is ____ m/s (one decimal place).",
       options: [],
       correct: 0,
@@ -174,36 +107,42 @@ export const GATE_QUESTIONS: Record<string, GateQuestion[]> = {
       solution: "Impulse = ∫₀² 3t² dt = [t³]₀² = 8 N·s. Change in velocity = 8/2 = 4 m/s. Final velocity = 1.5 + 4 = 5.5 m/s."
     },
     {
-      id: 20, type: "MCQ", marks: 1, neg: "1/3", year: "GATE-2019 SHIFT-I",
+      id: 10, type: "MCQ", marks: 1, neg: "1/3", year: "GATE-2019 SHIFT-I",
       question: "A simple mass-spring system has mass m suspended from a spring of stiffness k. With z the displacement, the free-vibration equation of motion is m·z̈ + k·z = 0. The natural frequency of the system is:",
       options: ["(a) √(k/m)", "(b) √(m/k)", "(c) k/m", "(d) m/k"],
       correct: 0,
       solution: "Comparing m·z̈ + k·z = 0 with z̈ + ω²z = 0 gives ω² = k/m, so the natural frequency ω = √(k/m)."
     },
     {
-      id: 21, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2024 SHIFT-II",
+      id: 11, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2024 SHIFT-II",
       question: "A linearly elastic simply-supported beam of length 2l with flexural rigidity EI and negligible mass carries a rigid block of mass m at mid-span. A massless spring of stiffness k also supports the block in parallel with the beam. The natural frequency of the system is:",
       options: ["(a) √((kl³+6EI)/(ml³))", "(b) √((kl³+48EI)/(ml³))", "(c) √(6EIk/((kl³+6EI)m))", "(d) √(48EIk/((kl³+48EI)m))"],
       correct: 0,
       solution: "Mid-span stiffness of a simply-supported beam of span 2l = 48EI/(2l)³ = 6EI/l³. The spring and the beam act in parallel, so k_eq = k + 6EI/l³. Natural frequency ω = √(k_eq/m) = √((kl³+6EI)/(ml³))."
     },
     {
-      id: 22, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2022 SHIFT-II",
+      id: 12, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2022 SHIFT-II",
       question: "An undamped spring-mass system with mass m and spring stiffness k has natural frequency ω rad/s and natural period T s. If the stiffness is doubled and the mass is halved, the new natural frequency and natural period are respectively:",
       options: ["(a) 2ω rad/s and T/2 s", "(b) ω/2 rad/s and 2T s", "(c) 4ω rad/s and T/4 s", "(d) ω rad/s and T s"],
       correct: 0,
       solution: "ω' = √(k'/m') = √(2k/(m/2)) = √(4k/m) = 2√(k/m) = 2ω. T' = 2π/ω' = T/2. So frequency doubles and period halves."
     },
     {
-      id: 23, type: "NAT", marks: 2, neg: "0", year: "GATE-2021 SHIFT-II",
+      id: 13, type: "NAT", marks: 2, neg: "0", year: "GATE-2021 SHIFT-II",
       question: "A prismatic fixed-fixed beam is modelled as an SDOF system with a total lumped mass of 10 kg. If the flexural stiffness of the beam is 4π² kN/m, its natural frequency of vibration in the flexural mode is ____ Hz (integer).",
       options: [],
       correct: 0,
       natAnswer: "10",
       solution: "ω = √(k/m) = √(4π²×1000/10) = √(400π²) = 20π rad/s. f = ω/(2π) = 20π/(2π) = 10 Hz."
     },
+    {
+      id: 14, type: "MCQ", marks: 2, neg: "2/3", year: "GATE-2021 SHIFT-II",
+      question: "A single-storey building is modelled as a rigid bar of mass m supported by three identical massless elastic columns whose ends are fixed against rotation. For each column the lateral deflection is δ = PL³/(12EI). The natural frequency of the system for horizontal oscillation is:",
+      options: ["(a) (2/L)√(EI/m) rad/s", "(b) 2√(6EI/mL³) rad/s", "(c) (1/L)√(2EI/m) rad/s", "(d) 6√(EI/mL³) rad/s"],
+      correct: 3,
+      solution: "Each fixed-fixed column has lateral stiffness 12EI/L³. Three columns act in parallel: k = 3×12EI/L³ = 36EI/L³. ω = √(k/m) = √(36EI/mL³) = 6√(EI/mL³) rad/s."
+    },
   ],
-
   // ─────────────────────────────────────────────
   // 2. STRENGTH OF MATERIALS
   // ─────────────────────────────────────────────
