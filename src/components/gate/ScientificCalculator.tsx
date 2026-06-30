@@ -117,7 +117,7 @@ export default function ScientificCalculator({ onClose }: Props) {
 
   const style: React.CSSProperties = pos.x || pos.y
     ? { position: "fixed", left: pos.x, top: pos.y, zIndex: 9999, right: "auto", bottom: "auto" }
-    : { position: "fixed", right: 260, top: 130, zIndex: 9999 };
+    : { position: "fixed", left: "50%", top: 70, transform: "translateX(-50%)", zIndex: 9999 };
 
   // ── button renderer ────────────────────────────────────────
   const Btn = ({
@@ -147,7 +147,11 @@ export default function ScientificCalculator({ onClose }: Props) {
   };
 
   return (
-    <div ref={calcRef} style={style} className="w-[380px] bg-white rounded shadow-2xl border border-slate-300">
+    <div
+      ref={calcRef}
+      style={{ ...style, width: "min(380px, calc(100vw - 16px))", maxWidth: "calc(100vw - 16px)", maxHeight: "90vh", overflowY: "auto" }}
+      className="bg-white rounded shadow-2xl border border-slate-300"
+    >
       {/* Title bar */}
       <div
         onMouseDown={onMouseDown}

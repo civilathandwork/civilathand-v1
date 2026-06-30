@@ -1,31 +1,17 @@
 "use client";
-// ============================================================
-// PLACE THIS FILE AT:
-//   src/app/education/test-series/gate-full-length/[testId]/page.tsx
-// ============================================================
-// Assembles a full-length GATE paper from the blueprint + your
-// question bank, then hands it to the shared ExamRunner engine.
-// ============================================================
 
-import React, { useMemo } from "react";
+import React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { getFullTest } from "@/data/testseries/blueprints";
-import { assembleTest } from "@/lib/assembleTest";
-import { GATE_QUESTIONS } from "@/data/gate/questions";
+import { getTest } from "@/data/exams/registry";
 import ExamRunner from "@/components/testseries/ExamRunner";
 
 export default function GateFullLengthRunner() {
   const params = useParams();
   const testId = params.testId as string;
-  const blueprint = getFullTest(testId);
+  const test = getTest("gate", testId);
 
-  const assembled = useMemo(
-    () => (blueprint ? assembleTest(blueprint, GATE_QUESTIONS) : null),
-    [blueprint]
-  );
-
-  if (!blueprint || !assembled) {
+  if (!test) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-100 p-6">
         <div className="bg-white p-8 rounded-lg shadow text-center max-w-sm">
@@ -38,20 +24,16 @@ export default function GateFullLengthRunner() {
     );
   }
 
-  const incomplete = assembled.questions.length < blueprint.totalQuestions;
-
   return (
     <ExamRunner
-      questions={assembled.questions}
-      examTitle={`GATE CE — ${blueprint.name}`}
-      examSubtitle={blueprint.subtitle}
-      paperLabel={`Civil Engineering · ${assembled.questions.length} Questions`}
-      durationSec={blueprint.durationSec}
+      questions={test.questions}
+      examTitle={`GATE CE — ${test.name}`}
+      examSubtitle={test.subtitle}
+      paperLabel={`Civil Engineering · ${test.questions.length} Questions`}
+      durationSec={test.durationSec}
       backHref="/education/test-series/gate-full-length"
       backLabel="Choose Another Test"
-      notice={incomplete
-        ? `Showing ${assembled.questions.length} of ${blueprint.totalQuestions} questions — bank still expanding.`
-        : undefined}
+      storageKey={`cah-gate-${test.id}`}
     />
   );
 }

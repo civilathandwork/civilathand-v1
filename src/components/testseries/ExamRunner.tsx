@@ -42,6 +42,7 @@ export interface ExamRunnerProps {
   backHref: string;        // where "choose another" returns to
   backLabel: string;
   notice?: string;         // optional yellow banner (e.g. bank incomplete)
+  storageKey?: string;     // unique key to auto-save progress (timer + answers)
 }
 
 type QStatus = "not-visited" | "not-answered" | "answered" | "marked" | "answered-marked";
@@ -89,7 +90,7 @@ function LegendRow({ color, label, count }: { color: string; label: string; coun
 
 export default function ExamRunner({
   questions, examTitle, examSubtitle, paperLabel,
-  durationSec, backHref, backLabel, notice,
+  durationSec, backHref, backLabel, notice, storageKey,
 }: ExamRunnerProps) {
   const [phase, setPhase] = useState<"exam" | "result">("exam");
   const [current, setCurrent] = useState(0);
@@ -108,6 +109,43 @@ export default function ExamRunner({
   const [scoreData, setScoreData] = useState({
     score: 0, maxScore: 0, correct: 0, wrong: 0, unattempted: 0, marked: 0,
   });
+
+  // ── Auto-save progress so a refresh / battery cut never wipes the test ──
+  const storeKey = storageKey || `cah-exam-${examTitle}`;
+  const [ready, setReady] = useState(false);
+  const clearSaved = useCallback(() => {
+    try { if (typeof window !== "undefined") window.localStorage.removeItem(storeKey); } catch { /* ignore */ }
+  }, [storeKey]);
+
+  // restore once on mount
+  useEffect(() => {
+    try {
+      const raw = typeof window !== "undefined" ? window.localStorage.getItem(storeKey) : null;
+      if (raw) {
+        const saved = JSON.parse(raw);
+        if (saved && typeof saved === "object") {
+          if (saved.phase === "exam" || saved.phase === "result") setPhase(saved.phase);
+          if (typeof saved.current === "number") setCurrent(saved.current);
+          if (saved.answers && typeof saved.answers === "object") setAnswers(saved.answers);
+          if (saved.statuses && typeof saved.statuses === "object") setStatuses(saved.statuses);
+          if (typeof saved.timeLeft === "number") setTimeLeft(saved.timeLeft);
+          if (saved.scoreData && typeof saved.scoreData === "object") setScoreData(saved.scoreData);
+        }
+      }
+    } catch { /* ignore corrupt save */ }
+    setReady(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // save on every change (only after the first restore has run)
+  useEffect(() => {
+    if (!ready) return;
+    try {
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(storeKey, JSON.stringify({ phase, current, answers, statuses, timeLeft, scoreData }));
+      }
+    } catch { /* ignore quota errors */ }
+  }, [ready, phase, current, answers, statuses, timeLeft, scoreData, storeKey]);
 
   const handleSubmit = useCallback((/* auto */) => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -282,6 +320,7 @@ export default function ExamRunner({
           <div className="flex gap-3 flex-wrap pb-8">
             <button
               onClick={() => {
+                clearSaved();
                 setAnswers({});
                 setStatuses(Object.fromEntries(questions.map((_, i) => [i, "not-visited"])));
                 setCurrent(0); setTimeLeft(durationSec); setPhase("exam");
