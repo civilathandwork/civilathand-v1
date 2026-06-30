@@ -62,7 +62,7 @@ export const GATE_SUBJECTS: GateSubject[] = [
     years: "1989–2025",
     bookPages: "196–211",
     category: "struct",
-    free: false,
+    free: true,
     color: "#4527a0",
   },
   {
@@ -86,7 +86,7 @@ export const GATE_SUBJECTS: GateSubject[] = [
     years: "1987–2025",
     bookPages: "294–351",
     category: "struct",
-    free: false,
+    free: true,
     color: "#880e4f",
   },
   {
@@ -122,7 +122,7 @@ export const GATE_SUBJECTS: GateSubject[] = [
     years: "1990–2025",
     bookPages: "683–727",
     category: "fluid",
-    free: false,
+    free: true,
     color: "#006064",
   },
   {
@@ -134,7 +134,7 @@ export const GATE_SUBJECTS: GateSubject[] = [
     years: "1989–2025",
     bookPages: "728–757",
     category: "fluid",
-    free: false,
+    free: true,
     color: "#1b5e20",
   },
   {
@@ -158,7 +158,7 @@ export const GATE_SUBJECTS: GateSubject[] = [
     years: "1987–2025",
     bookPages: "874–972",
     category: "env",
-    free: false,
+    free: true,
     color: "#e65100",
   },
   {
@@ -170,7 +170,7 @@ export const GATE_SUBJECTS: GateSubject[] = [
     years: "1988–2025",
     bookPages: "973–1011",
     category: "struct",
-    free: false,
+    free: true,
     color: "#827717",
   },
   {
@@ -206,7 +206,7 @@ export const GATE_SUBJECTS: GateSubject[] = [
     years: "2012–2025",
     bookPages: "1170–1184",
     category: "math",
-    free: false,
+    free: true,
     color: "#4e342e",
   },
 ];
