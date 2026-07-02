@@ -1007,6 +1007,6 @@ export const gateTest2: MockTest = {
       correct: 0,
       natAnswer: "18.4",
       solution: "Solution is not available."
-    }
+    },
   ]
 };
