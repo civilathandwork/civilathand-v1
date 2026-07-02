@@ -8,7 +8,7 @@ import { MockTest } from "../types";
 // CHANGE: The variable must be named gateTest2 to match index.ts import
 export const gateTest2: MockTest = {
   id: "test-2", // Changed from "gate-2026" to match standard naming "test-2"
-  name: "GATE 2026 Civil Engineering (Memory Based)",
+  name: "Full Lenth Test 2",
   subtitle: "65 Q · 100 marks · 3 hours",
   durationSec: 10800,
   totalMarks: 100,
