@@ -5,9 +5,10 @@
 
 import { MockTest } from "../types";
 
+// CHANGE: The variable must be named gateTest2 to match index.ts import
 export const gateTest2: MockTest = {
-  id: "test-2",
-  name: "Full Length Test 2",
+  id: "test-2", // Changed from "gate-2026" to match standard naming "test-2"
+  name: "Full Lenth Test 2",
   subtitle: "65 Q · 100 marks · 3 hours",
   durationSec: 10800,
   totalMarks: 100,
@@ -846,164 +847,6 @@ export const gateTest2: MockTest = {
         "(d) 25√2 tension"
       ],
       correct: 0,
-      solution: "Solution is not available."
-    },
-    {
-      id: 56,
-      type: "MCQ",
-      marks: 1,
-      neg: "1/3",
-      year: "GATE-2026",
-      sectionLabel: "Civil Engineering",
-      question: "The primary purpose of the Windrose diagram is for the design of:",
-      options: [
-        "(a) orientation of a runway.",
-        "(b) gradient of a runway.",
-        "(c) width of a runway.",
-        "(d) length of a runway."
-      ],
-      correct: 0,
-      solution: "Solution is not available."
-    },
-    {
-      id: 57,
-      type: "MCQ",
-      marks: 1,
-      neg: "1/3",
-      year: "GATE-2026",
-      sectionLabel: "Civil Engineering",
-      question: "As per IS:800-2007, design of a cantilever steel beam section for its moment capacity requires fulfilment of an upper bound, expressed as: M_d ≤ 1.5 Z_e (f_y / γ_m0). The reason for such upper bound is to:",
-      options: [
-        "(a) control deflection",
-        "(b) restrain lateral-torsional buckling",
-        "(c) avoid yielding at ultimate load",
-        "(d) avoid plastic deformation under working load"
-      ],
-      correct: 3,
-      solution: "Solution is not available."
-    },
-    {
-      id: 58,
-      type: "MCQ",
-      marks: 1,
-      neg: "1/3",
-      year: "GATE-2026",
-      sectionLabel: "Civil Engineering",
-      question: "Which one of the following statements is TRUE?",
-      options: [
-        "(a) Cant deficiency is related to train moving faster, and Cant excess is related to train moving slower.",
-        "(b) Cant deficiency is related to train moving on the main line, and Cant excess is related to train moving on the branch line.",
-        "(c) Cant deficiency is related to train moving on the branch line, and Cant excess is related to train moving on the main line.",
-        "(d) Cant deficiency is related to train moving slower, and Cant excess is related to train moving faster."
-      ],
-      correct: 0,
-      solution: "Solution is not available."
-    },
-    {
-      id: 59,
-      type: "MCQ",
-      marks: 1,
-      neg: "1/3",
-      year: "GATE-2026",
-      sectionLabel: "Civil Engineering",
-      question: "A rectangular singly reinforced concrete beam has a width of 300 mm and an effective depth of 550 mm. The grades of steel and concrete are Fe500 and M25, respectively. The area of steel in tension is 1963 mm². The depth of neutral axis is 302 mm. The ratio of the limiting depth of the neutral axis (x_u,max) to the effective depth (d) of the beam is 0.456. The most probable mode of failure of the beam is:",
-      options: [
-        "(a) bond failure",
-        "(b) ductile failure",
-        "(c) shear failure",
-        "(d) compression failure"
-      ],
-      correct: 1,
-      solution: "Solution is not available."
-    },
-    {
-      id: 60,
-      type: "MCQ",
-      marks: 1,
-      neg: "1/3",
-      year: "GATE-2026",
-      sectionLabel: "Civil Engineering",
-      question: "Information related to foundation design is provided in table below. (I) Converse-Labarre formula, (II) Hiley formula, (III) Newmark's influence chart, (IV) Skempton's equation. Match with (P) Pile capacity from dynamic formula, (Q) Pile group efficiency, (R) Bearing capacity factor of saturated clay, (S) Increase in vertical stress below footing.",
-      options: [
-        "(a) (I)-(R); (II)-(S); (III)-(Q); (IV)-(P)",
-        "(b) (I)-(Q); (II)-(P); (III)-(S); (IV)-(R)",
-        "(c) (I)-(P); (II)-(Q); (III)-(S); (IV)-(R)",
-        "(d) (I)-(R); (II)-(S); (III)-(P); (IV)-(Q)"
-      ],
-      correct: 1,
-      solution: "Solution is not available."
-    },
-    {
-      id: 61,
-      type: "MCQ",
-      marks: 2,
-      neg: "2/3",
-      year: "GATE-2026",
-      sectionLabel: "Civil Engineering",
-      question: "The Culturable Command Area (CCA) for a canal is 10000 hectares. The base period for a crop in the CCA is 140 days. Watering depth for the crop is 40 cm. The outlet discharge (in m³/s) lies between:",
-      options: [
-        "(a) 33 and 34",
-        "(b) 23 and 24",
-        "(c) 3 and 4",
-        "(d) 13 and 14"
-      ],
-      correct: 2,
-      solution: "Solution is not available."
-    },
-    {
-      id: 62,
-      type: "MCQ",
-      marks: 2,
-      neg: "2/3",
-      year: "GATE-2026",
-      sectionLabel: "Civil Engineering",
-      question: "The cross section of a 0.5 m wide vertical gate holding water and oil is shown in the figure. The unit weights of water and oil are 10 kN/m³ and 7.5 kN/m³ respectively. The horizontal hydrostatic force (in kN) acting on the vertical gate is (rounded off to two decimal places).",
-      options: [],
-      correct: 0,
-      natAnswer: "13.44",
-      solution: "Solution is not available."
-    },
-    {
-      id: 63,
-      type: "MCQ",
-      marks: 2,
-      neg: "2/3",
-      year: "GATE-2026",
-      sectionLabel: "Civil Engineering",
-      question: "Anaerobic bacteria are being utilized for the destruction of biodegradable organic content of wastewater measured in terms of Chemical Oxygen Demand (COD). The yield coefficient (Y) is 0.06 gram Volatile Suspended Solids (VSS) per gram of COD. Bacterial biomass forms the sludge during the process. The proximate chemical formula of anaerobic bacteria is C5H7NO2. The COD (in %) converted into bacterial biomass is (rounded off to the nearest integer).",
-      options: [],
-      correct: 0,
-      natAnswer: "9.09",
-      solution: "Solution is not available."
-    },
-    {
-      id: 64,
-      type: "MCQ",
-      marks: 2,
-      neg: "2/3",
-      year: "GATE-2026",
-      sectionLabel: "Civil Engineering",
-      question: "Types of flood routing and methods are given below. (P) Hydrologic routing, (Q) Hydraulic routing, (R) Reservoir routing, (S) Channel routing. (i) Muskingum method, (ii) Modified Pul's method, (iii) Method of Characteristics. Option(s) giving the CORRECT match(es) between Column 1 and Column 2 is/are:",
-      options: [
-        "(a) (P)-(ii); (Q)-(iii); (R)-(ii)",
-        "(b) (P)-(i); (R)-(ii); (S)-(i)",
-        "(c) (Q)-(i); (R)-(iii); (S)-(ii)",
-        "(d) (P)-(i); (Q)-(iii); (R)-(ii)"
-      ],
-      correct: 1,
-      solution: "Solution is not available."
-    },
-    {
-      id: 65,
-      type: "MCQ",
-      marks: 2,
-      neg: "2/3",
-      year: "GATE-2026",
-      sectionLabel: "Civil Engineering",
-      question: "The ultimate bearing capacity of a 1 m wide strip footing is 532.80 kPa when it is embedded at 1 m depth in dry cohesionless soil. The soil has a unit weight of 18 kN/m³. The ultimate bearing capacity is 864 kPa when the depth of embedment becomes 2 m. Neglecting the effect of the depth factor, the bearing capacity factor Nq is (rounded off to one decimal place).",
-      options: [],
-      correct: 0,
-      natAnswer: "18.4",
       solution: "Solution is not available."
     }
   ]
