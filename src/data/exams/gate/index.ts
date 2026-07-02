@@ -4,10 +4,10 @@
 
 import { MockTest } from "../types";
 import { gateTest1 } from "./test-1";
-// We import the test you created in test-2.ts
-import { gate2026 as gateTest2 } from "./test-2";
+// We import the new test from test-2 and rename it to gateTest2
+import { gateTest2 } from "./test-2";
 
-// We add gateTest2 to the array
+// We add gateTest2 to the exported array
 export const GATE_TESTS: MockTest[] = [
   gateTest1,
   gateTest2,
