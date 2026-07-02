@@ -5,10 +5,9 @@
 
 import { MockTest } from "../types";
 
-// CHANGE: The variable must be named gateTest2 to match index.ts import
 export const gateTest2: MockTest = {
-  id: "test-2", // Changed from "gate-2026" to match standard naming "test-2"
-  name: "Full Lenth Test 2",
+  id: "test-2",
+  name: "Full Length Test 2",
   subtitle: "65 Q · 100 marks · 3 hours",
   durationSec: 10800,
   totalMarks: 100,
@@ -849,7 +848,6 @@ export const gateTest2: MockTest = {
       correct: 0,
       solution: "Solution is not available."
     },
-        // ═══════════ FINAL 10 QUESTIONS (56 - 65) ═══════════
     {
       id: 56,
       type: "MCQ",
@@ -1007,6 +1005,6 @@ export const gateTest2: MockTest = {
       correct: 0,
       natAnswer: "18.4",
       solution: "Solution is not available."
-    },
+    }
   ]
 };
