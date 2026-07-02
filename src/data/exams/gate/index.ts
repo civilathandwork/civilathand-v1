@@ -9,5 +9,9 @@
 
 import { MockTest } from "../types";
 import { gateTest1 } from "./test-1";
+import { gateTest2 } from "./test-2";
 
-export const GATE_TESTS: MockTest[] = [gateTest1];
+export const GATE_TESTS: MockTest[] = [
+  gateTest1,
+  gateTest2,
+];
